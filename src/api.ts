@@ -2,6 +2,10 @@ import type { PokemonListItem } from './types'
 
 const API_URL = 'https://pokeapi.co/api/v2'
 
+// Genesect, the last Pokémon of Generation 5.
+export const LAST_POKEMON = 649
+export const PAGE_SIZE = 50
+
 type ListResponse = {
   results: { name: string; url: string }[]
 }
@@ -24,10 +28,9 @@ async function getJson<T>(url: string): Promise<T> {
 
 // The list endpoint only has names and urls, so we request each
 // Pokémon's own data to get its picture and types.
-export async function fetchPokemonPage(
-  offset: number,
-  limit = 50,
-): Promise<PokemonListItem[]> {
+// The last page is shorter so the list stops at LAST_POKEMON.
+export async function fetchPokemonPage(offset: number): Promise<PokemonListItem[]> {
+  const limit = Math.min(PAGE_SIZE, LAST_POKEMON - offset)
   const list = await getJson<ListResponse>(`${API_URL}/pokemon?limit=${limit}&offset=${offset}`)
   const pokemon = await Promise.all(
     list.results.map((result) => getJson<PokemonResponse>(result.url)),

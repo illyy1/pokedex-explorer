@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchPokemonPage } from './api'
+import { fetchPokemonPage, LAST_POKEMON } from './api'
 import DetailsPanel from './components/DetailsPanel'
 import PokemonList from './components/PokemonList'
 import samplePokemon from './data/samplePokemon.json'
@@ -10,6 +10,7 @@ const sampleInfo: PokemonInfo[] = samplePokemon
 function App() {
   const [pokemon, setPokemon] = useState<PokemonListItem[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   useEffect(() => {
     // Ignore the answer if the component was removed before it arrived.
@@ -24,6 +25,19 @@ function App() {
     }
   }, [])
 
+  async function handleLoadMore() {
+    setIsLoadingMore(true)
+    try {
+      const items = await fetchPokemonPage(pokemon.length)
+      setPokemon((current) => [...current, ...items])
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoadingMore(false)
+    }
+  }
+
+  const canLoadMore = pokemon.length > 0 && pokemon.length < LAST_POKEMON
   const selected = pokemon.find((p) => p.id === selectedId)
   const info = sampleInfo.find((p) => p.id === selectedId)
 
@@ -35,6 +49,16 @@ function App() {
       <main>
         <section className="list-panel" aria-label="Pokémon list">
           <PokemonList pokemon={pokemon} selectedId={selectedId} onSelect={setSelectedId} />
+          {canLoadMore && (
+            <button
+              type="button"
+              className="load-more"
+              onClick={handleLoadMore}
+              disabled={isLoadingMore}
+            >
+              Load more
+            </button>
+          )}
         </section>
         <section className="details-panel" aria-label="Pokémon details">
           <DetailsPanel selected={selected} info={info} />
