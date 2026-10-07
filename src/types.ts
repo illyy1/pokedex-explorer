@@ -13,11 +13,12 @@ export type PokemonStat = {
 }
 
 // Everything the details panel shows.
+// The description comes from a second endpoint, added in task 7.
 export type PokemonInfo = {
   id: number
   name: string
   types: string[]
   artwork: string
   stats: PokemonStat[]
-  description: string
+  description?: string
 }

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
-import { fetchPokemonPage, LAST_POKEMON } from './api'
+import { fetchPokemonInfo, fetchPokemonPage, LAST_POKEMON } from './api'
 import DetailsPanel from './components/DetailsPanel'
 import PokemonList from './components/PokemonList'
-import samplePokemon from './data/samplePokemon.json'
 import type { PokemonInfo, PokemonListItem } from './types'
-
-const sampleInfo: PokemonInfo[] = samplePokemon
 
 function App() {
   const [pokemon, setPokemon] = useState<PokemonListItem[]>([])
   const [selectedId, setSelectedId] = useState<number | null>(null)
+  const [info, setInfo] = useState<PokemonInfo | null>(null)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   useEffect(() => {
@@ -25,6 +23,20 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    if (selectedId === null) return
+    // Ignore the answer if another Pokémon was clicked before it arrived.
+    let ignore = false
+    fetchPokemonInfo(selectedId)
+      .then((result) => {
+        if (!ignore) setInfo(result)
+      })
+      .catch((error) => console.error(error))
+    return () => {
+      ignore = true
+    }
+  }, [selectedId])
+
   async function handleLoadMore() {
     setIsLoadingMore(true)
     try {
@@ -39,7 +51,8 @@ function App() {
 
   const canLoadMore = pokemon.length > 0 && pokemon.length < LAST_POKEMON
   const selected = pokemon.find((p) => p.id === selectedId)
-  const info = sampleInfo.find((p) => p.id === selectedId)
+  // Only show info that belongs to the clicked Pokémon, not the previous one.
+  const selectedInfo = info?.id === selectedId ? info : undefined
 
   return (
     <>
@@ -61,7 +74,7 @@ function App() {
           )}
         </section>
         <section className="details-panel" aria-label="Pokémon details">
-          <DetailsPanel selected={selected} info={info} />
+          <DetailsPanel selected={selected} info={selectedInfo} />
         </section>
       </main>
     </>

@@ -23,13 +23,12 @@ function DetailsPanel({ selected, info }: Props) {
     return <p className="hint">Pick a Pokémon to see its details.</p>
   }
 
-  // Until details come from PokéAPI (task 6), only the sample Pokémon have full info.
+  // While the details are on their way, show what the list already knows.
   if (!info) {
     return (
       <div className="details">
         <span className="number">#{selected.id}</span>
         <h2 className="name">{selected.name}</h2>
-        <p className="hint">More details are coming soon.</p>
       </div>
     )
   }
@@ -44,7 +43,7 @@ function DetailsPanel({ selected, info }: Props) {
           <TypeBadge key={type} type={type} />
         ))}
       </div>
-      <p className="description">{info.description}</p>
+      {info.description && <p className="description">{info.description}</p>}
       <table className="stats">
         <tbody>
           {info.stats.map((stat) => (
