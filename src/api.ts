@@ -1,3 +1,4 @@
+import { fetchBuilds } from './builds'
 import { typeMatchups } from './matchups'
 import type { PokemonInfo, PokemonListItem } from './types'
 
@@ -51,6 +52,7 @@ export type TypeData = {
 
 // Only the parts of the /pokemon-species/{id} response that we use.
 type SpeciesResponse = {
+  name: string
   flavor_text_entries: { flavor_text: string; language: { name: string } }[]
 }
 
@@ -151,9 +153,19 @@ async function fetchPokemonWithExtras(id: number) {
 
 export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
   // The species request is sent at the same time as the others.
-  const [{ p, typeData, abilityEffects }, species] = await Promise.all([
+  const speciesPromise = getJson<SpeciesResponse>(`${API_URL}/pokemon-species/${id}`)
+  // Builds come from a different website. If they fail, the rest of the
+  // details still show, with a message in the builds section.
+  const buildsPromise = speciesPromise
+    .then((species) => fetchBuilds(species.name))
+    .catch((error) => {
+      console.error(error)
+      return null
+    })
+  const [{ p, typeData, abilityEffects }, species, builds] = await Promise.all([
     fetchPokemonWithExtras(id),
-    getJson<SpeciesResponse>(`${API_URL}/pokemon-species/${id}`),
+    speciesPromise,
+    buildsPromise,
   ])
   return {
     id: p.id,
@@ -168,5 +180,6 @@ export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
       isHidden: a.is_hidden,
       effect: abilityEffects[i],
     })),
+    builds,
   }
 }

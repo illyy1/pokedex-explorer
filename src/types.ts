@@ -31,6 +31,19 @@ export type Ability = {
   effect: string
 }
 
+// One recommended competitive set. A move, item, ability or nature with
+// alternatives is shown as "Thunderbolt / Thunder".
+export type Build = {
+  format: string
+  name: string
+  moves: string[]
+  item?: string
+  ability?: string
+  nature?: string
+  // For example "252 Atk / 4 SpA / 252 Spe".
+  evs?: string
+}
+
 // Everything the details panel shows.
 export type PokemonInfo = {
   id: number
@@ -41,4 +54,6 @@ export type PokemonInfo = {
   description: string
   matchups: Matchups
   abilities: Ability[]
+  // null when the builds could not be loaded.
+  builds: Build[] | null
 }

@@ -1,4 +1,5 @@
 import type { PokemonInfo, PokemonListItem } from '../types'
+import BuildsSection from './BuildsSection'
 import MatchupsSection from './MatchupsSection'
 import TypeBadge from './TypeBadge'
 
@@ -80,6 +81,7 @@ function DetailsPanel({ selected, info, failed }: Props) {
         </ul>
       </section>
       <MatchupsSection matchups={info.matchups} />
+      <BuildsSection builds={info.builds} />
     </div>
   )
 }

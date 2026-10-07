@@ -64,7 +64,7 @@ When a Pokémon is clicked, show its abilities in the details panel and mark the
 
 Done when: Charizard shows Blaze with "Strengthens Fire moves to inflict 1.5× damage at 1/3 max HP or less." and Solar Power marked as hidden.
 
-## Task 13: Show recommended builds
+## Task 13: Show recommended builds ✅
 The first time a Pokémon is clicked, load Smogon's Generation 5 competitive sets from data.pkmn.cc once and keep them for the rest of the visit. Find the clicked Pokémon's builds by name, using two matching rules: (1) compare names using only lowercase letters and numbers, so "Mr. Mime" matches "mr-mime" and "Farfetch’d" matches "farfetchd"; (2) use the species name from the species request (for example "deoxys", not "deoxys-normal"). Show them in a "Recommended builds" section: format and set name, four moves (a slot with alternatives shows them as "Thunderbolt / Thunder"), item, ability, nature and EVs. If the Pokémon has no builds, show "No recommended builds for this Pokémon yet."
 
 Done when: Pikachu shows its builds, including "Revenge Killer" with Extreme Speed, Wild Charge, Volt Switch and Hidden Power Ice holding a Light Ball, a Pokémon with a dot or dash in its name (like Mr. Mime) also finds its builds, Deoxys and Landorus (whose PokéAPI names include a form) find their builds, and Caterpie, which has no builds, shows the message instead of an empty space. In total, 589 of the 649 Pokémon have builds.
