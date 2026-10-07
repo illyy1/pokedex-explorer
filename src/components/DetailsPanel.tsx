@@ -1,5 +1,6 @@
 import type { PokemonInfo, PokemonListItem } from '../types'
 import BuildsSection from './BuildsSection'
+import FavoriteButton from './FavoriteButton'
 import MatchupsSection from './MatchupsSection'
 import TypeBadge from './TypeBadge'
 
@@ -46,6 +47,7 @@ function DetailsPanel({ selected, info, failed }: Props) {
 
   return (
     <div className="details">
+      <FavoriteButton id={info.id} name={info.name} />
       <img src={info.artwork} alt={info.name} width="240" height="240" />
       <span className="number">#{info.id}</span>
       <h2 className="name">{info.name}</h2>

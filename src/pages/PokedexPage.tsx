@@ -10,6 +10,7 @@ import {
 } from '../api'
 import DetailsPanel from '../components/DetailsPanel'
 import PokemonList from '../components/PokemonList'
+import { useFavorites } from '../favorites'
 import { usePokemonData } from '../pokemonData'
 import { ALL_TYPES } from '../pokemonTypes'
 import { matchesQuery, normalizeQuery } from '../search'
@@ -18,9 +19,13 @@ import type { PokemonInfo } from '../types'
 // The most search results we show (and load pictures for) at once.
 const MAX_RESULTS = 50
 
-function PokedexPage() {
+// Used for both the Pokédex page and the Favorites page, which shows only
+// favorites and keeps its own address (/favorites/25 instead of /pokedex/25).
+function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   const { index, items, addItems, isLoadingIndex, indexError } = usePokemonData()
+  const { ids: favoriteIds } = useFavorites()
   const navigate = useNavigate()
+  const basePath = favoritesOnly ? '/favorites' : '/pokedex'
 
   // The clicked Pokémon comes from the address, for example /pokedex/25.
   const { id } = useParams()
@@ -97,13 +102,19 @@ function PokedexPage() {
   const typeFailed = typeFilter !== '' && typeErrorName === typeFilter
   const isLoadingType = typeFilter !== '' && !typeIds && !typeFailed
 
+  // All Pokémon, or only the favorites.
+  const baseList = favoritesOnly ? index.filter((p) => favoriteIds.includes(p.id)) : index
   const matches = isFiltering
-    ? index.filter(
+    ? baseList.filter(
         (p) =>
           (typeFilter === '' || typeIds?.has(p.id)) && (!isSearching || matchesQuery(p, search)),
       )
     : []
-  const visible = isFiltering ? matches.slice(0, MAX_RESULTS) : index.slice(0, shownCount)
+  const visible = isFiltering
+    ? matches.slice(0, MAX_RESULTS)
+    : favoritesOnly
+      ? baseList
+      : index.slice(0, shownCount)
   // Use the loaded version (with picture and types) when we have it.
   const rows = visible.map((p) => items[p.id] ?? p)
 
@@ -135,7 +146,7 @@ function PokedexPage() {
   }, [missingKey, isFiltering, retryCount, addItems])
 
   function handleSelect(pokemonId: number) {
-    navigate(`/pokedex/${pokemonId}`)
+    navigate(`${basePath}/${pokemonId}`)
     setClickCount((count) => count + 1)
   }
 
@@ -144,7 +155,8 @@ function PokedexPage() {
     setRetryCount((count) => count + 1)
   }
 
-  const canLoadMore = !isFiltering && shownCount < index.length && !isLoadingItems && !itemsFailed
+  const canLoadMore =
+    !favoritesOnly && !isFiltering && shownCount < index.length && !isLoadingItems && !itemsFailed
   const selected = isValidId
     ? (items[selectedId] ?? index.find((p) => p.id === selectedId) ?? { id: selectedId, name: '' })
     : undefined
@@ -177,6 +189,9 @@ function PokedexPage() {
           </select>
         </div>
         <PokemonList pokemon={rows} selectedId={selectedId} onSelect={handleSelect} />
+        {favoritesOnly && !isLoadingIndex && !indexError && baseList.length === 0 && (
+          <p className="status">No favorites yet. Tap the ☆ on any Pokémon to save it.</p>
+        )}
         {typeFailed && (
           <p className="status error" role="alert">
             Couldn't load the Pokémon of this type. Check your internet connection, pick "All

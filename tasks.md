@@ -79,7 +79,7 @@ Replace the Home placeholder with the app name, a one-line intro, a "Pokémon of
 
 Done when: the homepage shows the same Pokémon of the day after a refresh, clicking the card opens that Pokémon's details, and both buttons go to the right pages.
 
-## Task 16: Add favorites
+## Task 16: Add favorites ✅
 Add a star button to the details panel that adds the Pokémon to favorites (★) or removes it (☆). Save the list of favorite numbers in the browser's localStorage, so it survives closing the browser. Show a small filled star in the list rows of favorite Pokémon. Replace the Favorites placeholder with the same list and details layout, showing only favorites in Pokédex order, at `/favorites` and `/favorites/{number}`. With no favorites, show "No favorites yet. Tap the ☆ on any Pokémon to save it."
 
 Done when: starring Pikachu and Charizard shows both on the Favorites page, removing the star from one removes it from the page, the favorites are still there after closing and reopening the browser, and with no favorites the page shows the message.

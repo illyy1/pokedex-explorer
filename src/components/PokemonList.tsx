@@ -1,3 +1,4 @@
+import { useFavorites } from '../favorites'
 import type { PokemonListItem } from '../types'
 import TypeBadge from './TypeBadge'
 
@@ -8,6 +9,7 @@ type Props = {
 }
 
 function PokemonList({ pokemon, selectedId, onSelect }: Props) {
+  const { isFavorite } = useFavorites()
   return (
     <ul className="pokemon-list">
       {pokemon.map((p) => (
@@ -20,6 +22,11 @@ function PokemonList({ pokemon, selectedId, onSelect }: Props) {
             {p.sprite && <img src={p.sprite} alt="" width="56" height="56" />}
             <span className="number">#{p.id}</span>
             <span className="name">{p.name}</span>
+            {isFavorite(p.id) && (
+              <span className="favorite-mark" aria-label="Favorite">
+                ★
+              </span>
+            )}
             {p.types && (
               <span className="types">
                 {p.types.map((type) => (
