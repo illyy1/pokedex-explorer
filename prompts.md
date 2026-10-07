@@ -243,3 +243,9 @@ add the prompt and push
 ```text
 add to the docs, instead of a "load more" button replace it with an infinite scroll that begins loading when you reach the end of the page
 ```
+
+## 38. Build tasks 13–15
+
+```text
+execute tasks 13 to 15
+```

@@ -96,6 +96,100 @@ body {
   }
 }
 
+/* Homepage */
+
+.home {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 24px 0;
+}
+
+@media (max-width: 720px) {
+  .home {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.1;
+}
+
+.intro {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page a.button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+
+  &.primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.featured {
+  h2 {
+    color: var(--text-h);
+    font-size: 18px;
+    margin: 0 0 12px;
+    text-align: center;
+  }
+  .status {
+    margin: 48px 0;
+  }
+}
+
+.page a.featured-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel);
+  color: inherit;
+  text-decoration: none;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .name {
+    font-size: 24px;
+  }
+  .types {
+    margin-left: 0;
+  }
+  &:hover {
+    border-color: var(--accent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
 /* Pokédex page */
 
 .pokedex {

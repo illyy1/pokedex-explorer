@@ -4,6 +4,8 @@ export type PokemonListItem = {
   id: number
   name: string
   sprite?: string
+  // The large picture, used by the homepage card.
+  artwork?: string
   types?: string[]
 }
 

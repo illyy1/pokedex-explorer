@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–12 are done. Tasks 13–19 are planned. Tasks 9–19 were added after the first plan.
+Status: tasks 1–15 are done. Tasks 16–19 are planned. Tasks 9–19 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -74,7 +74,7 @@ Add React Router. Show a navigation bar on every page with links to Home, Pokéd
 
 Done when: clicking each link in the navigation bar changes the page and the address, opening `/pokedex/649` in a new tab shows Genesect's details, the browser's back button returns to the previous Pokémon or page, and `/nothing-here` shows "Page not found".
 
-## Task 15: Build the homepage
+## Task 15: Build the homepage ✅
 Replace the Home placeholder with the app name, a one-line intro, a "Pokémon of the day" card and two buttons, "Browse the Pokédex" and "My favorites". Pick the Pokémon of the day from today's date, so it is the same all day and changes the next day. Clicking the card opens its details at `/pokedex/{number}`.
 
 Done when: the homepage shows the same Pokémon of the day after a refresh, clicking the card opens that Pokémon's details, and both buttons go to the right pages.

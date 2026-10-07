@@ -88,6 +88,7 @@ export async function fetchListItem(id: number): Promise<PokemonListItem> {
     id: p.id,
     name: p.name,
     sprite: p.sprites.front_default ?? undefined,
+    artwork: p.sprites.other['official-artwork'].front_default ?? undefined,
     types: p.types.map((t) => t.type.name),
   }
 }
