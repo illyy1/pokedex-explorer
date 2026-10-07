@@ -249,3 +249,15 @@ add to the docs, instead of a "load more" button replace it with an infinite scr
 ```text
 execute tasks 13 to 15
 ```
+
+## 39. Push
+
+```text
+push the changes
+```
+
+## 40. Build tasks 16–19 with a Pokémon card design (sent with an image of original Pokémon cards as a reference)
+
+```text
+execute tasks 16 to 19, when you get to the sleeker design part, i would like the design to be based on a traditional pokemon card, i attached an image with what i mean, try to replicate the font and layout
+```

@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+
 // The 18 Pokémon types and the color used for each one's label.
 export const TYPE_COLORS: Record<string, string> = {
   normal: '#9fa19f',
@@ -21,3 +23,9 @@ export const TYPE_COLORS: Record<string, string> = {
 }
 
 export const ALL_TYPES = Object.keys(TYPE_COLORS)
+
+// Sets the --type CSS variable that colors a card, row or energy symbol.
+// Pokémon without a known type get a plain "colorless" card.
+export function typeStyle(type: string | undefined): CSSProperties {
+  return { '--type': (type && TYPE_COLORS[type]) || '#b8b2a7' } as CSSProperties
+}

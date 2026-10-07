@@ -16,6 +16,9 @@ type ListResponse = {
 type PokemonResponse = {
   id: number
   name: string
+  // In decimetres and hectograms.
+  height: number
+  weight: number
   sprites: {
     front_default: string | null
     other: { 'official-artwork': { front_default: string | null } }
@@ -53,6 +56,8 @@ export type TypeData = {
 // Only the parts of the /pokemon-species/{id} response that we use.
 type SpeciesResponse = {
   name: string
+  genera: { genus: string; language: { name: string } }[]
+  evolves_from_species: { name: string } | null
   flavor_text_entries: { flavor_text: string; language: { name: string } }[]
 }
 
@@ -90,6 +95,7 @@ export async function fetchListItem(id: number): Promise<PokemonListItem> {
     sprite: p.sprites.front_default ?? undefined,
     artwork: p.sprites.other['official-artwork'].front_default ?? undefined,
     types: p.types.map((t) => t.type.name),
+    hp: p.stats.find((s) => s.stat.name === 'hp')?.base_stat,
   }
 }
 
@@ -175,6 +181,10 @@ export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
     artwork: p.sprites.other['official-artwork'].front_default ?? p.sprites.front_default ?? '',
     stats: p.stats.map((s) => ({ name: s.stat.name, value: s.base_stat })),
     description: englishDescription(species),
+    genus: species.genera.find((g) => g.language.name === 'en')?.genus ?? 'Pokémon',
+    evolvesFrom: species.evolves_from_species?.name ?? null,
+    heightDm: p.height,
+    weightHg: p.weight,
     matchups: typeMatchups(typeData),
     abilities: p.abilities.map((a, i) => ({
       name: a.ability.name,

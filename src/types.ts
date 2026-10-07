@@ -7,6 +7,8 @@ export type PokemonListItem = {
   // The large picture, used by the homepage card.
   artwork?: string
   types?: string[]
+  // Base HP, shown like the HP on a Pokémon card.
+  hp?: number
 }
 
 export type PokemonStat = {
@@ -54,6 +56,12 @@ export type PokemonInfo = {
   artwork: string
   stats: PokemonStat[]
   description: string
+  // For example "Bird Pokémon".
+  genus: string
+  // The species it evolves from, or null for a basic Pokémon.
+  evolvesFrom: string | null
+  heightDm: number
+  weightHg: number
   matchups: Matchups
   abilities: Ability[]
   // null when the builds could not be loaded.

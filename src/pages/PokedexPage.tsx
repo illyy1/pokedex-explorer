@@ -237,7 +237,7 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
         {itemsFailed && (
           <div className="status error" role="alert">
             <p>Couldn't load these Pokémon. Check your internet connection and try again.</p>
-            <button type="button" className="load-more" onClick={handleRetry}>
+            <button type="button" className="retry-button" onClick={handleRetry}>
               Try again
             </button>
           </div>

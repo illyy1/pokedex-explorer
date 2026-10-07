@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–15 are done. Tasks 16–19 are planned. Tasks 9–19 were added after the first plan.
+Status: all 19 tasks are done. Tasks 9–19 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -94,7 +94,7 @@ Remove the "Load more" button. Put an invisible marker after the last row of the
 
 Done when: scrolling to the end of the list loads the next 50 Pokémon without clicking anything, scrolling quickly never loads the same Pokémon twice, the list stops at #649 Genesect, and with the internet turned off the error message and "Try again" button appear and work once the internet is back.
 
-## Task 19: Give the app a sleeker design
+## Task 19: Give the app a sleeker design ✅
 Restyle the app without changing what it does, including the navigation bar, homepage, Favorites and About pages, type dropdown, weaknesses, abilities and builds sections: a cleaner header, list rows that look like cards with a soft hover effect, a details panel whose top uses the color of the Pokémon's first type, rounded stat bars with the value next to them, and the same spacing and corner rounding everywhere. Keep light and dark mode, and keep the layout working on a phone.
 
 Done when: the app looks consistent in both light and dark mode, every row, badge and button has the same rounded style, and on a 375-pixel-wide screen the list and details stack with no sideways scrolling.

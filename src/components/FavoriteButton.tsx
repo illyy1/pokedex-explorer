@@ -13,7 +13,7 @@ function FavoriteButton({ id, name }: { id: number; name: string }) {
       title={favorite ? 'Remove from favorites' : 'Add to favorites'}
       onClick={() => toggleFavorite(id)}
     >
-      {favorite ? '★' : '☆'}
+      {favorite ? '★ Favorite' : '☆ Add to favorites'}
     </button>
   )
 }

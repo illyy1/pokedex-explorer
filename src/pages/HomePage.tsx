@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { fetchListItem } from '../api'
-import TypeBadge from '../components/TypeBadge'
+import { fetchListItem, LAST_POKEMON } from '../api'
+import EnergySymbol from '../components/EnergySymbol'
 import { usePokemonData } from '../pokemonData'
 import { pokemonOfTheDay } from '../pokemonOfTheDay'
+import { typeStyle } from '../pokemonTypes'
 
 function HomePage() {
   const { items, addItems } = usePokemonData()
@@ -49,16 +50,37 @@ function HomePage() {
       </section>
 
       <section className="featured" aria-label="Pokémon of the day">
-        <h2>Pokémon of the day</h2>
         {hasArtwork ? (
-          <Link to={`/pokedex/${featured.id}`} className="featured-card">
-            <img src={featured.artwork} alt="" width="200" height="200" />
-            <span className="number">#{featured.id}</span>
-            <span className="name">{featured.name}</span>
-            <span className="types">
-              {featured.types?.map((type) => (
-                <TypeBadge key={type} type={type} />
-              ))}
+          <Link
+            to={`/pokedex/${featured.id}`}
+            className="poke-card featured-card"
+            style={typeStyle(featured.types?.[0])}
+          >
+            <span className="card-face">
+              <span className="card-header">
+                <span className="card-stage">Pokémon of the day</span>
+                <span className="card-title">
+                  <span className="card-name">{featured.name.replace(/-/g, ' ')}</span>
+                  {featured.hp !== undefined && (
+                    <span className="card-hp">
+                      {featured.hp} <small>HP</small>
+                    </span>
+                  )}
+                  {featured.types?.map((type) => (
+                    <EnergySymbol key={type} type={type} />
+                  ))}
+                </span>
+              </span>
+              <span className="card-art">
+                <img src={featured.artwork} alt="" width="300" height="300" />
+              </span>
+              <span className="card-strip">Tap the card to see No. {featured.id}'s details.</span>
+              <span className="card-footer">
+                <span>Data: PokéAPI</span>
+                <span>
+                  {featured.id}/{LAST_POKEMON}
+                </span>
+              </span>
             </span>
           </Link>
         ) : failed ? (
