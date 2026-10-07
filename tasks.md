@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–9 are done. Tasks 10–14 are planned. Tasks 9–14 were added after the first plan.
+Status: tasks 1–9 are done. Tasks 10–18 are planned. Tasks 9–18 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -69,7 +69,27 @@ The first time a Pokémon is clicked, load Smogon's Generation 5 competitive set
 
 Done when: Pikachu shows its builds, including "Revenge Killer" with Extreme Speed, Wild Charge, Volt Switch and Hidden Power Ice holding a Light Ball, a Pokémon with a dot or dash in its name (like Mr. Mime) also finds its builds, Deoxys and Landorus (whose PokéAPI names include a form) find their builds, and Caterpie, which has no builds, shows the message instead of an empty space. In total, 589 of the 649 Pokémon have builds.
 
-## Task 14: Give the app a sleeker design
-Restyle the page without changing what it does, including the type dropdown, weaknesses, abilities and builds sections: a cleaner header, list rows that look like cards with a soft hover effect, a details panel whose top uses the color of the Pokémon's first type, rounded stat bars with the value next to them, and the same spacing and corner rounding everywhere. Keep light and dark mode, and keep the layout working on a phone.
+## Task 14: Add routing and a navigation bar
+Add React Router. Show a navigation bar on every page with links to Home, Pokédex, Favorites and About, with the current page highlighted. Move the current list and details to `/pokedex`. Clicking a Pokémon changes the address to its own link (for example `/pokedex/25`), and opening that link directly shows that Pokémon's details. Home, Favorites and About show a simple placeholder for now. Any other address shows "Page not found" with a link back to Home.
+
+Done when: clicking each link in the navigation bar changes the page and the address, opening `/pokedex/649` in a new tab shows Genesect's details, the browser's back button returns to the previous Pokémon or page, and `/nothing-here` shows "Page not found".
+
+## Task 15: Build the homepage
+Replace the Home placeholder with the app name, a one-line intro, a "Pokémon of the day" card and two buttons, "Browse the Pokédex" and "My favorites". Pick the Pokémon of the day from today's date, so it is the same all day and changes the next day. Clicking the card opens its details at `/pokedex/{number}`.
+
+Done when: the homepage shows the same Pokémon of the day after a refresh, clicking the card opens that Pokémon's details, and both buttons go to the right pages.
+
+## Task 16: Add favorites
+Add a star button to the details panel that adds the Pokémon to favorites (★) or removes it (☆). Save the list of favorite numbers in the browser's localStorage, so it survives closing the browser. Show a small filled star in the list rows of favorite Pokémon. Replace the Favorites placeholder with the same list and details layout, showing only favorites in Pokédex order, at `/favorites` and `/favorites/{number}`. With no favorites, show "No favorites yet. Tap the ☆ on any Pokémon to save it."
+
+Done when: starring Pikachu and Charizard shows both on the Favorites page, removing the star from one removes it from the page, the favorites are still there after closing and reopening the browser, and with no favorites the page shows the message.
+
+## Task 17: Build the About page
+Replace the About placeholder with a short description of the app and who made it, the data sources with links (PokéAPI and Smogon's sets from data.pkmn.cc), and a note that this is a fan project not affiliated with Nintendo, Game Freak or The Pokémon Company.
+
+Done when: the About page shows all three parts and both data source links open the right websites.
+
+## Task 18: Give the app a sleeker design
+Restyle the app without changing what it does, including the navigation bar, homepage, Favorites and About pages, type dropdown, weaknesses, abilities and builds sections: a cleaner header, list rows that look like cards with a soft hover effect, a details panel whose top uses the color of the Pokémon's first type, rounded stat bars with the value next to them, and the same spacing and corner rounding everywhere. Keep light and dark mode, and keep the layout working on a phone.
 
 Done when: the app looks consistent in both light and dark mode, every row, badge and button has the same rounded style, and on a 375-pixel-wide screen the list and details stack with no sideways scrolling.

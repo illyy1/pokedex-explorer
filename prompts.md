@@ -219,3 +219,9 @@ cant you match names between the 2 apis?
 ```text
 make the changes and push
 ```
+
+## 34. Pages, routing and favorites
+
+```text
+update the docs to include routing, include homepage, add the ability to favorite pokemon and then add a "favorite pokemon" tab to the routing, and an about page
+```
