@@ -225,3 +225,15 @@ make the changes and push
 ```text
 update the docs to include routing, include homepage, add the ability to favorite pokemon and then add a "favorite pokemon" tab to the routing, and an about page
 ```
+
+## 35. Build tasks 10–12
+
+```text
+execute tasks 10 to 12
+```
+
+## 36. Save the prompt and push
+
+```text
+add the prompt and push
+```
