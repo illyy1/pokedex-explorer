@@ -1,3 +1,4 @@
+import { typeMatchups } from './matchups'
 import type { PokemonInfo, PokemonListItem } from './types'
 
 const API_URL = 'https://pokeapi.co/api/v2'
@@ -25,12 +26,21 @@ type PokemonResponse = {
 // Only the parts of the /type/{name} response that we use.
 type TypeResponse = {
   pokemon: { pokemon: { name: string; url: string } }[]
+  damage_relations: {
+    double_damage_from: { name: string }[]
+    half_damage_from: { name: string }[]
+    no_damage_from: { name: string }[]
+  }
 }
 
 export type TypeData = {
   name: string
   // Numbers of the Pokémon (up to LAST_POKEMON) that have this type.
   pokemonIds: number[]
+  // Attacking types that do ×2, ×½ and ×0 damage to this type.
+  doubleDamageFrom: string[]
+  halfDamageFrom: string[]
+  noDamageFrom: string[]
 }
 
 // Only the parts of the /pokemon-species/{id} response that we use.
@@ -86,6 +96,9 @@ export function fetchTypeData(name: string): Promise<TypeData> {
       pokemonIds: t.pokemon
         .map((entry) => idFromUrl(entry.pokemon.url))
         .filter((id) => id <= LAST_POKEMON),
+      doubleDamageFrom: t.damage_relations.double_damage_from.map((d) => d.name),
+      halfDamageFrom: t.damage_relations.half_damage_from.map((d) => d.name),
+      noDamageFrom: t.damage_relations.no_damage_from.map((d) => d.name),
     }))
     // Forget failed requests so the next try asks again.
     promise.catch(() => typeCache.delete(name))
@@ -102,10 +115,18 @@ function englishDescription(species: SpeciesResponse): string {
   return entry.flavor_text.replace(/\s+/g, ' ').replace(/POKéMON/g, 'Pokémon')
 }
 
+// The Pokémon's own data, plus the data of each of its types,
+// which we can only ask for once we know what its types are.
+async function fetchPokemonWithTypes(id: number) {
+  const p = await getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`)
+  const typeData = await Promise.all(p.types.map((t) => fetchTypeData(t.type.name)))
+  return { p, typeData }
+}
+
 export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
-  // Both requests are sent at the same time.
-  const [p, species] = await Promise.all([
-    getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`),
+  // The species request is sent at the same time as the others.
+  const [{ p, typeData }, species] = await Promise.all([
+    fetchPokemonWithTypes(id),
     getJson<SpeciesResponse>(`${API_URL}/pokemon-species/${id}`),
   ])
   return {
@@ -115,5 +136,6 @@ export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
     artwork: p.sprites.other['official-artwork'].front_default ?? p.sprites.front_default ?? '',
     stats: p.stats.map((s) => ({ name: s.stat.name, value: s.base_stat })),
     description: englishDescription(species),
+    matchups: typeMatchups(typeData),
   }
 }

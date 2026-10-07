@@ -54,7 +54,7 @@ Add a type dropdown next to the search bar with "All types" and the 18 Pokémon 
 
 Done when: picking "Fire" shows only Fire-type Pokémon such as Charmander and Vulpix, picking "Fire" and typing "char" shows only Charmander, Charmeleon, Charizard and Chimchar, and picking "All types" brings back the normal list.
 
-## Task 11: Show weaknesses by type
+## Task 11: Show weaknesses by type ✅
 When a Pokémon is clicked, request the data for each of its types and work out how much damage each attacking type does to it. Multiply the values for Pokémon with two types. Show a "Weak to" section in the details panel (×2 and ×4), and also "Resists" (×½ and ×¼) and "Immune to" (×0), using the same colored type labels as the list.
 
 Done when: Bulbasaur shows weak to Fire, Ice, Flying and Psychic (all ×2), and Charizard shows weak to Rock ×4, Water ×2 and Electric ×2, and immune to Ground.

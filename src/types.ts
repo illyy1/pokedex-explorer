@@ -12,6 +12,18 @@ export type PokemonStat = {
   value: number
 }
 
+// How much damage one attacking type does, for example { type: 'rock', multiplier: 4 }.
+export type Matchup = {
+  type: string
+  multiplier: number
+}
+
+export type Matchups = {
+  weak: Matchup[]
+  resist: Matchup[]
+  immune: string[]
+}
+
 // Everything the details panel shows.
 export type PokemonInfo = {
   id: number
@@ -20,4 +32,5 @@ export type PokemonInfo = {
   artwork: string
   stats: PokemonStat[]
   description: string
+  matchups: Matchups
 }

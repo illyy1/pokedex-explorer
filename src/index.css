@@ -227,6 +227,46 @@ main {
   margin: 8px 0;
 }
 
+.details h3 {
+  color: var(--text-h);
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.matchups {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.matchup-row {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.matchup-label {
+  flex: 0 0 5.5em;
+  font-weight: 500;
+}
+
+.matchup-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.matchup {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.multiplier {
+  color: var(--text-h);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .stats {
   width: 100%;
   border-collapse: collapse;

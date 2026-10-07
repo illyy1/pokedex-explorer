@@ -1,4 +1,5 @@
 import type { PokemonInfo, PokemonListItem } from '../types'
+import MatchupsSection from './MatchupsSection'
 import TypeBadge from './TypeBadge'
 
 const STAT_LABELS: Record<string, string> = {
@@ -66,6 +67,7 @@ function DetailsPanel({ selected, info, failed }: Props) {
           ))}
         </tbody>
       </table>
+      <MatchupsSection matchups={info.matchups} />
     </div>
   )
 }
