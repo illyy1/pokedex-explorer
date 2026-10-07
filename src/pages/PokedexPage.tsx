@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import {
   fetchListItem,
@@ -35,6 +35,8 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
 
   // How many Pokémon the list shows when not searching.
   const [shownCount, setShownCount] = useState(PAGE_SIZE)
+  const listPanelRef = useRef<HTMLElement>(null)
+  const endMarkerRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   // The picked type, or '' for all types.
   const [typeFilter, setTypeFilter] = useState('')
@@ -155,8 +157,27 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
     setRetryCount((count) => count + 1)
   }
 
+  // Only one page loads at a time: while rows are loading (or failed), this is false.
   const canLoadMore =
     !favoritesOnly && !isFiltering && shownCount < index.length && !isLoadingItems && !itemsFailed
+
+  // Infinite scroll: watch the end marker inside the scrolling list panel.
+  // The observer is made again after every page, so if the marker is still
+  // in view (for example on a tall screen), the next page loads too.
+  useEffect(() => {
+    const endMarker = endMarkerRef.current
+    if (!canLoadMore || !endMarker) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) setShownCount((count) => count + PAGE_SIZE)
+      },
+      // Start a little before the very end, so new rows are usually ready in time.
+      { root: listPanelRef.current, rootMargin: '0px 0px 150px 0px' },
+    )
+    observer.observe(endMarker)
+    return () => observer.disconnect()
+  }, [canLoadMore, shownCount])
+
   const selected = isValidId
     ? (items[selectedId] ?? index.find((p) => p.id === selectedId) ?? { id: selectedId, name: '' })
     : undefined
@@ -166,7 +187,7 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
 
   return (
     <div className="pokedex">
-      <section className="list-panel" aria-label="Pokémon list">
+      <section ref={listPanelRef} className="list-panel" aria-label="Pokémon list">
         <div className="search">
           <input
             type="search"
@@ -221,15 +242,8 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
             </button>
           </div>
         )}
-        {canLoadMore && (
-          <button
-            type="button"
-            className="load-more"
-            onClick={() => setShownCount((count) => count + PAGE_SIZE)}
-          >
-            Load more
-          </button>
-        )}
+        {/* Invisible marker after the last row. When it scrolls into view, the next page loads. */}
+        <div ref={endMarkerRef} aria-hidden="true" />
       </section>
       <section className="details-panel" aria-label="Pokémon details">
         {id !== undefined && !isValidId ? (
