@@ -201,3 +201,21 @@ push
 ```text
 update prd and prompts and tasks with this: add pokemon abilities, add recommended builds per pokemon
 ```
+
+## 31. Matching names between the two data sources
+
+```text
+how do you recommend we handle this issue
+```
+
+## 32. Follow-up on matching
+
+```text
+cant you match names between the 2 apis?
+```
+
+## 33. Apply the recommendation
+
+```text
+make the changes and push
+```
