@@ -189,3 +189,15 @@ add to tasks, search by pokemon types, see pokemon weaknesses by their type, upd
 ```text
 update both
 ```
+
+## 29. Push
+
+```text
+push
+```
+
+## 30. Abilities and recommended builds
+
+```text
+update prd and prompts and tasks with this: add pokemon abilities, add recommended builds per pokemon
+```
