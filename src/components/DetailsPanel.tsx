@@ -16,19 +16,28 @@ const MAX_STAT = 255
 type Props = {
   selected: PokemonListItem | undefined
   info: PokemonInfo | undefined
+  failed: boolean
 }
 
-function DetailsPanel({ selected, info }: Props) {
+function DetailsPanel({ selected, info, failed }: Props) {
   if (!selected) {
     return <p className="hint">Pick a Pokémon to see its details.</p>
   }
 
-  // While the details are on their way, show what the list already knows.
+  // While the details are on their way (or if they failed),
+  // show what the list already knows.
   if (!info) {
     return (
       <div className="details">
         <span className="number">#{selected.id}</span>
         <h2 className="name">{selected.name}</h2>
+        {failed ? (
+          <p className="status error" role="alert">
+            Couldn't load the details. Check your internet connection, then click the Pokémon again.
+          </p>
+        ) : (
+          <p className="status">Loading…</p>
+        )}
       </div>
     )
   }
