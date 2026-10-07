@@ -96,6 +96,28 @@ body {
   }
 }
 
+/* About page */
+
+.about {
+  max-width: 70ch;
+  padding-bottom: 32px;
+
+  h2 {
+    color: var(--text-h);
+    font-size: 20px;
+    margin: 24px 0 8px;
+  }
+  p {
+    margin: 0 0 12px;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+}
+
 /* Homepage */
 
 .home {

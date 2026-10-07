@@ -84,7 +84,7 @@ Add a star button to the details panel that adds the Pokémon to favorites (★)
 
 Done when: starring Pikachu and Charizard shows both on the Favorites page, removing the star from one removes it from the page, the favorites are still there after closing and reopening the browser, and with no favorites the page shows the message.
 
-## Task 17: Build the About page
+## Task 17: Build the About page ✅
 Replace the About placeholder with a short description of the app and who made it, the data sources with links (PokéAPI and Smogon's sets from data.pkmn.cc), and a note that this is a fan project not affiliated with Nintendo, Game Freak or The Pokémon Company.
 
 Done when: the About page shows all three parts and both data source links open the right websites.
