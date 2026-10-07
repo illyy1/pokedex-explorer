@@ -147,3 +147,45 @@ add a search bar that responds to both the pokemon name and the pokedex number
 ```text
 update prd and tasks, add a prompts.md file and post all the prompts i gave you into it
 ```
+
+## 22. Push and make the repo public
+
+```text
+push the commits, make the repo public please
+```
+
+## 23. Email privacy
+
+```text
+my email addresses are already set to private in the settings
+```
+
+## 24. Choice: hide the email before going public
+
+```text
+2
+```
+
+## 25. Push status
+
+```text
+so did you push all recent changes or no
+```
+
+## 26. Ran the force-push and visibility commands
+
+```text
+i ran both commands
+```
+
+## 27. New tasks
+
+```text
+add to tasks, search by pokemon types, see pokemon weaknesses by their type, update css to a more sleek design
+```
+
+## 28. Update docs
+
+```text
+update both
+```
