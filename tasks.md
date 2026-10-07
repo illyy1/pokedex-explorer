@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all tasks are done. Task 9 was added after the first plan.
+Status: tasks 1–9 are done. Tasks 10–12 are planned. Tasks 9–12 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -48,3 +48,18 @@ Done when: I see "Loading…" while data loads, and when I turn off the internet
 Load the name and number of all 649 Pokémon in one request. Add a search bar above the list that shows only the Pokémon whose name contains the text, or whose Pokédex number starts with the typed number. Load pictures and types for the first 50 matches. Hide "Load more" while searching.
 
 Done when: typing "pika" shows Pikachu, typing "25" or "#25" shows #25 Pikachu first, typing "genesect" finds #649 before it has been loaded, and clearing the search brings back the normal list.
+
+## Task 10: Search by type
+Add a type dropdown next to the search bar with "All types" and the 18 Pokémon types. When a type is picked, request that type's Pokémon list from PokéAPI once and show only the Pokémon of that type, up to #649. The type filter works together with the name or number search, and "Load more" is hidden while a type is picked.
+
+Done when: picking "Fire" shows only Fire-type Pokémon such as Charmander and Vulpix, picking "Fire" and typing "char" shows only Charmander, Charmeleon and Charizard, and picking "All types" brings back the normal list.
+
+## Task 11: Show weaknesses by type
+When a Pokémon is clicked, request the data for each of its types and work out how much damage each attacking type does to it. Multiply the values for Pokémon with two types. Show a "Weak to" section in the details panel (×2 and ×4), and also "Resists" (×½ and ×¼) and "Immune to" (×0), using the same colored type labels as the list.
+
+Done when: Bulbasaur shows weak to Fire, Ice, Flying and Psychic (all ×2), and Charizard shows weak to Rock ×4, Water ×2 and Electric ×2, and immune to Ground.
+
+## Task 12: Give the app a sleeker design
+Restyle the page without changing what it does: a cleaner header, list rows that look like cards with a soft hover effect, a details panel whose top uses the color of the Pokémon's first type, rounded stat bars with the value next to them, and the same spacing and corner rounding everywhere. Keep light and dark mode, and keep the layout working on a phone.
+
+Done when: the app looks consistent in both light and dark mode, every row, badge and button has the same rounded style, and on a 375-pixel-wide screen the list and details stack with no sideways scrolling.
