@@ -11,14 +11,14 @@ The app has four pages. A navigation bar at the top of every page links to Home,
 
 - **Home** (`/`): the app name, a one-line intro, a "Pokémon of the day" card (the same Pokémon for everyone all day, a new one each day) that opens its details when clicked, and two buttons: "Browse the Pokédex" and "My favorites".
 - **Pokédex** (`/pokedex`): split into two areas.
-  - **List (left side):** A search bar and a type dropdown at the top, then a scrollable list of Pokémon. Each row shows the small picture, the Pokédex number (for example #25), the name, the type(s) and a filled star if it is a favorite. The list starts with the first 50 Pokémon and has a "Load more" button that adds the next 50, up to #649. Typing in the search bar or picking a type replaces the list with the matching Pokémon.
+  - **List (left side):** A search bar and a type dropdown at the top, then a scrollable list of Pokémon. Each row shows the small picture, the Pokédex number (for example #25), the name, the type(s) and a filled star if it is a favorite. The list starts with the first 50 Pokémon. When you scroll to the end of the list, the next 50 start loading on their own (infinite scroll), with "Loading…" shown at the bottom, until the list ends at #649. Typing in the search bar or picking a type replaces the list with the matching Pokémon.
   - **Details (right side):** When a Pokémon is clicked, the address changes to its own link (for example `/pokedex/25`), so it can be bookmarked or shared. The panel shows a star button to add or remove it from favorites, its large official artwork, name, number, type(s), the six base stats (HP, Attack, Defense, Special Attack, Special Defense, Speed), its abilities with a short explanation of each (the hidden ability is marked), its type weaknesses, resistances and immunities, and a short Pokédex description in English. Below that, a "Recommended builds" section lists Smogon's competitive sets for that Pokémon in Generation 5: the set name and format (for example "NU · Revenge Killer"), its four moves, item, ability, nature and EVs. The top of the panel uses the color of its first type. Before anything is clicked, it shows a short hint such as "Pick a Pokémon to see its details."
 - **Favorites** (`/favorites`): the same list and details layout, showing only the Pokémon the user has starred, in Pokédex order. With no favorites, it says "No favorites yet. Tap the ☆ on any Pokémon to save it." Favorites are saved in this browser, so they are still there after closing and reopening it.
 - **About** (`/about`): what the app is and who made it, where the data comes from (PokéAPI and Smogon, with links), and a note that this is a fan project not affiliated with Nintendo, Game Freak or The Pokémon Company.
 - **Page not found**: any other address shows "Page not found" with a link back to Home.
 
 ## 4. Must-have features
-1. Browse all 649 Pokémon (50 at a time with "Load more") and search them by name, Pokédex number or type.
+1. Browse all 649 Pokémon with infinite scroll (the next 50 load when you reach the end of the list) and search them by name, Pokédex number or type.
 2. Click a Pokémon to see its details: large picture, name, number, type(s), base stats, abilities, weaknesses by type, Pokédex description and recommended competitive builds.
 3. Star a Pokémon to save it as a favorite, and see all favorites on their own page.
 4. Move between the Home, Pokédex, Favorites and About pages with a navigation bar, and open any Pokémon directly from its own link.
@@ -26,7 +26,7 @@ The app has four pages. A navigation bar at the top of every page links to Home,
 
 ## 5. Acceptance criteria
 - When I open the app, I see the homepage with the Pokémon of the day and a navigation bar, and when I click Pokédex, Favorites or About, I see that page and the address changes.
-- When I type "pika" or "25" in the Pokédex search bar, or pick a type like Fire, I see only the matching Pokémon, even ones I have not loaded yet.
+- When I scroll to the end of the Pokédex list, I see the next 50 Pokémon load on their own (until #649), and when I type "pika" or "25" in the search bar or pick a type like Fire, I see only the matching Pokémon, even ones not loaded yet.
 - When I click a Pokémon, or open a link like /pokedex/6, I see its details, including its abilities (for example Charizard: Blaze, and Solar Power marked as hidden), what it is weak to (Rock ×4) and its recommended builds, or a short message if it has none.
 - When I click the star on a Pokémon, I see it on the Favorites page, and it is still there after I close and reopen the browser.
 - When the data cannot be loaded (for example, no internet), I see a friendly error message instead of a blank screen.

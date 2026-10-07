@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–12 are done. Tasks 13–18 are planned. Tasks 9–18 were added after the first plan.
+Status: tasks 1–12 are done. Tasks 13–19 are planned. Tasks 9–19 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -89,7 +89,12 @@ Replace the About placeholder with a short description of the app and who made i
 
 Done when: the About page shows all three parts and both data source links open the right websites.
 
-## Task 18: Give the app a sleeker design
+## Task 18: Replace "Load more" with infinite scroll
+Remove the "Load more" button. Put an invisible marker after the last row of the list, and use the browser's IntersectionObserver to notice when it scrolls into view; then load the next 50 Pokémon automatically and show "Loading…" at the bottom while they load. Only load one page at a time, stop at #649, and do nothing while searching or filtering by type. If loading fails, show the error message with a "Try again" button, since there is no longer a button to click.
+
+Done when: scrolling to the end of the list loads the next 50 Pokémon without clicking anything, scrolling quickly never loads the same Pokémon twice, the list stops at #649 Genesect, and with the internet turned off the error message and "Try again" button appear and work once the internet is back.
+
+## Task 19: Give the app a sleeker design
 Restyle the app without changing what it does, including the navigation bar, homepage, Favorites and About pages, type dropdown, weaknesses, abilities and builds sections: a cleaner header, list rows that look like cards with a soft hover effect, a details panel whose top uses the color of the Pokémon's first type, rounded stat bars with the value next to them, and the same spacing and corner rounding everywhere. Keep light and dark mode, and keep the layout working on a phone.
 
 Done when: the app looks consistent in both light and dark mode, every row, badge and button has the same rounded style, and on a 375-pixel-wide screen the list and details stack with no sideways scrolling.

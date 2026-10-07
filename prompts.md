@@ -237,3 +237,9 @@ execute tasks 10 to 12
 ```text
 add the prompt and push
 ```
+
+## 37. Infinite scroll
+
+```text
+add to the docs, instead of a "load more" button replace it with an infinite scroll that begins loading when you reach the end of the page
+```
