@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
-import { fetchListItem, fetchPokemonIndex, fetchPokemonInfo, PAGE_SIZE } from './api'
+import {
+  fetchListItem,
+  fetchPokemonIndex,
+  fetchPokemonInfo,
+  fetchTypeData,
+  PAGE_SIZE,
+  type TypeData,
+} from './api'
 import DetailsPanel from './components/DetailsPanel'
 import PokemonList from './components/PokemonList'
+import { ALL_TYPES } from './pokemonTypes'
 import { matchesQuery, normalizeQuery } from './search'
 import type { PokemonInfo, PokemonListItem } from './types'
 
@@ -18,6 +26,12 @@ function App() {
   const [isLoadingList, setIsLoadingList] = useState(true)
   const [listError, setListError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  // The picked type, or '' for all types.
+  const [typeFilter, setTypeFilter] = useState('')
+  // The Pokémon of the most recently loaded type.
+  const [typeData, setTypeData] = useState<TypeData | null>(null)
+  // The type whose Pokémon failed to load, if any.
+  const [typeErrorName, setTypeErrorName] = useState<string | null>(null)
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [info, setInfo] = useState<PokemonInfo | null>(null)
@@ -80,16 +94,48 @@ function App() {
     }
   }, [selectedId, clickCount])
 
+  useEffect(() => {
+    if (typeFilter === '') return
+    // Ignore the answer if another type was picked before it arrived.
+    let ignore = false
+    fetchTypeData(typeFilter)
+      .then((result) => {
+        if (!ignore) {
+          setTypeData(result)
+          setTypeErrorName(null)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        if (!ignore) setTypeErrorName(typeFilter)
+      })
+    return () => {
+      ignore = true
+    }
+  }, [typeFilter])
+
   const search = normalizeQuery(query)
   const isSearching = search !== ''
-  const matches = isSearching ? index.filter((p) => matchesQuery(p, search)) : []
-  const visible = isSearching ? matches.slice(0, MAX_RESULTS) : index.slice(0, shownCount)
+  const isFiltering = isSearching || typeFilter !== ''
+  // The numbers of the picked type's Pokémon, once they have loaded.
+  const typeIds =
+    typeFilter !== '' && typeData?.name === typeFilter ? new Set(typeData.pokemonIds) : null
+  const typeFailed = typeFilter !== '' && typeErrorName === typeFilter
+  const isLoadingType = typeFilter !== '' && !typeIds && !typeFailed
+
+  const matches = isFiltering
+    ? index.filter(
+        (p) =>
+          (typeFilter === '' || typeIds?.has(p.id)) && (!isSearching || matchesQuery(p, search)),
+      )
+    : []
+  const visible = isFiltering ? matches.slice(0, MAX_RESULTS) : index.slice(0, shownCount)
   // Use the loaded version (with picture and types) when we have it.
   const rows = visible.map((p) => items[p.id] ?? p)
 
   // Search results that still need their picture and types. Joined into a
   // string so the effect below only runs when this list really changes.
-  const missingIds = isSearching ? visible.filter((p) => !items[p.id]).map((p) => p.id) : []
+  const missingIds = isFiltering ? visible.filter((p) => !items[p.id]).map((p) => p.id) : []
   const missingKey = missingIds.join(',')
 
   useEffect(() => {
@@ -146,15 +192,34 @@ function App() {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
+            <select
+              aria-label="Filter by type"
+              value={typeFilter}
+              onChange={(event) => setTypeFilter(event.target.value)}
+            >
+              <option value="">All types</option>
+              {ALL_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type[0].toUpperCase() + type.slice(1)}
+                </option>
+              ))}
+            </select>
           </div>
           <PokemonList pokemon={rows} selectedId={selectedId} onSelect={handleSelect} />
-          {isSearching && index.length > 0 && matches.length === 0 && (
-            <p className="status">No Pokémon match “{query.trim()}”.</p>
+          {isLoadingType && <p className="status">Loading…</p>}
+          {typeFailed && (
+            <p className="status error" role="alert">
+              Couldn't load the Pokémon of this type. Check your internet connection, pick "All
+              types", then pick this type again.
+            </p>
+          )}
+          {isFiltering && index.length > 0 && !isLoadingType && !typeFailed && matches.length === 0 && (
+            <p className="status">No Pokémon match your search.</p>
           )}
           {matches.length > MAX_RESULTS && (
             <p className="status">
-              Showing the first {MAX_RESULTS} of {matches.length} matches. Keep typing to narrow
-              it down.
+              Showing the first {MAX_RESULTS} of {matches.length} matches. Type a name or number to
+              narrow it down.
             </p>
           )}
           {isLoadingList && <p className="status">Loading…</p>}
@@ -163,7 +228,7 @@ function App() {
               {listError}
             </p>
           )}
-          {!isSearching && canLoadMore && !isLoadingList && (
+          {!isFiltering && canLoadMore && !isLoadingList && (
             <button type="button" className="load-more" onClick={handleLoadMore}>
               Load more
             </button>

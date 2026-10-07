@@ -22,6 +22,17 @@ type PokemonResponse = {
   stats: { base_stat: number; stat: { name: string } }[]
 }
 
+// Only the parts of the /type/{name} response that we use.
+type TypeResponse = {
+  pokemon: { pokemon: { name: string; url: string } }[]
+}
+
+export type TypeData = {
+  name: string
+  // Numbers of the Pokémon (up to LAST_POKEMON) that have this type.
+  pokemonIds: number[]
+}
+
 // Only the parts of the /pokemon-species/{id} response that we use.
 type SpeciesResponse = {
   flavor_text_entries: { flavor_text: string; language: { name: string } }[]
@@ -61,6 +72,26 @@ export async function fetchListItem(id: number): Promise<PokemonListItem> {
     sprite: p.sprites.front_default ?? undefined,
     types: p.types.map((t) => t.type.name),
   }
+}
+
+// A type's data never changes, so each type is requested at most once.
+// We keep the promise (not the result) so two requests at the same time share it.
+const typeCache = new Map<string, Promise<TypeData>>()
+
+export function fetchTypeData(name: string): Promise<TypeData> {
+  let promise = typeCache.get(name)
+  if (!promise) {
+    promise = getJson<TypeResponse>(`${API_URL}/type/${name}`).then((t) => ({
+      name,
+      pokemonIds: t.pokemon
+        .map((entry) => idFromUrl(entry.pokemon.url))
+        .filter((id) => id <= LAST_POKEMON),
+    }))
+    // Forget failed requests so the next try asks again.
+    promise.catch(() => typeCache.delete(name))
+    typeCache.set(name, promise)
+  }
+  return promise
 }
 
 // The text comes from the old games, so it has line breaks (\n, \f)

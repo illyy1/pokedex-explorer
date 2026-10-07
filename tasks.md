@@ -49,10 +49,10 @@ Load the name and number of all 649 Pokémon in one request. Add a search bar ab
 
 Done when: typing "pika" shows Pikachu, typing "25" or "#25" shows #25 Pikachu first, typing "genesect" finds #649 before it has been loaded, and clearing the search brings back the normal list.
 
-## Task 10: Search by type
+## Task 10: Search by type ✅
 Add a type dropdown next to the search bar with "All types" and the 18 Pokémon types. When a type is picked, request that type's Pokémon list from PokéAPI once and show only the Pokémon of that type, up to #649. The type filter works together with the name or number search, and "Load more" is hidden while a type is picked.
 
-Done when: picking "Fire" shows only Fire-type Pokémon such as Charmander and Vulpix, picking "Fire" and typing "char" shows only Charmander, Charmeleon and Charizard, and picking "All types" brings back the normal list.
+Done when: picking "Fire" shows only Fire-type Pokémon such as Charmander and Vulpix, picking "Fire" and typing "char" shows only Charmander, Charmeleon, Charizard and Chimchar, and picking "All types" brings back the normal list.
 
 ## Task 11: Show weaknesses by type
 When a Pokémon is clicked, request the data for each of its types and work out how much damage each attacking type does to it. Multiply the values for Pokémon with two types. Show a "Weak to" section in the details panel (×2 and ×4), and also "Resists" (×½ and ×¼) and "Immune to" (×0), using the same colored type labels as the list.

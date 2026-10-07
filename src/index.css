@@ -73,10 +73,12 @@ main {
   padding: 10px 12px;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
 
-  input {
+  input,
+  select {
     box-sizing: border-box;
-    width: 100%;
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -88,6 +90,10 @@ main {
       outline: 2px solid var(--accent);
       outline-offset: 1px;
     }
+  }
+  input {
+    flex: 1;
+    min-width: 0;
   }
 }
 
