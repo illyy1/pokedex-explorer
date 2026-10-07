@@ -1,0 +1,149 @@
+# Prompts
+
+Every prompt I gave the AI assistant while planning and building Pokédex Explorer, in order and word for word.
+
+## 1. Planning interview (PRD)
+
+```text
+You are a product manager helping a first-year student plan a small React web app.
+The app is a master-detail app: a list of items, and a details panel for the item I click.
+The data comes from a free public API that needs no key.
+
+Interview me one question at a time, at most 8 questions, until you know:
+who the app is for, what they want to do, which API to use,
+and which fields to show in the list and in the details panel.
+Talk with me in the language I write in.
+
+Then write PRD.md in English: one page, plain language, no code, with these sections:
+1. One-sentence pitch
+2. Who it is for
+3. Screens (list, details)
+4. Must-have features (at most 5)
+5. Acceptance criteria: 3 to 5 lines, each written as "When I ..., I see ..."
+6. Not now (ideas for later)
+7. Data: the API URL and the fields we use
+```
+
+## 2. Interview answer: who it is for
+
+```text
+the project is for pokemon enthusiests who want to learn more about their favorite pokemon
+```
+
+## 3. Interview answer: what they want to do
+
+```text
+i want the app to be able to do all of these
+```
+
+## 4. Interview answer: scope of the first version
+
+```text
+for the first prd just be able to press a pokemon to see the details about it
+```
+
+## 5. Interview answer: list fields
+
+```text
+name number picture and type
+```
+
+## 6. Interview answer: details fields
+
+```text
+short pokedex description, base stats, bigger picture, name number and type
+```
+
+## 7. Interview answer: how many Pokémon
+
+```text
+gen 1-5
+```
+
+## 8. Interview answer: how the list loads
+
+```text
+load 50 at a time
+```
+
+## 9. Task list
+
+```text
+Read the PRD above. Write tasks.md: at most 8 tasks, in build order.
+Each task must be small enough for one commit, and end with a "Done when:" line.
+Task 1: show the list using a few sample items saved in a local JSON file (no API yet).
+Task 2: click an item to show its details.
+No code.
+```
+
+## 10. Build tasks 1–3
+
+```text
+run the first 3 tasks from tasks.md
+```
+
+## 11. GitHub repo
+
+```text
+create a new repo for the project and push the first commit
+```
+
+## 12. GitHub login
+
+```text
+can you give me a line to run in the terminal for the login
+```
+
+## 13. GitHub login code (sent with a screenshot of GitHub's "Authorize your device" page)
+
+```text
+i didnt get a code in the app or email. what code is it referring to
+```
+
+## 14. Push the first commit
+
+```text
+ok i logged in now create a repo and push the commit
+```
+
+## 15. Question about missing details
+
+```text
+why are some pokemon details missing like ivysaur for example
+```
+
+## 16. Build tasks 4–6
+
+```text
+run tasks 4 to 6
+```
+
+## 17. Commit
+
+```text
+commit changes
+```
+
+## 18. Push
+
+```text
+push
+```
+
+## 19. Build tasks 7–8
+
+```text
+run tasks 7 and 8
+```
+
+## 20. Search bar
+
+```text
+add a search bar that responds to both the pokemon name and the pokedex number
+```
+
+## 21. Update docs and save prompts
+
+```text
+update prd and tasks, add a prompts.md file and post all the prompts i gave you into it
+```
