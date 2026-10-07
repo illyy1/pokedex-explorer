@@ -38,13 +38,67 @@ body {
   padding: 0 16px;
 }
 
-header h1 {
-  color: var(--text-h);
-  font-size: 28px;
-  margin: 20px 0;
+/* Navigation */
+
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: 16px 0;
+
+  a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .brand {
+    color: var(--text-h);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  ul {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+
+    &:hover {
+      background: var(--panel);
+    }
+    &.active {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+    }
+  }
 }
 
-main {
+/* Simple pages (Home, Favorites, About, Page not found) */
+
+.page {
+  h1 {
+    color: var(--text-h);
+    font-size: 28px;
+    margin: 8px 0 16px;
+  }
+  a {
+    color: var(--accent);
+  }
+}
+
+/* Pokédex page */
+
+.pokedex {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
@@ -52,7 +106,7 @@ main {
 }
 
 @media (max-width: 720px) {
-  main {
+  .pokedex {
     grid-template-columns: 1fr;
   }
 }

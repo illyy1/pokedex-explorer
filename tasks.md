@@ -69,7 +69,7 @@ The first time a Pokémon is clicked, load Smogon's Generation 5 competitive set
 
 Done when: Pikachu shows its builds, including "Revenge Killer" with Extreme Speed, Wild Charge, Volt Switch and Hidden Power Ice holding a Light Ball, a Pokémon with a dot or dash in its name (like Mr. Mime) also finds its builds, Deoxys and Landorus (whose PokéAPI names include a form) find their builds, and Caterpie, which has no builds, shows the message instead of an empty space. In total, 589 of the 649 Pokémon have builds.
 
-## Task 14: Add routing and a navigation bar
+## Task 14: Add routing and a navigation bar ✅
 Add React Router. Show a navigation bar on every page with links to Home, Pokédex, Favorites and About, with the current page highlighted. Move the current list and details to `/pokedex`. Clicking a Pokémon changes the address to its own link (for example `/pokedex/25`), and opening that link directly shows that Pokémon's details. Home, Favorites and About show a simple placeholder for now. Any other address shows "Page not found" with a link back to Home.
 
 Done when: clicking each link in the navigation bar changes the page and the address, opening `/pokedex/649` in a new tab shows Genesect's details, the browser's back button returns to the previous Pokémon or page, and `/nothing-here` shows "Page not found".
