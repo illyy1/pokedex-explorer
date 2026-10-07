@@ -35,21 +35,32 @@ async function getJson<T>(url: string): Promise<T> {
   return response.json()
 }
 
-// The list endpoint only has names and urls, so we request each
-// Pokémon's own data to get its picture and types.
-// The last page is shorter so the list stops at LAST_POKEMON.
-export async function fetchPokemonPage(offset: number): Promise<PokemonListItem[]> {
-  const limit = Math.min(PAGE_SIZE, LAST_POKEMON - offset)
-  const list = await getJson<ListResponse>(`${API_URL}/pokemon?limit=${limit}&offset=${offset}`)
-  const pokemon = await Promise.all(
-    list.results.map((result) => getJson<PokemonResponse>(result.url)),
-  )
-  return pokemon.map((p) => ({
+// The list endpoint has no id field, so we read it from the end of the url,
+// for example "https://pokeapi.co/api/v2/pokemon/25/" -> 25.
+function idFromUrl(url: string): number {
+  const parts = url.split('/').filter(Boolean)
+  return Number(parts[parts.length - 1])
+}
+
+// The name and number of every Pokémon up to LAST_POKEMON, in one request.
+// Used for searching and to know which Pokémon come next in the list.
+export async function fetchPokemonIndex(): Promise<PokemonListItem[]> {
+  const list = await getJson<ListResponse>(`${API_URL}/pokemon?limit=${LAST_POKEMON}&offset=0`)
+  return list.results.map((result) => ({
+    id: idFromUrl(result.url),
+    name: result.name,
+  }))
+}
+
+// The index has no pictures or types, so we request each Pokémon's own data.
+export async function fetchListItem(id: number): Promise<PokemonListItem> {
+  const p = await getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`)
+  return {
     id: p.id,
     name: p.name,
     sprite: p.sprites.front_default ?? undefined,
     types: p.types.map((t) => t.type.name),
-  }))
+  }
 }
 
 // The text comes from the old games, so it has line breaks (\n, \f)

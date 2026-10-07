@@ -1,13 +1,23 @@
 import { useEffect, useState } from 'react'
-import { fetchPokemonInfo, fetchPokemonPage, LAST_POKEMON } from './api'
+import { fetchListItem, fetchPokemonIndex, fetchPokemonInfo, PAGE_SIZE } from './api'
 import DetailsPanel from './components/DetailsPanel'
 import PokemonList from './components/PokemonList'
+import { matchesQuery, normalizeQuery } from './search'
 import type { PokemonInfo, PokemonListItem } from './types'
 
+// The most search results we show (and load pictures for) at once.
+const MAX_RESULTS = 50
+
 function App() {
-  const [pokemon, setPokemon] = useState<PokemonListItem[]>([])
+  // Name and number of every Pokémon, loaded once at the start.
+  const [index, setIndex] = useState<PokemonListItem[]>([])
+  // Pokémon whose picture and types we have already loaded, by id.
+  const [items, setItems] = useState<Record<number, PokemonListItem>>({})
+  // How many Pokémon the list shows when not searching.
+  const [shownCount, setShownCount] = useState(0)
   const [isLoadingList, setIsLoadingList] = useState(true)
   const [listError, setListError] = useState<string | null>(null)
+  const [query, setQuery] = useState('')
 
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [info, setInfo] = useState<PokemonInfo | null>(null)
@@ -16,22 +26,35 @@ function App() {
   // Goes up on every click, so clicking the same Pokémon again retries a failed load.
   const [clickCount, setClickCount] = useState(0)
 
+  function addItems(loaded: PokemonListItem[]) {
+    setItems((current) => {
+      const next = { ...current }
+      for (const item of loaded) next[item.id] = item
+      return next
+    })
+  }
+
   useEffect(() => {
     // Ignore the answer if the component was removed before it arrived.
     let ignore = false
-    fetchPokemonPage(0)
-      .then((items) => {
-        if (!ignore) setPokemon(items)
-      })
-      .catch((error) => {
+    async function loadFirstPage() {
+      try {
+        const all = await fetchPokemonIndex()
+        const firstPage = await Promise.all(all.slice(0, PAGE_SIZE).map((p) => fetchListItem(p.id)))
+        if (ignore) return
+        setIndex(all)
+        addItems(firstPage)
+        setShownCount(PAGE_SIZE)
+      } catch (error) {
         console.error(error)
         if (!ignore) {
           setListError("Couldn't load Pokémon. Check your internet connection and refresh the page.")
         }
-      })
-      .finally(() => {
+      } finally {
         if (!ignore) setIsLoadingList(false)
-      })
+      }
+    }
+    loadFirstPage()
     return () => {
       ignore = true
     }
@@ -57,6 +80,30 @@ function App() {
     }
   }, [selectedId, clickCount])
 
+  const search = normalizeQuery(query)
+  const isSearching = search !== ''
+  const matches = isSearching ? index.filter((p) => matchesQuery(p, search)) : []
+  const visible = isSearching ? matches.slice(0, MAX_RESULTS) : index.slice(0, shownCount)
+  // Use the loaded version (with picture and types) when we have it.
+  const rows = visible.map((p) => items[p.id] ?? p)
+
+  // Search results that still need their picture and types. Joined into a
+  // string so the effect below only runs when this list really changes.
+  const missingIds = isSearching ? visible.filter((p) => !items[p.id]).map((p) => p.id) : []
+  const missingKey = missingIds.join(',')
+
+  useEffect(() => {
+    if (missingKey === '') return
+    const ids = missingKey.split(',').map(Number)
+    // Wait until the user stops typing for a moment before loading.
+    const timer = setTimeout(() => {
+      Promise.all(ids.map(fetchListItem))
+        .then(addItems)
+        .catch((error) => console.error(error))
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [missingKey])
+
   function handleSelect(id: number) {
     setSelectedId(id)
     setClickCount((count) => count + 1)
@@ -66,8 +113,9 @@ function App() {
     setIsLoadingList(true)
     setListError(null)
     try {
-      const items = await fetchPokemonPage(pokemon.length)
-      setPokemon((current) => [...current, ...items])
+      const nextPage = index.slice(shownCount, shownCount + PAGE_SIZE)
+      addItems(await Promise.all(nextPage.map((p) => fetchListItem(p.id))))
+      setShownCount((count) => count + PAGE_SIZE)
     } catch (error) {
       console.error(error)
       setListError("Couldn't load more Pokémon. Check your internet connection and try again.")
@@ -76,8 +124,9 @@ function App() {
     }
   }
 
-  const canLoadMore = pokemon.length > 0 && pokemon.length < LAST_POKEMON
-  const selected = pokemon.find((p) => p.id === selectedId)
+  const canLoadMore = shownCount > 0 && shownCount < index.length
+  const selected =
+    selectedId === null ? undefined : (items[selectedId] ?? index.find((p) => p.id === selectedId))
   // Only show info that belongs to the clicked Pokémon, not the previous one.
   const selectedInfo = info?.id === selectedId ? info : undefined
   const detailsFailed = selectedId !== null && detailsErrorId === selectedId
@@ -89,14 +138,32 @@ function App() {
       </header>
       <main>
         <section className="list-panel" aria-label="Pokémon list">
-          <PokemonList pokemon={pokemon} selectedId={selectedId} onSelect={handleSelect} />
+          <div className="search">
+            <input
+              type="search"
+              placeholder="Search by name or number"
+              aria-label="Search Pokémon by name or Pokédex number"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
+          <PokemonList pokemon={rows} selectedId={selectedId} onSelect={handleSelect} />
+          {isSearching && index.length > 0 && matches.length === 0 && (
+            <p className="status">No Pokémon match “{query.trim()}”.</p>
+          )}
+          {matches.length > MAX_RESULTS && (
+            <p className="status">
+              Showing the first {MAX_RESULTS} of {matches.length} matches. Keep typing to narrow
+              it down.
+            </p>
+          )}
           {isLoadingList && <p className="status">Loading…</p>}
           {listError && (
             <p className="status error" role="alert">
               {listError}
             </p>
           )}
-          {canLoadMore && !isLoadingList && (
+          {!isSearching && canLoadMore && !isLoadingList && (
             <button type="button" className="load-more" onClick={handleLoadMore}>
               Load more
             </button>
