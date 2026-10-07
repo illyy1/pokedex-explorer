@@ -43,7 +43,7 @@ function DetailsPanel({ selected, info }: Props) {
           <TypeBadge key={type} type={type} />
         ))}
       </div>
-      {info.description && <p className="description">{info.description}</p>}
+      <p className="description">{info.description}</p>
       <table className="stats">
         <tbody>
           {info.stats.map((stat) => (

@@ -22,6 +22,11 @@ type PokemonResponse = {
   stats: { base_stat: number; stat: { name: string } }[]
 }
 
+// Only the parts of the /pokemon-species/{id} response that we use.
+type SpeciesResponse = {
+  flavor_text_entries: { flavor_text: string; language: { name: string } }[]
+}
+
 async function getJson<T>(url: string): Promise<T> {
   const response = await fetch(url)
   if (!response.ok) {
@@ -47,13 +52,26 @@ export async function fetchPokemonPage(offset: number): Promise<PokemonListItem[
   }))
 }
 
+// The text comes from the old games, so it has line breaks (\n, \f)
+// and the spelling "POKéMON". We tidy both up.
+function englishDescription(species: SpeciesResponse): string {
+  const entry = species.flavor_text_entries.find((e) => e.language.name === 'en')
+  if (!entry) return 'No description available.'
+  return entry.flavor_text.replace(/\s+/g, ' ').replace(/POKéMON/g, 'Pokémon')
+}
+
 export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
-  const p = await getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`)
+  // Both requests are sent at the same time.
+  const [p, species] = await Promise.all([
+    getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`),
+    getJson<SpeciesResponse>(`${API_URL}/pokemon-species/${id}`),
+  ])
   return {
     id: p.id,
     name: p.name,
     types: p.types.map((t) => t.type.name),
     artwork: p.sprites.other['official-artwork'].front_default ?? p.sprites.front_default ?? '',
     stats: p.stats.map((s) => ({ name: s.stat.name, value: s.base_stat })),
+    description: englishDescription(species),
   }
 }
