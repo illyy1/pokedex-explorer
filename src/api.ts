@@ -21,6 +21,12 @@ type PokemonResponse = {
   }
   types: { type: { name: string } }[]
   stats: { base_stat: number; stat: { name: string } }[]
+  abilities: { is_hidden: boolean; ability: { name: string } }[]
+}
+
+// Only the parts of the /ability/{name} response that we use.
+type AbilityResponse = {
+  effect_entries: { short_effect: string; language: { name: string } }[]
 }
 
 // Only the parts of the /type/{name} response that we use.
@@ -107,6 +113,23 @@ export function fetchTypeData(name: string): Promise<TypeData> {
   return promise
 }
 
+// Many Pokémon share abilities, so each explanation is also requested only once.
+const abilityCache = new Map<string, Promise<string>>()
+
+function fetchAbilityEffect(name: string): Promise<string> {
+  let promise = abilityCache.get(name)
+  if (!promise) {
+    promise = getJson<AbilityResponse>(`${API_URL}/ability/${name}`).then(
+      (a) =>
+        a.effect_entries.find((e) => e.language.name === 'en')?.short_effect ??
+        'No description available.',
+    )
+    promise.catch(() => abilityCache.delete(name))
+    abilityCache.set(name, promise)
+  }
+  return promise
+}
+
 // The text comes from the old games, so it has line breaks (\n, \f)
 // and the spelling "POKéMON". We tidy both up.
 function englishDescription(species: SpeciesResponse): string {
@@ -115,18 +138,21 @@ function englishDescription(species: SpeciesResponse): string {
   return entry.flavor_text.replace(/\s+/g, ' ').replace(/POKéMON/g, 'Pokémon')
 }
 
-// The Pokémon's own data, plus the data of each of its types,
-// which we can only ask for once we know what its types are.
-async function fetchPokemonWithTypes(id: number) {
+// The Pokémon's own data, plus the data of each of its types and abilities,
+// which we can only ask for once we know what they are.
+async function fetchPokemonWithExtras(id: number) {
   const p = await getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`)
-  const typeData = await Promise.all(p.types.map((t) => fetchTypeData(t.type.name)))
-  return { p, typeData }
+  const [typeData, abilityEffects] = await Promise.all([
+    Promise.all(p.types.map((t) => fetchTypeData(t.type.name))),
+    Promise.all(p.abilities.map((a) => fetchAbilityEffect(a.ability.name))),
+  ])
+  return { p, typeData, abilityEffects }
 }
 
 export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
   // The species request is sent at the same time as the others.
-  const [{ p, typeData }, species] = await Promise.all([
-    fetchPokemonWithTypes(id),
+  const [{ p, typeData, abilityEffects }, species] = await Promise.all([
+    fetchPokemonWithExtras(id),
     getJson<SpeciesResponse>(`${API_URL}/pokemon-species/${id}`),
   ])
   return {
@@ -137,5 +163,10 @@ export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
     stats: p.stats.map((s) => ({ name: s.stat.name, value: s.base_stat })),
     description: englishDescription(species),
     matchups: typeMatchups(typeData),
+    abilities: p.abilities.map((a, i) => ({
+      name: a.ability.name,
+      isHidden: a.is_hidden,
+      effect: abilityEffects[i],
+    })),
   }
 }

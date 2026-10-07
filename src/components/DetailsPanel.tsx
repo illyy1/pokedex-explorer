@@ -67,6 +67,18 @@ function DetailsPanel({ selected, info, failed }: Props) {
           ))}
         </tbody>
       </table>
+      <section className="abilities" aria-label="Abilities">
+        <h3>Abilities</h3>
+        <ul>
+          {info.abilities.map((ability) => (
+            <li key={ability.name}>
+              <span className="ability-name">{ability.name.replace(/-/g, ' ')}</span>
+              {ability.isHidden && <span className="hidden-tag">Hidden</span>}
+              <p>{ability.effect}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
       <MatchupsSection matchups={info.matchups} />
     </div>
   )

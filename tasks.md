@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–9 are done. Tasks 10–18 are planned. Tasks 9–18 were added after the first plan.
+Status: tasks 1–12 are done. Tasks 13–18 are planned. Tasks 9–18 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -59,7 +59,7 @@ When a Pokémon is clicked, request the data for each of its types and work out 
 
 Done when: Bulbasaur shows weak to Fire, Ice, Flying and Psychic (all ×2), and Charizard shows weak to Rock ×4, Water ×2 and Electric ×2, and immune to Ground.
 
-## Task 12: Show abilities
+## Task 12: Show abilities ✅
 When a Pokémon is clicked, show its abilities in the details panel and mark the hidden ability. For each ability, request its data from PokéAPI and show the short English explanation of what it does.
 
 Done when: Charizard shows Blaze with "Strengthens Fire moves to inflict 1.5× damage at 1/3 max HP or less." and Solar Power marked as hidden.

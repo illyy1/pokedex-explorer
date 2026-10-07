@@ -24,6 +24,13 @@ export type Matchups = {
   immune: string[]
 }
 
+export type Ability = {
+  name: string
+  isHidden: boolean
+  // A one-sentence explanation of what the ability does.
+  effect: string
+}
+
 // Everything the details panel shows.
 export type PokemonInfo = {
   id: number
@@ -33,4 +40,5 @@ export type PokemonInfo = {
   stats: PokemonStat[]
   description: string
   matchups: Matchups
+  abilities: Ability[]
 }
