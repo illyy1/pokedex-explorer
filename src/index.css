@@ -1435,6 +1435,197 @@ body {
   }
 }
 
+.team-count {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.team-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: 20px;
+  align-items: start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* A smaller card for each Pokémon in a team. */
+.team-card {
+  max-width: none;
+  padding: 10px;
+
+  .card-name {
+    font-size: 21px;
+  }
+  .card-hp {
+    font-size: 18px;
+  }
+  .card-art {
+    aspect-ratio: 16 / 10;
+  }
+  .card-art .status {
+    margin: 8px;
+  }
+}
+
+.team-remove {
+  align-self: center;
+  margin-top: 2px;
+  padding: 3px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--card-red);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--card-red);
+    color: #fff;
+  }
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Empty slots: dashed outlines waiting for a Pokémon. */
+.team-slot-empty {
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+  border: 3px dashed var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+
+  .empty-slot {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.12);
+  }
+  .empty-slot.big {
+    width: 96px;
+    height: 96px;
+    opacity: 0.6;
+  }
+  &:has(.picker) {
+    place-items: stretch;
+    padding: 10px;
+  }
+}
+
+.add-pokemon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  color: var(--text-h);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bg);
+  }
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+  }
+}
+
+/* The search list for adding a Pokémon. */
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 420px;
+  min-width: 0;
+}
+
+.picker-search {
+  display: flex;
+  gap: 6px;
+
+  input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--text-h);
+    font: inherit;
+  }
+  input:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 1px;
+  }
+}
+
+.picker-cancel {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.picker-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 2px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--text-h);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--bg);
+    }
+    &:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: -3px;
+    }
+  }
+  img {
+    image-rendering: pixelated;
+  }
+}
+
+.picker-name {
+  font-weight: 700;
+}
+
+.picker-number {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 /* Phones and narrow windows: stack everything. */
 
 @media (max-width: 720px) {

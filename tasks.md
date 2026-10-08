@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–24 are done. Tasks 25–26 are planned. Tasks 9–26 were added after the first plan.
+Status: tasks 1–25 are done. Task 26 is planned. Tasks 9–26 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -124,7 +124,7 @@ Add a "Team Builder" link to the navigation bar. At `/teams`, list every saved t
 
 Done when: making two teams and renaming one shows both after reloading the page, deleting one removes it after reloading too, and `/teams/does-not-exist` shows "Team not found".
 
-## Task 25: Add and remove Pokémon in a team
+## Task 25: Add and remove Pokémon in a team ✅
 In the team editor, show six slots. An empty slot has an "Add Pokémon" button that opens a search over all 649 Pokémon by name or number; picking one fills the slot. A Pokémon already in the team is not offered again. A filled slot shows the Pokémon as a small card (name, HP, types, picture, with the sparkly look for legendary Pokémon) and a "Remove" button. A team holds at most six Pokémon.
 
 Done when: adding Pikachu, Charizard and Mewtwo shows their cards (Mewtwo sparkly), Pikachu is not offered again, removing Charizard frees its slot, and the team page shows the right sprites after reloading.

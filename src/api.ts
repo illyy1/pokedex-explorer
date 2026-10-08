@@ -26,6 +26,7 @@ type PokemonResponse = {
   types: { type: { name: string } }[]
   stats: { base_stat: number; stat: { name: string } }[]
   abilities: { is_hidden: boolean; ability: { name: string } }[]
+  moves: { move: { name: string }; version_group_details: { version_group: { name: string } }[] }[]
 }
 
 // Only the parts of the /ability/{name} response that we use.
@@ -88,7 +89,10 @@ export async function fetchPokemonIndex(): Promise<PokemonListItem[]> {
 
 // The index has no pictures or types, so we request each Pokémon's own data.
 export async function fetchListItem(id: number): Promise<PokemonListItem> {
-  const p = await getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`)
+  return toListItem(await getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`))
+}
+
+function toListItem(p: PokemonResponse): PokemonListItem {
   return {
     id: p.id,
     name: p.name,
@@ -97,6 +101,40 @@ export async function fetchListItem(id: number): Promise<PokemonListItem> {
     types: p.types.map((t) => t.type.name),
     hp: p.stats.find((s) => s.stat.name === 'hp')?.base_stat,
   }
+}
+
+// The games of Generation 5. The Team Builder only offers moves a Pokémon
+// can learn in these, to match the app's Generations 1–5 and the Gen 5 builds.
+const GEN5_VERSION_GROUPS = ['black-white', 'black-2-white-2']
+
+// What the Team Builder needs to know about one Pokémon.
+export type TeamPokemonData = {
+  item: PokemonListItem
+  abilities: { name: string; isHidden: boolean }[]
+  // Move names, sorted alphabetically.
+  moves: string[]
+}
+
+// Each Pokémon is requested at most once while the page is open.
+const teamPokemonCache = new Map<number, Promise<TeamPokemonData>>()
+
+export function fetchTeamPokemon(id: number): Promise<TeamPokemonData> {
+  let promise = teamPokemonCache.get(id)
+  if (!promise) {
+    promise = getJson<PokemonResponse>(`${API_URL}/pokemon/${id}`).then((p) => ({
+      item: toListItem(p),
+      abilities: p.abilities.map((a) => ({ name: a.ability.name, isHidden: a.is_hidden })),
+      moves: p.moves
+        .filter((m) =>
+          m.version_group_details.some((d) => GEN5_VERSION_GROUPS.includes(d.version_group.name)),
+        )
+        .map((m) => m.move.name)
+        .sort(),
+    }))
+    promise.catch(() => teamPokemonCache.delete(id))
+    teamPokemonCache.set(id, promise)
+  }
+  return promise
 }
 
 // A type's data never changes, so each type is requested at most once.
