@@ -1011,6 +1011,11 @@ body {
     background: var(--card-frame);
     color: var(--card-ink);
   }
+  /* "Not available": the phone can't share its motion. */
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
   &:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 2px;
@@ -1350,8 +1355,9 @@ body {
   }
 }
 
-/* The 3D effect only runs with a mouse and normal motion, so hide its switch otherwise. */
-@media (hover: none), (prefers-reduced-motion: reduce) {
+/* The 3D effect only runs with normal motion, so hide its switch otherwise.
+   (Phones tilt the card with their motion sensor, so they keep it.) */
+@media (prefers-reduced-motion: reduce) {
   .toggle-3d {
     display: none;
   }

@@ -387,3 +387,15 @@ could we make the website public through a github static website
 ```text
 update the readme and push
 ```
+
+## 62. Website link on GitHub, and 3D on phones?
+
+```text
+do that and also is it possible to make the 3d reactivity work on mobile or no
+```
+
+## 63. Tilt the card with the phone
+
+```text
+build the gyroscope version with the tilt
+```

@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33 are done; task 32 is planned for later. Tasks 9–33 were added after the first plan.
+Status: tasks 1–31, 33 and 34 are done; task 32 is planned for later. Tasks 9–34 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -179,3 +179,12 @@ Done when: the Pokédex list scrolls to No. 1025 (Pecharunt), searching "1025" o
 Make the app public at https://illyy1.github.io/pokedex-explorer/. GitHub Pages serves it from a folder, so `vite.config.ts` builds with `base: '/pokedex-explorer/'` (the dev server stays at "/"), and `BrowserRouter` gets the same folder as its `basename`. GitHub Pages only knows the built files, so a link like /pokedex-explorer/pokedex/25 would be "not found"; the build copies `index.html` to `404.html`, so that page loads the app, which then shows the right page. A GitHub Actions workflow (`.github/workflows/deploy.yml`) lints, builds and publishes the site every time `main` is pushed, and Pages in the repository settings is set to deploy from GitHub Actions.
 
 Done when: the production build, served under /pokedex-explorer/ with the 404 fallback like GitHub Pages, opens the homepage; opening /pokedex/25, /about, /teams and a made-up address directly shows Pikachu, About, the Team Builder and "Page not found"; reloading a team's page keeps it; the navigation links include /pokedex-explorer; and after pushing, the workflow succeeds and the live site loads.
+
+## Task 34: Tilt the card with the phone's motion sensor ✅
+On touch screens, following a finger would fight with scrolling, so the card tilts as you tilt the phone instead, with the same shine as with a mouse.
+- `useTilt` listens to `deviceorientation` on touch screens (`(hover: none) and (pointer: coarse)`) and turns the phone's left/right and forward/back tilt into the same tilt as the mouse. Turning the phone 20° turns the card all the way; more is capped.
+- The tilt is measured from how the phone is being held, which starts at the first reading and slowly follows the phone, so the card settles back to flat after a few seconds held still. Holding the phone sideways is handled with `screen.orientation.angle`.
+- `src/motionAccess.ts` keeps track of whether the page may read the sensor. iPhones and iPads (Safari) ask first, and only after a tap, so the 3D button says "Tap to start" and asks when tapped. If a reading arrives without asking, access was already allowed. A "no", or a device without the sensor, shows "3D effect: Not available" with a hint to allow it in the browser's settings.
+- The 3D button now shows on touch screens too; it is still hidden for people who turned off animations, who still get a flat card. Computers keep the mouse tilt and ignore sensor readings.
+
+Done when (checked with fake sensor readings in a phone-sized, touch-screen browser): tilting right 15° turns the card 10.5° to the right and tipping forward tips it, 60° stops at the most, holding a tilt settles back to flat, the phone held sideways still tilts the right way, turning 3D off keeps it flat; pretending to be an iPhone, the button says "Tap to start", asks once when tapped, and then tilts on "Allow" or shows "Not available" on "Don't Allow"; on a computer the mouse still tilts the card and sensor readings are ignored. The last check is on a real phone, on the live site (motion needs HTTPS).
