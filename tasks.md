@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 28 tasks are done. Tasks 9–28 were added after the first plan.
+Status: all 29 tasks are done. Tasks 9–29 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -143,3 +143,14 @@ Done when: with Pikachu in the team, scrolling the picker to the end shows all 6
 Add an "Export to Showdown" button to the team editor. Showdown can't be opened with a team already in it, so the button copies the team in Showdown's text format (name, `Ability:` line, `- Move` lines) and opens Showdown's team builder in a new tab, then shows how to paste it: New Team → Import from text → Save. PokéAPI names are turned into Showdown's spelling in `src/showdown.ts` ("mr-mime" → "Mr. Mime", "landorus-incarnate" → "Landorus", "u-turn" → "U-turn"). If the browser won't allow copying, the text appears in a box to copy by hand. The button is off while the team is empty. Items, natures and EVs aren't part of our teams, so they are added in Showdown.
 
 Done when: a team of Pikachu (Lightning Rod, Thunderbolt, Volt Switch), Mr. Mime and Landorus (U-turn, Earthquake) copies as "Pikachu / Ability: Lightning Rod / - Thunderbolt / - Volt Switch", "Mr. Mime / Ability: Soundproof" and "Landorus / Ability: Sand Force / - U-turn / - Earthquake" and opens play.pokemonshowdown.com/teambuilder; every Generation 1–5 Pokémon, move and ability name we write matches a name in Showdown's own data; and when copying is refused, the same text is shown in a box.
+
+## Task 29: Items, EVs and Smogon builds in the Team Builder ✅
+Give each team member an item, a nature and EVs, and a quick way to use a Smogon build.
+- **Smogon build dropdown:** the Pokémon's Generation 5 builds from the file the Pokédex already uses, grouped by format. Picking one fills in the item, ability, nature, EVs and moves. Where a build lists alternatives, take the first; moves become PokéAPI names ("U-turn" → "u-turn", "Hidden Power Ice" → "hidden-power-ice"), and the few spreads over 510 EVs stop at 510.
+- **Item dropdown:** the 94 items Smogon's Generation 5 builds use, in Showdown's spelling.
+- **Nature & EVs:** a fold-out section with a summary line when closed, a Nature dropdown that shows which stat goes up and down, and six EV boxes that keep each stat at 0–252 and the total at 510, with "EVs left".
+- **Moves:** typed Hidden Power (any type but Normal) for Pokémon that learn it, and a move a build chose stays in the list even if PokéAPI doesn't list it for Generation 5. Move names are shown in Showdown's spelling ("U-turn").
+- **Saving:** stored with the team. Teams saved before this load with no item, no nature and 0 EVs.
+- **Export to Showdown:** now writes "@ Item", `EVs:` and "Nature" lines.
+
+Done when: Pikachu's first build (NU Substitute) sets Light Ball, Lightning Rod, Timid, 4 Def / 252 SpA / 252 Spe and Substitute, Thunderbolt, Hidden Power Ice, Encore; typing 300 SpA gives 252, and with 504 used, 100 HP gives 6; changes are still there after reloading; an old saved team still opens; every one of the 2,251 builds for our Pokémon uses moves, abilities and items that PokéAPI and Showdown both know; and the export shows "Pikachu @ Leftovers", "EVs: 6 HP / 252 SpA / 252 Spe" and "Modest Nature".

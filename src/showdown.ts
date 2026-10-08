@@ -1,4 +1,5 @@
 import { displayName } from './names'
+import { formatEvs } from './stats'
 import type { Team } from './teams'
 
 // Pokémon Showdown's team builder, where an exported team is pasted.
@@ -60,14 +61,23 @@ export function showdownAbilityName(name: string): string {
 }
 
 // Writes a team in Showdown's text format, the one its "Import from text"
-// reads: the Pokémon's name, then its ability, then one "- Move" line per
-// move, with a blank line between Pokémon. Unchosen moves are left out.
+// reads, with a blank line between Pokémon:
+//   Pikachu @ Light Ball
+//   Ability: Lightning Rod
+//   EVs: 4 Atk / 252 SpA / 252 Spe
+//   Timid Nature
+//   - Thunderbolt
+// Anything not chosen (item, EVs, nature, empty move slots) is left out.
 // `nameOf` turns a Pokémon number into its PokéAPI name.
 export function teamToShowdownText(team: Team, nameOf: (id: number) => string): string {
   return team.members
     .map((member) => {
-      const lines = [showdownPokemonName(nameOf(member.pokemonId))]
+      const name = showdownPokemonName(nameOf(member.pokemonId))
+      const lines = [member.item ? `${name} @ ${member.item}` : name]
       if (member.ability) lines.push(`Ability: ${showdownAbilityName(member.ability)}`)
+      const evs = formatEvs(member.evs)
+      if (evs) lines.push(`EVs: ${evs}`)
+      if (member.nature) lines.push(`${member.nature} Nature`)
       for (const move of member.moves) {
         if (move) lines.push(`- ${showdownMoveName(move)}`)
       }

@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react'
+import { emptyEvs, type EvSpread } from './stats'
 
 export const TEAM_SIZE = 6
 export const MOVES_PER_POKEMON = 4
@@ -8,7 +9,24 @@ export const MOVES_PER_POKEMON = 4
 export type TeamMember = {
   pokemonId: number
   ability: string | null
+  // The held item in Showdown's spelling ("Choice Scarf"), or "" for none.
+  item: string
+  // A nature's name ("Adamant"), or "" for none chosen.
+  nature: string
+  evs: EvSpread
   moves: string[]
+}
+
+// A Pokémon just added to a team: nothing chosen yet.
+export function newMember(pokemonId: number): TeamMember {
+  return {
+    pokemonId,
+    ability: null,
+    item: '',
+    nature: '',
+    evs: emptyEvs(),
+    moves: Array.from({ length: MOVES_PER_POKEMON }, () => ''),
+  }
 }
 
 export type Team = {

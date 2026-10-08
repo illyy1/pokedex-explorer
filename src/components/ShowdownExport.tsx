@@ -45,8 +45,7 @@ function ShowdownExport({ team }: Props) {
         <p className="showdown-help" role="status">
           Team copied! In Showdown, click <strong>New Team</strong>, then{' '}
           <strong>Import from text</strong>, paste it, and click <strong>Save</strong>. Pick a
-          Gen 5 format to battle with it. Items, natures and EVs aren't in our team builder, so
-          add those in Showdown.
+          Gen 5 format to battle with it.
         </p>
       )}
       {status === 'failed' && (

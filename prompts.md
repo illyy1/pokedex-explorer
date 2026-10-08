@@ -333,3 +333,9 @@ could we do a direct link that automatically opens pokemon showdown with the tea
 ```text
 do option 1 and update the docs
 ```
+
+## 53. Items, EVs and Smogon builds in the Team Builder
+
+```text
+add the option to add items to the team builder and edit EVs, also add the option to just choose a completed smogon build from the ones we imported
+```

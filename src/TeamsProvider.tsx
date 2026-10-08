@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { emptyEvs, MAX_EVS_PER_STAT, MAX_EVS_TOTAL, NATURES, STATS, type EvSpread } from './stats'
 import { MOVES_PER_POKEMON, TEAM_SIZE, TeamsContext, type Team, type TeamMember } from './teams'
 
 // Teams are saved in this browser's localStorage, like favorites.
@@ -27,8 +28,24 @@ function isTeam(value: unknown): value is Team {
   )
 }
 
+// Saved EVs must be whole numbers from 0 to 252, 510 at most in all;
+// anything else starts again from zero.
+function readEvs(value: unknown): EvSpread {
+  const evs = emptyEvs()
+  if (typeof value !== 'object' || value === null) return evs
+  const saved = value as Record<string, unknown>
+  for (const stat of STATS) {
+    const n = saved[stat]
+    if (typeof n === 'number' && Number.isInteger(n) && n >= 0 && n <= MAX_EVS_PER_STAT) {
+      evs[stat] = n
+    }
+  }
+  return STATS.reduce((sum, stat) => sum + evs[stat], 0) <= MAX_EVS_TOTAL ? evs : emptyEvs()
+}
+
 // localStorage can be missing, blocked or hold bad data, so we keep only
-// teams that look right, and pad each Pokémon's moves to four slots.
+// teams that look right, and pad each Pokémon's moves to four slots. Teams
+// saved before items, natures and EVs existed get empty ones.
 function readTeams(): Team[] {
   try {
     const parsed: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
@@ -37,6 +54,9 @@ function readTeams(): Team[] {
       ...team,
       members: team.members.map((m) => ({
         ...m,
+        item: typeof m.item === 'string' ? m.item : '',
+        nature: NATURES.some((n) => n.name === m.nature) ? m.nature : '',
+        evs: readEvs(m.evs),
         moves: Array.from({ length: MOVES_PER_POKEMON }, (_, i) => m.moves[i] ?? ''),
       })),
     }))

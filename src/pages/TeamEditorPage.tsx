@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router'
 import PokemonPicker from '../components/PokemonPicker'
 import ShowdownExport from '../components/ShowdownExport'
 import TeamSlot from '../components/TeamSlot'
-import { MOVES_PER_POKEMON, TEAM_SIZE, useTeams, type TeamMember } from '../teams'
+import { newMember, TEAM_SIZE, useTeams, type TeamMember } from '../teams'
 
 // Edits one team: its name and its six Pokémon.
 function TeamEditorPage() {
@@ -27,11 +27,7 @@ function TeamEditorPage() {
   const id = team.id
 
   function addPokemon(pokemonId: number) {
-    const member: TeamMember = {
-      pokemonId,
-      ability: null,
-      moves: Array.from({ length: MOVES_PER_POKEMON }, () => ''),
-    }
+    const member = newMember(pokemonId)
     updateTeam(id, (t) =>
       t.members.length < TEAM_SIZE ? { ...t, members: [...t.members, member] } : t,
     )
