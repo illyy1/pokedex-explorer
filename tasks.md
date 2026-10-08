@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–25 are done. Task 26 is planned. Tasks 9–26 were added after the first plan.
+Status: all 26 tasks are done. Tasks 9–26 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -129,7 +129,7 @@ In the team editor, show six slots. An empty slot has an "Add Pokémon" button t
 
 Done when: adding Pikachu, Charizard and Mewtwo shows their cards (Mewtwo sparkly), Pikachu is not offered again, removing Charizard frees its slot, and the team page shows the right sprites after reloading.
 
-## Task 26: Choose abilities and moves
+## Task 26: Choose abilities and moves ✅
 On each Pokémon in a team, add an "Ability" dropdown with its abilities (the hidden one marked) and four "Move" dropdowns with the moves it can learn in Generation 5 (from the `moves` in its PokéAPI data, kept when they include the `black-white` or `black-2-white-2` version groups), sorted by name. A move already chosen in another slot of the same Pokémon is not offered again. A newly added Pokémon starts with its first normal ability and no moves. Each Pokémon's data is requested once and reused.
 
 Done when: Pikachu offers Static and Lightning Rod (hidden), its move lists include Thunderbolt but not moves from later games, choosing Thunderbolt in one slot removes it from the other three, and the chosen ability and moves are still there after reloading the page.

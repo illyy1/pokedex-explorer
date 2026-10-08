@@ -37,6 +37,14 @@ function TeamEditorPage() {
     setIsPicking(false)
   }
 
+  // Each Pokémon is in a team once, so its number finds it even if the list changed.
+  function changePokemon(member: TeamMember) {
+    updateTeam(id, (t) => ({
+      ...t,
+      members: t.members.map((m) => (m.pokemonId === member.pokemonId ? member : m)),
+    }))
+  }
+
   function removePokemon(index: number) {
     updateTeam(id, (t) => ({ ...t, members: t.members.filter((_, i) => i !== index) }))
   }
@@ -65,7 +73,11 @@ function TeamEditorPage() {
         {team.members.map((member, index) => (
           // A Pokémon can only be in a team once, so its number is a stable key.
           <li key={member.pokemonId}>
-            <TeamSlot member={member} onRemove={() => removePokemon(index)} />
+            <TeamSlot
+              member={member}
+              onChange={changePokemon}
+              onRemove={() => removePokemon(index)}
+            />
           </li>
         ))}
         {/* The next free slot can add a Pokémon; the others wait their turn. */}

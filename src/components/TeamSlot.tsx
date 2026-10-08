@@ -10,11 +10,13 @@ import Sparkles from './Sparkles'
 
 type Props = {
   member: TeamMember
+  // Called with the changed Pokémon when its ability or a move is picked.
+  onChange: (member: TeamMember) => void
   onRemove: () => void
 }
 
 // One Pokémon in a team, shown as a small trading card.
-function TeamSlot({ member, onRemove }: Props) {
+function TeamSlot({ member, onChange, onRemove }: Props) {
   const [data, setData] = useState<TeamPokemonData | null>(null)
   const [failed, setFailed] = useState(false)
   // Goes up when "Try again" is clicked, to load the Pokémon again.
@@ -37,7 +39,20 @@ function TeamSlot({ member, onRemove }: Props) {
     }
   }, [member.pokemonId, retryCount])
 
-  const item = data?.item.id === member.pokemonId ? data.item : null
+  const loaded = data?.item.id === member.pokemonId ? data : null
+  const item = loaded?.item ?? null
+
+  // A newly added Pokémon starts with its first normal (not hidden) ability.
+  useEffect(() => {
+    if (!loaded || member.ability !== null) return
+    const first = loaded.abilities.find((a) => !a.isHidden) ?? loaded.abilities[0]
+    if (first) onChange({ ...member, ability: first.name })
+  }, [loaded, member, onChange])
+
+  function changeMove(slot: number, move: string) {
+    const moves = member.moves.map((m, i) => (i === slot ? move : m))
+    onChange({ ...member, moves })
+  }
 
   return (
     <article
@@ -83,6 +98,45 @@ function TeamSlot({ member, onRemove }: Props) {
             <p className="status">Loading…</p>
           )}
         </div>
+        {loaded && (
+          <div className="team-options">
+            <label className="team-field">
+              <span>Ability</span>
+              <select
+                value={member.ability ?? ''}
+                onChange={(event) => onChange({ ...member, ability: event.target.value })}
+              >
+                {loaded.abilities.map((a) => (
+                  <option key={a.name} value={a.name}>
+                    {displayName(a.name)}
+                    {a.isHidden ? ' (hidden)' : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <fieldset className="team-field team-moves">
+              <legend>Moves</legend>
+              {member.moves.map((move, slot) => (
+                <select
+                  key={slot}
+                  aria-label={`Move ${slot + 1}`}
+                  value={move}
+                  onChange={(event) => changeMove(slot, event.target.value)}
+                >
+                  <option value="">— Move —</option>
+                  {/* A move chosen in another slot is not offered again. */}
+                  {loaded.moves
+                    .filter((m) => m === move || !member.moves.includes(m))
+                    .map((m) => (
+                      <option key={m} value={m}>
+                        {displayName(m)}
+                      </option>
+                    ))}
+                </select>
+              ))}
+            </fieldset>
+          </div>
+        )}
         <button type="button" className="team-remove" onClick={onRemove}>
           Remove {item ? displayName(item.name) : 'Pokémon'}
         </button>

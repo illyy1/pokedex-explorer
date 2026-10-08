@@ -1493,6 +1493,60 @@ body {
   }
 }
 
+/* The ability and move choices on a team card. */
+.team-options {
+  display: grid;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1.5px solid #b8952e;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.team-field {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 12px;
+  font-weight: 700;
+
+  > span,
+  legend {
+    padding: 0;
+    color: var(--card-red);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  select {
+    width: 100%;
+    min-width: 0;
+    padding: 5px 8px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    background: #fffdf6;
+    color: var(--card-ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color-scheme: light;
+
+    &:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 1px;
+    }
+  }
+}
+
+.team-moves {
+  grid-template-columns: 1fr 1fr;
+
+  legend {
+    margin-bottom: 4px;
+  }
+}
+
 /* Empty slots: dashed outlines waiting for a Pokémon. */
 .team-slot-empty {
   display: grid;
