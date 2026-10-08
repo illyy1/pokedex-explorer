@@ -1,6 +1,7 @@
 import { LAST_POKEMON } from '../api'
 import { rarityOf } from '../legendary'
 import { formatMultiplier } from '../matchups'
+import { displayName } from '../names'
 import { typeStyle } from '../pokemonTypes'
 import type { Matchup, PokemonInfo } from '../types'
 import { formatLength, formatWeight } from '../units'
@@ -23,11 +24,6 @@ const STAT_LABELS: Record<string, string> = {
 // how big the stat is: one dot per 50 points (the highest base stat is 255).
 function statDots(value: number): number {
   return Math.min(6, Math.max(1, Math.ceil(value / 50)))
-}
-
-// "mr-mime" -> "Mr Mime"
-function displayName(name: string): string {
-  return name.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
 }
 
 // The bottom row of a card: weakness, resistance and (instead of retreat cost) immunity.

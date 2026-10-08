@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 23 tasks are done. Tasks 9–23 were added after the first plan.
+Status: tasks 1–24 are done. Tasks 25–26 are planned. Tasks 9–26 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -118,3 +118,18 @@ Done when: the button shows "On" by default and the card tilts; clicking it show
 List the legendary and mythical Pokémon up to #649 from PokéAPI's is_legendary and is_mythical flags (35 legendary, 13 mythical). Show a rainbow "✦ Legendary" or "✦ Mythical" mark next to the name on the card and in the list. Give their cards a "rainbow rare" look: a shimmering rainbow foil frame with diagonal stripes, glitter over the card and the picture, a rainbow foil on the picture and twinkling four-pointed sparkles. Give their list rows the rainbow frame and glitter too. With animations turned off, keep the sparkle but hold it still.
 
 Done when: Mewtwo, Articuno, Zapdos and Moltres show "✦ Legendary" and Mew shows "✦ Mythical" in the list and on the card, their cards sparkle, Charizard keeps a normal card, the 3D tilt still works, and on a 375-pixel-wide screen legendary rows fit with no sideways scrolling.
+
+## Task 24: Add the Team Builder page and save teams ✅
+Add a "Team Builder" link to the navigation bar. At `/teams`, list every saved team as a box with its name, how many Pokémon it has and six slots (a sprite or an empty Poké Ball outline), plus a "New team" button and a "Delete" button (with an "are you sure?" question) on each team. "New team" makes "Team 1", "Team 2" and so on, and opens its editor at `/teams/{id}`, where the name can be changed. Save all teams in localStorage (key `teams`) as they change, keep them in sync between open tabs like favorites, and ignore saved data that doesn't look like a team. An unknown team address shows "Team not found".
+
+Done when: making two teams and renaming one shows both after reloading the page, deleting one removes it after reloading too, and `/teams/does-not-exist` shows "Team not found".
+
+## Task 25: Add and remove Pokémon in a team
+In the team editor, show six slots. An empty slot has an "Add Pokémon" button that opens a search over all 649 Pokémon by name or number; picking one fills the slot. A Pokémon already in the team is not offered again. A filled slot shows the Pokémon as a small card (name, HP, types, picture, with the sparkly look for legendary Pokémon) and a "Remove" button. A team holds at most six Pokémon.
+
+Done when: adding Pikachu, Charizard and Mewtwo shows their cards (Mewtwo sparkly), Pikachu is not offered again, removing Charizard frees its slot, and the team page shows the right sprites after reloading.
+
+## Task 26: Choose abilities and moves
+On each Pokémon in a team, add an "Ability" dropdown with its abilities (the hidden one marked) and four "Move" dropdowns with the moves it can learn in Generation 5 (from the `moves` in its PokéAPI data, kept when they include the `black-white` or `black-2-white-2` version groups), sorted by name. A move already chosen in another slot of the same Pokémon is not offered again. A newly added Pokémon starts with its first normal ability and no moves. Each Pokémon's data is requested once and reused.
+
+Done when: Pikachu offers Static and Lightning Rod (hidden), its move lists include Thunderbolt but not moves from later games, choosing Thunderbolt in one slot removes it from the other three, and the chosen ability and moves are still there after reloading the page.

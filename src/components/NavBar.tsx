@@ -20,6 +20,9 @@ function NavBar() {
           <NavLink to="/favorites">Favorites</NavLink>
         </li>
         <li>
+          <NavLink to="/teams">Team Builder</NavLink>
+        </li>
+        <li>
           <NavLink to="/about">About</NavLink>
         </li>
       </ul>

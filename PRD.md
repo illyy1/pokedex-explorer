@@ -1,41 +1,43 @@
 # PRD: Pokédex Explorer
 
 ## 1. One-sentence pitch
-A simple web app where Pokémon fans browse or search Pokémon from Generations 1–5 by name, number or type, see each one's stats, abilities, weaknesses and recommended competitive builds, and save their favorites.
+A simple web app where Pokémon fans browse or search Pokémon from Generations 1–5 by name, number or type, see each one's stats, abilities, weaknesses and recommended competitive builds, save their favorites, and build teams of six with their abilities and moves.
 
 ## 2. Who it is for
 Pokémon fans who want to learn more about their favorite Pokémon, quickly and without ads or clutter.
 
 ## 3. Screens
-The app has four pages. A navigation bar at the top of every page links to Home, Pokédex, Favorites and About, and the browser's back and forward buttons work as expected. Every page shows "Loading…" while data loads and a friendly message if it fails.
+The app has five pages. A navigation bar at the top of every page links to Home, Pokédex, Favorites, Team Builder and About, and the browser's back and forward buttons work as expected. Every page shows "Loading…" while data loads and a friendly message if it fails.
 
 - **Home** (`/`): the app name, a one-line intro, a "Pokémon of the day" card (the same Pokémon for everyone all day, a new one each day) that opens its details when clicked, and two buttons: "Browse the Pokédex" and "My favorites".
 - **Pokédex** (`/pokedex`): split into two areas.
   - **List (left side):** A search bar and a type dropdown at the top, then a scrollable list of Pokémon. Each row shows the small picture, the Pokédex number (for example #25), the name, the type(s), a filled star if it is a favorite, and a rainbow "✦ Legendary" or "✦ Mythical" mark (with a rainbow frame) for the 35 legendary and 13 mythical Pokémon. The list starts with the first 50 Pokémon. When you scroll to the end of the list, the next 50 start loading on their own (infinite scroll), with "Loading…" shown at the bottom, until the list ends at #649. Typing in the search bar or picking a type replaces the list with the matching Pokémon.
   - **Details (right side):** When a Pokémon is clicked, the address changes to its own link (for example `/pokedex/25`), so it can be bookmarked or shared. The panel shows a star button to add or remove it from favorites, its large official artwork, name, number, type(s), the six base stats (HP, Attack, Defense, Special Attack, Special Defense, Speed), its abilities with a short explanation of each (the hidden ability is marked), its type weaknesses, resistances and immunities, and a short Pokédex description in English. Below that, a "Recommended builds" section lists Smogon's competitive sets for that Pokémon in Generation 5: the set name and format (for example "NU · Revenge Killer"), its four moves, item, ability, nature and EVs. The details are shown as a card in the style of the original Pokémon trading cards: a yellow frame, a background in the color of its first type, its HP, a framed picture, abilities written like "Pokémon Power", stats written like attacks, and weakness and resistance at the bottom. Legendary and mythical Pokémon get a sparkly "rainbow rare" card instead: a shimmering rainbow foil frame, glitter, twinkling star sparkles and a "✦ Legendary" or "✦ Mythical" mark next to the name. When you move the mouse over the card, it tilts toward the pointer in 3D, with a shine that follows it like a holographic card. A "3D effect: On / Off" button above the card turns this on or off, and the choice is remembered in the browser (on by default; the effect and the button are left out on touch screens and for people who turned off animations). Before anything is clicked, it shows a short hint such as "Pick a Pokémon to see its card."
 - **Favorites** (`/favorites`): the same list and details layout, showing only the Pokémon the user has starred, in Pokédex order. With no favorites, it says "No favorites yet. Tap the ☆ on any Pokémon to save it." Favorites are saved in this browser, so they are still there after closing and reopening it.
+- **Team Builder** (`/teams` and `/teams/{id}`): `/teams` lists every saved team as a box showing its name and six slots (a sprite for each chosen Pokémon, an empty Poké Ball outline otherwise), with a "New team" button and a "Delete" button on each team. Opening a team shows its editor: a name you can change and six slots. An empty slot has "Add Pokémon", which opens a search over all 649 Pokémon (a Pokémon can only be in a team once). A chosen Pokémon is shown as a small card with an Ability dropdown (its abilities, the hidden one marked) and four Move dropdowns with the moves it can learn in Generation 5 (the same move can't be picked twice), and a "Remove" button. Teams are saved in this browser as you go, like favorites, and you can make as many as you like.
 - **About** (`/about`): a hand of three trading cards. A Trainer card says what the app is and who made it, and an Energy card for each data source (PokéAPI and Smogon) says what it provides, with links. Hovering a card lifts it out of the hand; on phones the cards stack. Under the cards, fine print (like the copyright line on a real card) says this is a fan project not affiliated with Nintendo, Game Freak or The Pokémon Company.
 - **Page not found**: any other address shows "Page not found" with a link back to Home.
 
 ## 4. Must-have features
 1. Browse all 649 Pokémon with infinite scroll (the next 50 load when you reach the end of the list) and search them by name, Pokédex number or type.
 2. Click a Pokémon to see its details: large picture, name, number, type(s), base stats, abilities, weaknesses by type, Pokédex description and recommended competitive builds.
-3. Star a Pokémon to save it as a favorite, and see all favorites on their own page.
-4. Move between the Home, Pokédex, Favorites and About pages with a navigation bar, and open any Pokémon directly from its own link.
+3. Save favorite Pokémon, and build as many teams of up to six Pokémon as you like, choosing each one's ability and four moves. Favorites and teams are saved in the browser.
+4. Move between the Home, Pokédex, Favorites, Team Builder and About pages with a navigation bar, and open any Pokémon directly from its own link.
 5. Show a clear "Loading…" message while data is loading, and a friendly error message if the data cannot be loaded.
 
 ## 5. Acceptance criteria
 - When I open the app, I see the homepage with the Pokémon of the day and a navigation bar, and when I click Pokédex, Favorites or About, I see that page and the address changes.
 - When I scroll to the end of the Pokédex list, I see the next 50 Pokémon load on their own (until #649), and when I type "pika" or "25" in the search bar or pick a type like Fire, I see only the matching Pokémon, even ones not loaded yet.
 - When I click a Pokémon, or open a link like /pokedex/6, I see its details, including its abilities (for example Charizard: Blaze, and Solar Power marked as hidden), what it is weak to (Rock ×4) and its recommended builds, or a short message if it has none.
-- When I click the star on a Pokémon, I see it on the Favorites page, and it is still there after I close and reopen the browser.
+- When I star a Pokémon or build a team (six Pokémon, each with an ability and moves), I see it on the Favorites or Team Builder page, and it is still there after I close and reopen the browser.
 - When the data cannot be loaded (for example, no internet), I see a friendly error message instead of a blank screen.
 
 ## 6. Not now (ideas for later)
 - Compare two Pokémon side by side.
 - Filter the list by generation.
 - Add Pokémon from Generation 6 and later.
-- Sync favorites across devices (this would need user accounts).
+- Sync favorites and teams across devices (this would need user accounts).
+- Fill a team member from one of its recommended builds with one click, and choose items, natures and EVs.
 - Builds from other generations, or let me pick the generation.
 
 ## 7. Data
@@ -51,3 +53,5 @@ Sources: **PokéAPI** (https://pokeapi.co) for Pokémon data, and **Smogon's com
 | Recommended builds (loaded once, details only) | `https://data.pkmn.cc/sets/gen5.json` | Keyed by Pokémon name (for example "Pikachu"), then format (for example "nu" or "vgc2012"), then set name. Each set has `moves` (a slot can list alternatives), `item`, `ability`, `nature` and `evs`. Matched to PokéAPI by the species name, comparing only letters and numbers ("Mr. Mime" = "mr-mime"). Covers 589 of our 649 Pokémon |
 | Favorites (saved in this browser, not an API) | Browser storage (localStorage), key `favorites` | A list of the favorite Pokémon's numbers, for example [6, 25, 133] |
 | 3D effect setting (saved in this browser, not an API) | Browser storage (localStorage), key `tilt3d` | `true` or `false`; on when nothing is saved yet |
+| Moves a Pokémon can learn (Team Builder) | `https://pokeapi.co/api/v2/pokemon/{id}` | `moves` → `move.name`, keeping only moves whose `version_group_details` include `black-white` or `black-2-white-2` (Generation 5), plus `abilities` → `ability.name` and `is_hidden` |
+| Teams (saved in this browser, not an API) | Browser storage (localStorage), key `teams` | A list of teams, each with an `id`, a `name` and up to six `members`; each member has a `pokemonId`, an `ability` and four `moves` (an empty move slot is `""`) |

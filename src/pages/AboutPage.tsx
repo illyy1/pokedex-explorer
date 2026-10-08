@@ -1,7 +1,7 @@
+import { spriteUrl } from '../names'
 import { typeStyle } from '../pokemonTypes'
 
-// Small sprites for the Trainer card's picture, straight from PokéAPI's sprite collection.
-const SPRITE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon'
+// The Pokémon whose sprites make up the Trainer card's picture.
 const COLLAGE = [1, 4, 7, 25, 133, 150, 152, 155, 158]
 
 // The About page is a hand of three cards: a Trainer card about the app,
@@ -25,7 +25,7 @@ function AboutPage() {
             </header>
             <div className="card-art trainer-art" aria-hidden="true">
               {COLLAGE.map((id) => (
-                <img key={id} src={`${SPRITE_URL}/${id}.png`} alt="" width="96" height="96" />
+                <img key={id} src={spriteUrl(id)} alt="" width="96" height="96" />
               ))}
             </div>
             <div className="card-rules">

@@ -291,3 +291,15 @@ update the docs, add the option to toggle the 3d effect on and off
 ```text
 please add a mark for legendary pokemon, and give their cards a sparkly effect like the image attached
 ```
+
+## 46. Team Builder
+
+```text
+please add to the routing a "team builder" option, this allows you to pick 6 pokemon, choose their abilities and their moves, you can build as many teams as you want and each one is saved to local storage just like the favorites tab
+```
+
+## 47. Update the docs (sent while the Team Builder was being built)
+
+```text
+update the docs  files
+```

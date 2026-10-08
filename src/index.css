@@ -1275,6 +1275,166 @@ body {
   }
 }
 
+/* Team Builder: the list of teams */
+
+.teams {
+  padding-bottom: 40px;
+}
+
+.teams-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-bottom: 24px;
+
+  .intro {
+    max-width: 60ch;
+    margin: 0;
+  }
+}
+
+.team-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Each team is a yellow-framed "deck box" with its six slots. */
+.team-box {
+  position: relative;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--card-frame);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.18),
+    0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.page a.team-box-link {
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: linear-gradient(160deg, #fffdf3, #f1e9cf);
+  color: var(--card-ink);
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+}
+
+.team-box-name {
+  padding-right: 70px;
+  font-size: 22px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.team-box-count {
+  color: #6b6252;
+  font-size: 13px;
+}
+
+.team-box-slots {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+
+  img,
+  .empty-slot {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 55%, #e7dfc6 100%);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+    image-rendering: pixelated;
+  }
+}
+
+/* An empty slot looks like an empty Poké Ball outline. */
+.empty-slot {
+  display: block;
+  background:
+    linear-gradient(transparent 46%, rgba(0, 0, 0, 0.15) 46% 54%, transparent 54%),
+    radial-gradient(circle, #fff 55%, #e7dfc6 100%) !important;
+}
+
+.team-delete {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 3px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--card-red);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--card-red);
+    color: #fff;
+  }
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Team Builder: editing one team */
+
+.team-editor {
+  padding-bottom: 40px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.team-name {
+  display: grid;
+  gap: 4px;
+  max-width: 420px;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+
+  input {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text-h);
+    font: inherit;
+    font-size: 26px;
+    font-weight: 700;
+
+    &:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 1px;
+    }
+  }
+}
+
 /* Phones and narrow windows: stack everything. */
 
 @media (max-width: 720px) {
