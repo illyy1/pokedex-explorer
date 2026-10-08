@@ -303,3 +303,15 @@ please add to the routing a "team builder" option, this allows you to pick 6 pok
 ```text
 update the docs  files
 ```
+
+## 48. Fix the picker's scrolling
+
+```text
+fix the infinite scroll in the team builder route
+```
+
+## 49. Update the docs and push (sent while the fix was being tested)
+
+```text
+update the docs and push
+```

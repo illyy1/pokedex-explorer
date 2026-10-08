@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 26 tasks are done. Tasks 9–26 were added after the first plan.
+Status: all 27 tasks are done. Tasks 9–27 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -133,3 +133,8 @@ Done when: adding Pikachu, Charizard and Mewtwo shows their cards (Mewtwo sparkl
 On each Pokémon in a team, add an "Ability" dropdown with its abilities (the hidden one marked) and four "Move" dropdowns with the moves it can learn in Generation 5 (from the `moves` in its PokéAPI data, kept when they include the `black-white` or `black-2-white-2` version groups), sorted by name. A move already chosen in another slot of the same Pokémon is not offered again. A newly added Pokémon starts with its first normal ability and no moves. Each Pokémon's data is requested once and reused.
 
 Done when: Pikachu offers Static and Lightning Rod (hidden), its move lists include Thunderbolt but not moves from later games, choosing Thunderbolt in one slot removes it from the other three, and the chosen ability and moves are still there after reloading the page.
+
+## Task 27: Fix scrolling in the Team Builder's Pokémon picker ✅
+The "Add Pokémon" picker only listed the first 40 Pokémon, so without a search you could not reach the rest. Give it infinite scroll like the Pokédex list: an invisible marker after the last choice, watched by an IntersectionObserver inside the picker's scrolling list, shows 40 more each time it comes into view, until every match is shown. A new search starts again at the top. Sprites still only download as they come into view.
+
+Done when: with Pikachu in the team, scrolling the picker to the end shows all 648 other Pokémon with no duplicates, ending at No. 649, and searching "1" first shows 40 and then all 111 matches as you scroll.

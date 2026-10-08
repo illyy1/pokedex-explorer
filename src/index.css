@@ -1670,6 +1670,11 @@ body {
   }
 }
 
+/* The invisible marker that loads more choices when it scrolls into view. */
+.picker-end {
+  height: 1px;
+}
+
 .picker-name {
   font-weight: 700;
 }
