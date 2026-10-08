@@ -381,3 +381,9 @@ nevermind lets keep it as is for now, add it to tasks for later
 ```text
 could we make the website public through a github static website
 ```
+
+## 61. Update the README and push
+
+```text
+update the readme and push
+```
