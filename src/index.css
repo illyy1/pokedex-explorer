@@ -1441,6 +1441,38 @@ body {
   font-size: 14px;
 }
 
+/* Export to Showdown: the button and what to do next. */
+.showdown-export {
+  margin-bottom: 20px;
+}
+
+.showdown-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.showdown-help {
+  max-width: 640px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+
+  p {
+    margin: 0 0 6px;
+  }
+  textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-h);
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 13px;
+    resize: vertical;
+  }
+}
+
 .team-slots {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));

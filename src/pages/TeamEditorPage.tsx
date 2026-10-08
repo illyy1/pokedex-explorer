@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import PokemonPicker from '../components/PokemonPicker'
+import ShowdownExport from '../components/ShowdownExport'
 import TeamSlot from '../components/TeamSlot'
 import { MOVES_PER_POKEMON, TEAM_SIZE, useTeams, type TeamMember } from '../teams'
 
@@ -68,6 +69,7 @@ function TeamEditorPage() {
       <p className="team-count">
         {team.members.length}/{TEAM_SIZE} Pokémon · saved automatically in this browser
       </p>
+      <ShowdownExport team={team} />
 
       <ul className="team-slots">
         {team.members.map((member, index) => (

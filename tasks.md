@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 27 tasks are done. Tasks 9–27 were added after the first plan.
+Status: all 28 tasks are done. Tasks 9–28 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -138,3 +138,8 @@ Done when: Pikachu offers Static and Lightning Rod (hidden), its move lists incl
 The "Add Pokémon" picker only listed the first 40 Pokémon, so without a search you could not reach the rest. Give it infinite scroll like the Pokédex list: an invisible marker after the last choice, watched by an IntersectionObserver inside the picker's scrolling list, shows 40 more each time it comes into view, until every match is shown. A new search starts again at the top. Sprites still only download as they come into view.
 
 Done when: with Pikachu in the team, scrolling the picker to the end shows all 648 other Pokémon with no duplicates, ending at No. 649, and searching "1" first shows 40 and then all 111 matches as you scroll.
+
+## Task 28: Export a team to Pokémon Showdown ✅
+Add an "Export to Showdown" button to the team editor. Showdown can't be opened with a team already in it, so the button copies the team in Showdown's text format (name, `Ability:` line, `- Move` lines) and opens Showdown's team builder in a new tab, then shows how to paste it: New Team → Import from text → Save. PokéAPI names are turned into Showdown's spelling in `src/showdown.ts` ("mr-mime" → "Mr. Mime", "landorus-incarnate" → "Landorus", "u-turn" → "U-turn"). If the browser won't allow copying, the text appears in a box to copy by hand. The button is off while the team is empty. Items, natures and EVs aren't part of our teams, so they are added in Showdown.
+
+Done when: a team of Pikachu (Lightning Rod, Thunderbolt, Volt Switch), Mr. Mime and Landorus (U-turn, Earthquake) copies as "Pikachu / Ability: Lightning Rod / - Thunderbolt / - Volt Switch", "Mr. Mime / Ability: Soundproof" and "Landorus / Ability: Sand Force / - U-turn / - Earthquake" and opens play.pokemonshowdown.com/teambuilder; every Generation 1–5 Pokémon, move and ability name we write matches a name in Showdown's own data; and when copying is refused, the same text is shown in a box.

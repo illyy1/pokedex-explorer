@@ -315,3 +315,21 @@ fix the infinite scroll in the team builder route
 ```text
 update the docs and push
 ```
+
+## 50. Can a team go to Pokémon Showdown?
+
+```text
+is it possible to add a button to the team builder that allows you to extract the team you built into the pokemon showdown website??
+```
+
+## 51. A direct link to Showdown?
+
+```text
+could we do a direct link that automatically opens pokemon showdown with the team already built according to the specifications provided or is that not possible
+```
+
+## 52. Export to Showdown
+
+```text
+do option 1 and update the docs
+```
