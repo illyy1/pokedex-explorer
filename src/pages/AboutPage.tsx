@@ -4,11 +4,28 @@ import { typeStyle } from '../pokemonTypes'
 // The Pokémon whose sprites make up the Trainer card's picture.
 const COLLAGE = [1, 4, 7, 25, 133, 150, 152, 155, 158]
 
+// Pokémon peeking in from the left and right edges of the screen, one or
+// two from each generation. The left ones are flipped to face the cards.
+const LEFT_EDGE = [6, 94, 197, 448, 609]
+const RIGHT_EDGE = [9, 149, 282, 445, 571]
+
 // The About page is a hand of three cards: a Trainer card about the app,
 // and an Energy card for each place the data comes from.
 function AboutPage() {
   return (
     <div className="page about">
+      {/* Decoration only, so screen readers skip it. */}
+      <div className="edge-sprites left" aria-hidden="true">
+        {LEFT_EDGE.map((id) => (
+          <img key={id} src={spriteUrl(id)} alt="" width="96" height="96" />
+        ))}
+      </div>
+      <div className="edge-sprites right" aria-hidden="true">
+        {RIGHT_EDGE.map((id) => (
+          <img key={id} src={spriteUrl(id)} alt="" width="96" height="96" />
+        ))}
+      </div>
+
       <header className="about-intro">
         <h1>About</h1>
         <p>Three cards tell you everything about this app.</p>
@@ -30,9 +47,10 @@ function AboutPage() {
             </div>
             <div className="card-rules">
               <p>
-                Browse and search all 649 Pokémon from Generations 1–5 by name, number or type.
-                See each one's stats, abilities, weaknesses and recommended builds, and save your
-                favorites.
+                Browse and search all 649 Pokémon from Generations 1–5 by name, number or type,
+                and see each one's stats, abilities, weaknesses and recommended builds. Star your
+                favorites, build teams of six with items, EVs and moves (or a Smogon build in one
+                click), and export them to Pokémon Showdown.
               </p>
               <p>
                 Made by{' '}
@@ -92,15 +110,15 @@ function AboutPage() {
             <div className="energy-art" aria-hidden="true">
               <span className="energy big" />
             </div>
-            <p className="card-strip">Provides: competitive builds</p>
+            <p className="card-strip">Provides: competitive builds and items</p>
             <div className="card-rules">
               <p>
-                The recommended Generation 5 builds are written by the Smogon community and
-                downloaded from the{' '}
+                The recommended Generation 5 builds, and the items in the Team Builder, are
+                written by the Smogon community and downloaded from the{' '}
                 <a href="https://data.pkmn.cc" target="_blank" rel="noreferrer">
                   pkmn project
                 </a>
-                .
+                . Pick one to fill in a team member in one click.
               </p>
               <a className="card-link" href="https://www.smogon.com" target="_blank" rel="noreferrer">
                 smogon.com
@@ -118,8 +136,8 @@ function AboutPage() {
       <p className="fine-print">
         Fan project, not affiliated with or endorsed by Nintendo, Game Freak, Creatures or The
         Pokémon Company. Pokémon and Pokémon character names are trademarks of their respective
-        owners. Both data sources are free and need no account, and your favorites are saved only
-        in your browser.
+        owners. Both data sources are free and need no account, and your favorites and teams are
+        saved only in your browser.
       </p>
     </div>
   )

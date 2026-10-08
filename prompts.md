@@ -339,3 +339,9 @@ do option 1 and update the docs
 ```text
 add the option to add items to the team builder and edit EVs, also add the option to just choose a completed smogon build from the ones we imported
 ```
+
+## 54. Update the About page with sprites at the edges
+
+```text
+update the about page, add pokemon sprites on the edges of the screen to spice up the design and update the docs
+```

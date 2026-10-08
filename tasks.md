@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 29 tasks are done. Tasks 9–29 were added after the first plan.
+Status: all 30 tasks are done. Tasks 9–30 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -154,3 +154,8 @@ Give each team member an item, a nature and EVs, and a quick way to use a Smogon
 - **Export to Showdown:** now writes "@ Item", `EVs:` and "Nature" lines.
 
 Done when: Pikachu's first build (NU Substitute) sets Light Ball, Lightning Rod, Timid, 4 Def / 252 SpA / 252 Spe and Substitute, Thunderbolt, Hidden Power Ice, Encore; typing 300 SpA gives 252, and with 504 used, 100 HP gives 6; changes are still there after reloading; an old saved team still opens; every one of the 2,251 builds for our Pokémon uses moves, abilities and items that PokéAPI and Showdown both know; and the export shows "Pikachu @ Leftovers", "EVs: 6 HP / 252 SpA / 252 Spe" and "Modest Nature".
+
+## Task 30: Update the About page and add sprites at the screen edges ✅
+Bring the About cards up to date: the Trainer card mentions the Team Builder (items, EVs, moves, Smogon builds) and the Showdown export, the Smogon card says it also provides the Team Builder's builds and items, and the fine print says favorites and teams are saved only in the browser. For decoration, add a column of five sprites at each edge of the screen (Charizard, Gengar, Umbreon, Lucario, Chandelure on the left, turned to face the cards; Blastoise, Dragonite, Gardevoir, Garchomp, Zoroark on the right). They stay in place while scrolling, sit behind the page so they never cover a link, zig-zag in and out, bob gently (not for people who turn off animations), are hidden from screen readers, and only show on screens at least 1000 pixels wide. Also fix the tilted third card sticking out 3 pixels at 1000 pixels wide.
+
+Done when: at 1280 and 1600 pixels wide all ten sprites show at the edges and no link is covered, at 1000 pixels wide nothing scrolls sideways, at 375 pixels wide the sprites are hidden, and the cards' text describes the Team Builder and the Showdown export.
