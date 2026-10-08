@@ -279,3 +279,9 @@ change the design in the about section, it looks generic and boring
 ```text
 i would like the pokemon card in the pokedex section to act as 3d cards that react to your mouse
 ```
+
+## 44. Toggle the 3D effect and update the docs
+
+```text
+update the docs, add the option to toggle the 3d effect on and off
+```

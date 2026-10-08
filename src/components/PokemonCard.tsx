@@ -46,10 +46,10 @@ function MatchupCell({ label, matchups }: { label: string; matchups: Matchup[] }
 }
 
 // The details of one Pokémon, laid out like an original Pokémon trading card.
-function PokemonCard({ info }: { info: PokemonInfo }) {
+function PokemonCard({ info, tilt3d = true }: { info: PokemonInfo; tilt3d?: boolean }) {
   const hp = info.stats.find((s) => s.name === 'hp')?.value
   const otherStats = info.stats.filter((s) => s.name !== 'hp')
-  const tiltRef = useTilt<HTMLDivElement>()
+  const tiltRef = useTilt<HTMLDivElement>(tilt3d)
 
   return (
     // The wrapper follows the mouse; the card inside tilts in 3D.

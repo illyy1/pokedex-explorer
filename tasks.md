@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 19 tasks are done. Tasks 9–19 were added after the first plan.
+Status: all 22 tasks are done. Tasks 9–22 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -98,3 +98,18 @@ Done when: scrolling to the end of the list loads the next 50 Pokémon without c
 Restyle the app after the original Pokémon trading cards (Base Set era), without changing what it does. Use Gill Sans, the font on the cards, with Cabin from Google Fonts as a fallback. Show the details as a card: a yellow frame, a face in the color of the Pokémon's first type, "Basic Pokémon" or "Evolves from …" at the top, the name with red HP and energy symbols, the artwork in a gold frame, a gold strip with the species, length and weight, abilities written like "Pokémon Power", stats written like attacks (energy dots, name, big number), a weakness / resistance / immune row and a flavor text box. Make the list rows look like card headers and the Pokémon of the day a small card. Keep light and dark mode, and keep the layout working on a phone.
 
 Done when: the Pokémon details look like a trading card, the app looks consistent in both light and dark mode, and on a 375-pixel-wide screen the list and card stack with no sideways scrolling.
+
+## Task 20: Redesign the About page as a hand of cards ✅
+Replace the plain text boxes with three trading cards fanned out like a hand: a silver Trainer card about the app and who made it (with a grid of Pokémon sprites as its picture), and an Energy card for each data source (PokéAPI and Smogon) with a big energy symbol and a link. Hovering or tabbing into a card lifts it out of the hand. Turn the disclaimer into small print under the cards. On narrow screens, stack the cards.
+
+Done when: the About page shows the three cards fanned out with all text readable, hovering a card lifts it, all links work, and on a 375-pixel-wide screen the cards stack with no sideways scrolling.
+
+## Task 21: Make the Pokédex card tilt in 3D with the mouse ✅
+Wrap the details card in an element that follows the mouse and tilts the card toward the pointer (up to 14° left and right, 8° up and down), with a glare and a holo foil sheen over the picture that follow the pointer and a shadow that shifts. When the mouse leaves, the card eases back flat. Pass the pointer position to CSS as variables, updated at most once per frame. Leave the card still on touch screens and for people who turned off animations.
+
+Done when: moving the mouse to a corner of the card tilts it toward that corner with the shine following, moving away lays it flat again, and the "Add to favorites" button stays clickable and in front of the card.
+
+## Task 22: Add a switch to turn the 3D effect on and off ✅
+Add a "3D effect: On / Off" button next to "Add to favorites". Turning it off keeps the card flat. Save the choice in localStorage (key `tilt3d`) so it stays after a reload; it is on by default. Hide the button on touch screens and for people who turned off animations, where the effect never runs.
+
+Done when: the button shows "On" by default and the card tilts; clicking it shows "Off" and the card stays flat; the choice stays the same after reloading the page and when opening another Pokémon; and clicking it again turns the tilt back on.

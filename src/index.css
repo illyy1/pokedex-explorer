@@ -705,10 +705,13 @@ body {
   position: relative;
   z-index: 1;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 8px;
 }
 
-.favorite-button {
+.favorite-button,
+.toggle-3d {
   padding: 6px 16px;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -1059,6 +1062,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .card-hand .poke-card {
     transition: none;
+  }
+}
+
+/* The 3D effect only runs with a mouse and normal motion, so hide its switch otherwise. */
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .toggle-3d {
+    display: none;
   }
 }
 

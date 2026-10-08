@@ -11,13 +11,14 @@ const MAX_SHADOW_SHIFT = 18
 // wrapper around the card: the wrapper does not move, so measuring it
 // stays steady while the card inside turns. The position is passed to
 // CSS as variables (--rx, --ry, --mx, --my, --sx, --sy), so React does
-// not need to re-render on every mouse move.
-export function useTilt<T extends HTMLElement>() {
+// not need to re-render on every mouse move. When `enabled` is false
+// (the 3D effect is turned off), the card stays flat.
+export function useTilt<T extends HTMLElement>(enabled = true) {
   const ref = useRef<T>(null)
 
   useEffect(() => {
     const wrapper = ref.current
-    if (!wrapper) return
+    if (!wrapper || !enabled) return
     // People who asked their system for less motion get a still card.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -56,11 +57,12 @@ export function useTilt<T extends HTMLElement>() {
     wrapper.addEventListener('pointermove', handleMove)
     wrapper.addEventListener('pointerleave', handleLeave)
     return () => {
-      cancelAnimationFrame(frame)
       wrapper.removeEventListener('pointermove', handleMove)
       wrapper.removeEventListener('pointerleave', handleLeave)
+      // If the effect is turned off mid-tilt, lay the card flat again.
+      handleLeave()
     }
-  }, [])
+  }, [enabled])
 
   return ref
 }

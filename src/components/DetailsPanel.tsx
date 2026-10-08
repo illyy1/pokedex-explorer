@@ -1,5 +1,6 @@
 import { typeStyle } from '../pokemonTypes'
 import type { PokemonInfo, PokemonListItem } from '../types'
+import { useStoredToggle } from '../useStoredToggle'
 import BuildsSection from './BuildsSection'
 import FavoriteButton from './FavoriteButton'
 import PokemonCard from './PokemonCard'
@@ -11,6 +12,9 @@ type Props = {
 }
 
 function DetailsPanel({ selected, info, failed }: Props) {
+  // The 3D tilt is on unless the user turned it off; the choice is remembered.
+  const [tilt3d, toggleTilt3d] = useStoredToggle('tilt3d', true)
+
   if (!selected) {
     return <p className="hint">Pick a Pokémon to see its card.</p>
   }
@@ -48,8 +52,17 @@ function DetailsPanel({ selected, info, failed }: Props) {
     <div className="details">
       <div className="details-toolbar">
         <FavoriteButton id={info.id} name={info.name} />
+        <button
+          type="button"
+          className={tilt3d ? 'toggle-3d on' : 'toggle-3d'}
+          aria-pressed={tilt3d}
+          title="Make the card tilt toward your mouse"
+          onClick={toggleTilt3d}
+        >
+          3D effect: {tilt3d ? 'On' : 'Off'}
+        </button>
       </div>
-      <PokemonCard info={info} />
+      <PokemonCard info={info} tilt3d={tilt3d} />
       <BuildsSection builds={info.builds} />
     </div>
   )
