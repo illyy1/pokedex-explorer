@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { fetchListItem, LAST_POKEMON } from '../api'
 import EnergySymbol from '../components/EnergySymbol'
+import RarityMark from '../components/RarityMark'
+import Sparkles from '../components/Sparkles'
+import { rarityOf } from '../legendary'
 import { usePokemonData } from '../pokemonData'
 import { pokemonOfTheDay } from '../pokemonOfTheDay'
 import { typeStyle } from '../pokemonTypes'
@@ -12,6 +15,7 @@ function HomePage() {
   const [featuredId] = useState(() => pokemonOfTheDay())
   const [failed, setFailed] = useState(false)
   const featured = items[featuredId]
+  const rarity = rarityOf(featuredId)
   // The list may have loaded this Pokémon already, but without its artwork.
   const hasArtwork = featured?.artwork !== undefined
 
@@ -53,14 +57,17 @@ function HomePage() {
         {hasArtwork ? (
           <Link
             to={`/pokedex/${featured.id}`}
-            className="poke-card featured-card"
+            className={rarity ? 'poke-card featured-card holo-rare' : 'poke-card featured-card'}
             style={typeStyle(featured.types?.[0])}
           >
             <span className="card-face">
+              {rarity && <Sparkles />}
               <span className="card-header">
                 <span className="card-stage">Pokémon of the day</span>
                 <span className="card-title">
-                  <span className="card-name">{featured.name.replace(/-/g, ' ')}</span>
+                  <span className="card-name">
+                    {featured.name.replace(/-/g, ' ')} {rarity && <RarityMark rarity={rarity} />}
+                  </span>
                   {featured.hp !== undefined && (
                     <span className="card-hp">
                       {featured.hp} <small>HP</small>

@@ -285,3 +285,9 @@ i would like the pokemon card in the pokedex section to act as 3d cards that rea
 ```text
 update the docs, add the option to toggle the 3d effect on and off
 ```
+
+## 45. Legendary mark and sparkly cards (sent with an image of rainbow rare Pokémon cards as a reference)
+
+```text
+please add a mark for legendary pokemon, and give their cards a sparkly effect like the image attached
+```

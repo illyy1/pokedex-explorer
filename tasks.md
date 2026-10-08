@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 22 tasks are done. Tasks 9–22 were added after the first plan.
+Status: all 23 tasks are done. Tasks 9–23 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -113,3 +113,8 @@ Done when: moving the mouse to a corner of the card tilts it toward that corner 
 Add a "3D effect: On / Off" button next to "Add to favorites". Turning it off keeps the card flat. Save the choice in localStorage (key `tilt3d`) so it stays after a reload; it is on by default. Hide the button on touch screens and for people who turned off animations, where the effect never runs.
 
 Done when: the button shows "On" by default and the card tilts; clicking it shows "Off" and the card stays flat; the choice stays the same after reloading the page and when opening another Pokémon; and clicking it again turns the tilt back on.
+
+## Task 23: Mark legendary Pokémon and give them sparkly cards ✅
+List the legendary and mythical Pokémon up to #649 from PokéAPI's is_legendary and is_mythical flags (35 legendary, 13 mythical). Show a rainbow "✦ Legendary" or "✦ Mythical" mark next to the name on the card and in the list. Give their cards a "rainbow rare" look: a shimmering rainbow foil frame with diagonal stripes, glitter over the card and the picture, a rainbow foil on the picture and twinkling four-pointed sparkles. Give their list rows the rainbow frame and glitter too. With animations turned off, keep the sparkle but hold it still.
+
+Done when: Mewtwo, Articuno, Zapdos and Moltres show "✦ Legendary" and Mew shows "✦ Mythical" in the list and on the card, their cards sparkle, Charizard keeps a normal card, the 3D tilt still works, and on a 375-pixel-wide screen legendary rows fit with no sideways scrolling.

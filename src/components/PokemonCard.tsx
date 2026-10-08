@@ -1,10 +1,13 @@
-import { formatMultiplier } from '../matchups'
 import { LAST_POKEMON } from '../api'
+import { rarityOf } from '../legendary'
+import { formatMultiplier } from '../matchups'
 import { typeStyle } from '../pokemonTypes'
 import type { Matchup, PokemonInfo } from '../types'
 import { formatLength, formatWeight } from '../units'
 import { useTilt } from '../useTilt'
 import EnergySymbol from './EnergySymbol'
+import RarityMark from './RarityMark'
+import Sparkles from './Sparkles'
 import TypeBadge from './TypeBadge'
 
 const STAT_LABELS: Record<string, string> = {
@@ -50,18 +53,27 @@ function PokemonCard({ info, tilt3d = true }: { info: PokemonInfo; tilt3d?: bool
   const hp = info.stats.find((s) => s.name === 'hp')?.value
   const otherStats = info.stats.filter((s) => s.name !== 'hp')
   const tiltRef = useTilt<HTMLDivElement>(tilt3d)
+  // Legendary and mythical Pokémon get a sparkly rainbow card.
+  const rarity = rarityOf(info.id)
 
   return (
     // The wrapper follows the mouse; the card inside tilts in 3D.
     <div ref={tiltRef} className="tilt-wrapper">
-      <article className="poke-card" style={typeStyle(info.types[0])} aria-label={`${info.name} card`}>
+      <article
+        className={rarity ? 'poke-card holo-rare' : 'poke-card'}
+        style={typeStyle(info.types[0])}
+        aria-label={`${info.name} card`}
+      >
         <div className="card-face">
+          {rarity && <Sparkles />}
           <header className="card-header">
             <span className="card-stage">
               {info.evolvesFrom ? `Evolves from ${displayName(info.evolvesFrom)}` : 'Basic Pokémon'}
             </span>
             <div className="card-title">
-              <h2 className="card-name">{displayName(info.name)}</h2>
+              <h2 className="card-name">
+                {displayName(info.name)} {rarity && <RarityMark rarity={rarity} />}
+              </h2>
               {hp !== undefined && (
                 <span className="card-hp">
                   {hp} <small>HP</small>

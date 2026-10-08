@@ -195,6 +195,208 @@ body {
   font-family: var(--card-font);
 }
 
+/* Legendary and mythical Pokémon: a sparkly rainbow card, like a rainbow rare. */
+
+:root {
+  --holo-rainbow: linear-gradient(
+    125deg,
+    #ffb3d9 0%,
+    #ffe08a 17%,
+    #b8f5d0 34%,
+    #9fdcff 51%,
+    #cdb5ff 68%,
+    #ffb3d9 85%,
+    #ffe08a 100%
+  );
+}
+
+/* The rainbow frame, which slowly shimmers. */
+.poke-card.holo-rare,
+.row.holo-rare {
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.45) 0 5px, transparent 5px 16px),
+    var(--holo-rainbow);
+  background-size:
+    100% 100%,
+    300% 300%;
+  animation: holo-shift 6s ease-in-out infinite alternate;
+}
+
+@keyframes holo-shift {
+  from {
+    background-position:
+      0 0,
+      0% 50%;
+  }
+  to {
+    background-position:
+      0 0,
+      100% 50%;
+  }
+}
+
+/* Glitter dots and a rainbow wash over the type color. */
+.holo-rare .card-face {
+  position: relative;
+  background:
+    radial-gradient(circle, #fff 0 1.6px, transparent 2.2px) 0 0 / 14px 14px,
+    radial-gradient(circle, rgba(255, 255, 255, 0.8) 0 1.1px, transparent 1.6px) 7px 7px / 14px 14px,
+    linear-gradient(
+      125deg,
+      rgba(255, 170, 220, 0.5),
+      rgba(255, 240, 150, 0.5),
+      rgba(170, 255, 210, 0.5),
+      rgba(150, 220, 255, 0.5),
+      rgba(210, 180, 255, 0.5)
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--type) 20%, #fff),
+      color-mix(in srgb, var(--type) 45%, #fff)
+    );
+}
+
+/* A rainbow foil over the picture that is always on, not only while tilting. */
+.poke-card.holo-rare .card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--holo-rainbow);
+  background-size: 300% 300%;
+  mix-blend-mode: color-dodge;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: holo-shift 6s ease-in-out infinite alternate;
+}
+
+.holo-rare .card-art {
+  position: relative;
+  border-color: #fff5fb #c7b4ff #9fd3ff #fff2b8;
+  background:
+    radial-gradient(circle, #fff 0 1.5px, transparent 2px) 0 0 / 12px 12px,
+    radial-gradient(circle at 50% 40%, #fff 0%, color-mix(in srgb, var(--type) 30%, #fff) 70%),
+    var(--holo-rainbow);
+}
+
+.holo-rare .card-strip {
+  background: var(--holo-rainbow);
+}
+
+/* Twinkling four-pointed stars (see Sparkles.tsx). */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  /* The glow is on this element, the star shape on ::before, so the shape doesn't clip the glow. */
+  /* A coloured glow keeps white stars visible on pale pictures. */
+  filter: drop-shadow(0 0 1px rgba(140, 90, 255, 0.9)) drop-shadow(0 0 4px rgba(255, 200, 90, 0.95))
+    drop-shadow(0 0 10px rgba(255, 120, 200, 0.6));
+  animation: twinkle 2.6s ease-in-out infinite;
+  animation-delay: var(--delay);
+  transform: scale(0);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    clip-path: polygon(50% 0, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0 50%, 44% 44%);
+  }
+  /* A soft round glow in the middle of the star. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 25%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, 0.6) 40%, transparent 70%);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+
+/* The "✦ Legendary" / "✦ Mythical" mark. */
+.rarity-mark {
+  display: inline-block;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--holo-rainbow);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  color: var(--card-ink);
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  text-transform: uppercase;
+  vertical-align: 4px;
+  white-space: nowrap;
+
+  &.small {
+    padding: 0 7px;
+    font-size: 10px;
+    vertical-align: 0;
+  }
+}
+
+/* Legendary rows in the list get the glitter too. */
+.row.holo-rare .row-main {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.5px) 0 0 / 12px 12px,
+    linear-gradient(
+      125deg,
+      rgba(255, 170, 220, 0.45),
+      rgba(255, 240, 150, 0.45),
+      rgba(170, 255, 210, 0.45),
+      rgba(150, 220, 255, 0.45)
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--type) 20%, #fff),
+      color-mix(in srgb, var(--type) 45%, #fff)
+    );
+}
+
+/* On phones a legendary row has less room, so its type names are left to the energy symbols. */
+@media (max-width: 480px) {
+  .row.holo-rare .row-types {
+    display: none;
+  }
+}
+
+/* With animations turned off, keep the sparkle but hold it still. */
+@media (prefers-reduced-motion: reduce) {
+  .poke-card.holo-rare,
+  .row.holo-rare,
+  .poke-card.holo-rare .card-art::after {
+    animation: none;
+  }
+  .sparkle {
+    animation: none;
+    opacity: 0.85;
+    transform: scale(0.8) rotate(45deg);
+  }
+}
+
 /* 3D tilt: the wrapper follows the mouse (see useTilt.ts) and sets
    --rx/--ry (rotation), --mx/--my (pointer position) and --sx/--sy (shadow). */
 
@@ -664,6 +866,7 @@ body {
 
   .number {
     opacity: 0.75;
+    white-space: nowrap;
   }
   .types {
     display: flex;
