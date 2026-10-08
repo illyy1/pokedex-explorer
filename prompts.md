@@ -411,3 +411,15 @@ push, ill check on my phone if the update works
 ```text
 im on samsung and the tilt effect doesnt work at all
 ```
+
+## 66. Push the fix (it was already pushed)
+
+```text
+push the fix
+```
+
+## 67. The fix works on the phone
+
+```text
+the fix works now on both samsung internet and chrome, thanks
+```
