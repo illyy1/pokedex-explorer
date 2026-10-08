@@ -375,3 +375,9 @@ would it make a mess to pull all pokemon gens now instead of up to gen 5
 ```text
 nevermind lets keep it as is for now, add it to tasks for later
 ```
+
+## 60. Publish on GitHub Pages
+
+```text
+could we make the website public through a github static website
+```

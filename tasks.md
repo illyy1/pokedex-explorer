@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 are done; task 32 is planned for later. Tasks 9–32 were added after the first plan.
+Status: tasks 1–31 and 33 are done; task 32 is planned for later. Tasks 9–33 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -174,3 +174,8 @@ Not started; kept for later. Show all 1025 Pokémon (Generations 1–9) instead 
 - Expect a mix of art styles: sprites from Generation 6 on are not pixel art.
 
 Done when: the Pokédex list scrolls to No. 1025 (Pecharunt), searching "1025" or "pecharunt" finds it, the card shows "1025/1025", Generation 6–9 legendaries have the mark and the sparkly card, and the Team Builder picker still ends at No. 649.
+
+## Task 33: Publish the app on GitHub Pages ✅
+Make the app public at https://illyy1.github.io/pokedex-explorer/. GitHub Pages serves it from a folder, so `vite.config.ts` builds with `base: '/pokedex-explorer/'` (the dev server stays at "/"), and `BrowserRouter` gets the same folder as its `basename`. GitHub Pages only knows the built files, so a link like /pokedex-explorer/pokedex/25 would be "not found"; the build copies `index.html` to `404.html`, so that page loads the app, which then shows the right page. A GitHub Actions workflow (`.github/workflows/deploy.yml`) lints, builds and publishes the site every time `main` is pushed, and Pages in the repository settings is set to deploy from GitHub Actions.
+
+Done when: the production build, served under /pokedex-explorer/ with the 404 fallback like GitHub Pages, opens the homepage; opening /pokedex/25, /about, /teams and a made-up address directly shows Pikachu, About, the Team Builder and "Page not found"; reloading a team's page keeps it; the navigation links include /pokedex-explorer; and after pushing, the workflow succeeds and the live site loads.

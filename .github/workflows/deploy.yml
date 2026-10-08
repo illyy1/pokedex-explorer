@@ -1,0 +1,50 @@
+# Builds the app and publishes it to GitHub Pages every time main is pushed.
+# The site: https://illyy1.github.io/pokedex-explorer/
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Also allows running it by hand from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time; a newer push replaces one that is waiting.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      # GitHub Pages only knows the files in dist, so opening a link like
+      # /pokedex-explorer/pokedex/25 directly would be "not found". Its 404
+      # page is a copy of the app, which then shows the right page itself.
+      - run: cp dist/index.html dist/404.html
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
