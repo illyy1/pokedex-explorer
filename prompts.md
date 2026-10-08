@@ -273,3 +273,9 @@ push
 ```text
 change the design in the about section, it looks generic and boring
 ```
+
+## 43. 3D cards
+
+```text
+i would like the pokemon card in the pokedex section to act as 3d cards that react to your mouse
+```

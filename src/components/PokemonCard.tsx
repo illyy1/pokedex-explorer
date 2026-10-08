@@ -3,6 +3,7 @@ import { LAST_POKEMON } from '../api'
 import { typeStyle } from '../pokemonTypes'
 import type { Matchup, PokemonInfo } from '../types'
 import { formatLength, formatWeight } from '../units'
+import { useTilt } from '../useTilt'
 import EnergySymbol from './EnergySymbol'
 import TypeBadge from './TypeBadge'
 
@@ -48,88 +49,92 @@ function MatchupCell({ label, matchups }: { label: string; matchups: Matchup[] }
 function PokemonCard({ info }: { info: PokemonInfo }) {
   const hp = info.stats.find((s) => s.name === 'hp')?.value
   const otherStats = info.stats.filter((s) => s.name !== 'hp')
+  const tiltRef = useTilt<HTMLDivElement>()
 
   return (
-    <article className="poke-card" style={typeStyle(info.types[0])} aria-label={`${info.name} card`}>
-      <div className="card-face">
-        <header className="card-header">
-          <span className="card-stage">
-            {info.evolvesFrom ? `Evolves from ${displayName(info.evolvesFrom)}` : 'Basic Pokémon'}
-          </span>
-          <div className="card-title">
-            <h2 className="card-name">{displayName(info.name)}</h2>
-            {hp !== undefined && (
-              <span className="card-hp">
-                {hp} <small>HP</small>
-              </span>
-            )}
-            {info.types.map((type) => (
-              <EnergySymbol key={type} type={type} />
-            ))}
-          </div>
-        </header>
-
-        <div className="card-art">
-          <img src={info.artwork} alt={info.name} width="300" height="300" />
-        </div>
-        <p className="card-strip">
-          {info.genus}. Length: {formatLength(info.heightDm)}, Weight: {formatWeight(info.weightHg)}
-        </p>
-
-        <div className="card-body">
-          <div className="card-types">
-            {info.types.map((type) => (
-              <TypeBadge key={type} type={type} />
-            ))}
-          </div>
-
-          {info.abilities.map((ability) => (
-            <div key={ability.name} className="card-power">
-              <p>
-                <span className="card-power-label">
-                  {ability.isHidden ? 'Hidden Ability:' : 'Pokémon Power:'}
-                </span>{' '}
-                <span className="card-power-name">{displayName(ability.name)}</span>
-              </p>
-              <p className="card-power-text">{ability.effect}</p>
-            </div>
-          ))}
-
-          <ul className="card-attacks" aria-label="Base stats">
-            {otherStats.map((stat) => (
-              <li key={stat.name} className="card-attack">
-                <span className="card-cost" aria-hidden="true">
-                  {Array.from({ length: statDots(stat.value) }, (_, i) => (
-                    <EnergySymbol key={i} size="small" />
-                  ))}
+    // The wrapper follows the mouse; the card inside tilts in 3D.
+    <div ref={tiltRef} className="tilt-wrapper">
+      <article className="poke-card" style={typeStyle(info.types[0])} aria-label={`${info.name} card`}>
+        <div className="card-face">
+          <header className="card-header">
+            <span className="card-stage">
+              {info.evolvesFrom ? `Evolves from ${displayName(info.evolvesFrom)}` : 'Basic Pokémon'}
+            </span>
+            <div className="card-title">
+              <h2 className="card-name">{displayName(info.name)}</h2>
+              {hp !== undefined && (
+                <span className="card-hp">
+                  {hp} <small>HP</small>
                 </span>
-                <span className="card-attack-name">{STAT_LABELS[stat.name] ?? stat.name}</span>
-                <span className="card-attack-damage">{stat.value}</span>
-              </li>
+              )}
+              {info.types.map((type) => (
+                <EnergySymbol key={type} type={type} />
+              ))}
+            </div>
+          </header>
+
+          <div className="card-art">
+            <img src={info.artwork} alt={info.name} width="300" height="300" />
+          </div>
+          <p className="card-strip">
+            {info.genus}. Length: {formatLength(info.heightDm)}, Weight: {formatWeight(info.weightHg)}
+          </p>
+
+          <div className="card-body">
+            <div className="card-types">
+              {info.types.map((type) => (
+                <TypeBadge key={type} type={type} />
+              ))}
+            </div>
+
+            {info.abilities.map((ability) => (
+              <div key={ability.name} className="card-power">
+                <p>
+                  <span className="card-power-label">
+                    {ability.isHidden ? 'Hidden Ability:' : 'Pokémon Power:'}
+                  </span>{' '}
+                  <span className="card-power-name">{displayName(ability.name)}</span>
+                </p>
+                <p className="card-power-text">{ability.effect}</p>
+              </div>
             ))}
-          </ul>
-        </div>
 
-        <div className="card-matchups">
-          <MatchupCell label="weakness" matchups={info.matchups.weak} />
-          <MatchupCell label="resistance" matchups={info.matchups.resist} />
-          <MatchupCell
-            label="immune"
-            matchups={info.matchups.immune.map((type) => ({ type, multiplier: 0 }))}
-          />
-        </div>
+            <ul className="card-attacks" aria-label="Base stats">
+              {otherStats.map((stat) => (
+                <li key={stat.name} className="card-attack">
+                  <span className="card-cost" aria-hidden="true">
+                    {Array.from({ length: statDots(stat.value) }, (_, i) => (
+                      <EnergySymbol key={i} size="small" />
+                    ))}
+                  </span>
+                  <span className="card-attack-name">{STAT_LABELS[stat.name] ?? stat.name}</span>
+                  <span className="card-attack-damage">{stat.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <p className="card-flavor">
-          {info.description} <span className="card-flavor-number">No. {info.id}</span>
-        </p>
-        <footer className="card-footer">
-          <span>Data: PokéAPI</span>
-          <span>
-            {info.id}/{LAST_POKEMON}
-          </span>
-        </footer>
-      </div>
-    </article>
+          <div className="card-matchups">
+            <MatchupCell label="weakness" matchups={info.matchups.weak} />
+            <MatchupCell label="resistance" matchups={info.matchups.resist} />
+            <MatchupCell
+              label="immune"
+              matchups={info.matchups.immune.map((type) => ({ type, multiplier: 0 }))}
+            />
+          </div>
+
+          <p className="card-flavor">
+            {info.description} <span className="card-flavor-number">No. {info.id}</span>
+          </p>
+          <footer className="card-footer">
+            <span>Data: PokéAPI</span>
+            <span>
+              {info.id}/{LAST_POKEMON}
+            </span>
+          </footer>
+        </div>
+      </article>
+    </div>
   )
 }
 
