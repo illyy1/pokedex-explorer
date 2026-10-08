@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { canReadMotion, isTouchScreen, useMotionAccess } from './motionAccess'
+import { canReadMotion, useMotionAccess } from './motionAccess'
 
 // How far the card can turn, in degrees. The card is tall, so it tips
 // forward and back less than it turns left and right.
@@ -14,6 +14,8 @@ const PHONE_TILT_RANGE = 20
 // phone is being held (a little of the way on each sensor reading, about
 // 60 per second, so it takes a few seconds).
 const SETTLE_RATE = 0.01
+// How long after the mouse last moved that motion readings are ignored, in ms.
+const MOUSE_PRIORITY_MS = 1500
 
 // An angle difference between -180 and 180 degrees.
 function angleDiff(a: number, b: number): number {
@@ -84,10 +86,15 @@ export function useTilt<T extends HTMLElement>(enabled = true) {
       }
     }
 
+    // When the mouse last moved over the card. While it is moving, it is in
+    // charge, even on a laptop or tablet that also has a motion sensor.
+    let lastMouseMove = -Infinity
+
     function handleMove(event: PointerEvent) {
       // Only the mouse: on touch screens, following a finger would fight
       // with scrolling, so phones use the motion sensor below instead.
       if (event.pointerType !== 'mouse' || !wrapper) return
+      lastMouseMove = performance.now()
       const rect = wrapper.getBoundingClientRect()
       tiltToward((event.clientX - rect.left) / rect.width, (event.clientY - rect.top) / rect.height)
     }
@@ -101,6 +108,7 @@ export function useTilt<T extends HTMLElement>(enabled = true) {
 
     function handleOrientation(event: DeviceOrientationEvent) {
       if (event.beta === null || event.gamma === null) return
+      if (performance.now() - lastMouseMove < MOUSE_PRIORITY_MS) return
       const [side, forward] = screenTilt(event.beta, event.gamma)
       const angle = screen.orientation?.angle ?? 0
       // Start again after the phone turns between upright and sideways.
@@ -117,10 +125,11 @@ export function useTilt<T extends HTMLElement>(enabled = true) {
       )
     }
 
-    const useMotion = isTouchScreen() && canReadMotion(motionAccess)
+    // Any device that sends motion readings tilts with them; computers
+    // without a motion sensor never send any.
     wrapper.addEventListener('pointermove', handleMove)
     wrapper.addEventListener('pointerleave', layFlat)
-    if (useMotion) window.addEventListener('deviceorientation', handleOrientation)
+    if (canReadMotion(motionAccess)) window.addEventListener('deviceorientation', handleOrientation)
     return () => {
       wrapper.removeEventListener('pointermove', handleMove)
       wrapper.removeEventListener('pointerleave', layFlat)

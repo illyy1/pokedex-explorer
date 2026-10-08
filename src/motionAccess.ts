@@ -65,10 +65,11 @@ export function useMotionAccess(): MotionAccess {
   )
 }
 
-// Phones and tablets: a touch screen and no mouse to hover with. These tilt
-// the card with the motion sensor instead of the mouse.
+// Phones and tablets, which tilt the card with the motion sensor. This
+// counts touch points rather than asking for "no hover", because some
+// phones (many Samsung Galaxy models) say they can hover like a mouse.
 export function isTouchScreen(): boolean {
-  return window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  return navigator.maxTouchPoints > 0 || window.matchMedia('(any-pointer: coarse)').matches
 }
 
 export function canReadMotion(access: MotionAccess): boolean {

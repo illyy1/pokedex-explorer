@@ -399,3 +399,15 @@ do that and also is it possible to make the 3d reactivity work on mobile or no
 ```text
 build the gyroscope version with the tilt
 ```
+
+## 64. Push to try it on a phone
+
+```text
+push, ill check on my phone if the update works
+```
+
+## 65. The tilt does nothing on a Samsung phone
+
+```text
+im on samsung and the tilt effect doesnt work at all
+```
