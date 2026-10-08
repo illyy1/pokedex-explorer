@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 30 tasks are done. Tasks 9–30 were added after the first plan.
+Status: all 31 tasks are done. Tasks 9–31 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -159,3 +159,8 @@ Done when: Pikachu's first build (NU Substitute) sets Light Ball, Lightning Rod,
 Bring the About cards up to date: the Trainer card mentions the Team Builder (items, EVs, moves, Smogon builds) and the Showdown export, the Smogon card says it also provides the Team Builder's builds and items, and the fine print says favorites and teams are saved only in the browser. For decoration, add a column of five sprites at each edge of the screen (Charizard, Gengar, Umbreon, Lucario, Chandelure on the left, turned to face the cards; Blastoise, Dragonite, Gardevoir, Garchomp, Zoroark on the right). They stay in place while scrolling, sit behind the page so they never cover a link, zig-zag in and out, bob gently (not for people who turn off animations), are hidden from screen readers, and only show on screens at least 1000 pixels wide. Also fix the tilted third card sticking out 3 pixels at 1000 pixels wide.
 
 Done when: at 1280 and 1600 pixels wide all ten sprites show at the edges and no link is covered, at 1000 pixels wide nothing scrolls sideways, at 375 pixels wide the sprites are hidden, and the cards' text describes the Team Builder and the Showdown export.
+
+## Task 31: Random edge sprites on every page ✅
+Move the edge sprites from the About page into their own `EdgeSprites` component in the app layout, so every page has them. Instead of a fixed ten, pick ten different Pokémon at random from all 649 each time you go to another page (the component is keyed by the first part of the address, so React starts it again with a new set). Picking a different Pokémon on the same page, like /pokedex/6 → /pokedex/25, keeps the set so it doesn't change on every click. The whole app gets its own layer (`isolation: isolate` on `#root`) so the sprites stay behind every page's content but in front of the background.
+
+Done when: at 1280 pixels wide all ten sprites show on every page (Home, Pokédex, a Pokémon, Favorites, Team Builder, a team, About, and a page that doesn't exist) without covering any link, button or input, and with no sideways scroll; going through the pages with the navigation bar shows a new set of ten different Pokémon each time; clicking a Pokémon in the Pokédex list keeps the set; and at 375 pixels wide the sprites are hidden.

@@ -4,28 +4,11 @@ import { typeStyle } from '../pokemonTypes'
 // The Pokémon whose sprites make up the Trainer card's picture.
 const COLLAGE = [1, 4, 7, 25, 133, 150, 152, 155, 158]
 
-// Pokémon peeking in from the left and right edges of the screen, one or
-// two from each generation. The left ones are flipped to face the cards.
-const LEFT_EDGE = [6, 94, 197, 448, 609]
-const RIGHT_EDGE = [9, 149, 282, 445, 571]
-
 // The About page is a hand of three cards: a Trainer card about the app,
 // and an Energy card for each place the data comes from.
 function AboutPage() {
   return (
     <div className="page about">
-      {/* Decoration only, so screen readers skip it. */}
-      <div className="edge-sprites left" aria-hidden="true">
-        {LEFT_EDGE.map((id) => (
-          <img key={id} src={spriteUrl(id)} alt="" width="96" height="96" />
-        ))}
-      </div>
-      <div className="edge-sprites right" aria-hidden="true">
-        {RIGHT_EDGE.map((id) => (
-          <img key={id} src={spriteUrl(id)} alt="" width="96" height="96" />
-        ))}
-      </div>
-
       <header className="about-intro">
         <h1>About</h1>
         <p>Three cards tell you everything about this app.</p>

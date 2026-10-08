@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import EdgeSprites from './components/EdgeSprites'
 import NavBar from './components/NavBar'
 import FavoritesProvider from './FavoritesProvider'
 import AboutPage from './pages/AboutPage'
@@ -15,6 +16,7 @@ function App() {
     <PokemonDataProvider>
       <FavoritesProvider>
         <TeamsProvider>
+          <EdgeSprites />
           <NavBar />
           <main>
             <Routes>

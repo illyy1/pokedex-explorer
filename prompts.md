@@ -345,3 +345,21 @@ add the option to add items to the team builder and edit EVs, also add the optio
 ```text
 update the about page, add pokemon sprites on the edges of the screen to spice up the design and update the docs
 ```
+
+## 55. Edge sprites on every page
+
+```text
+to be clear i want to add the pokemon sprites to all routes
+```
+
+## 56. New random sprites on each page (sent while the previous change was being tested)
+
+```text
+could we make so every switch from route to route pulls new randomized pokemon sprites for the edges of the website
+```
+
+## 57. Update the docs and push (sent while the random sprites were being tested)
+
+```text
+update the docs and push into github
+```

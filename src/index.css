@@ -45,9 +45,90 @@ body {
 }
 
 #root {
+  /* Its own layer, so the edge sprites (z-index -1) sit behind every page's
+     content but still in front of the page background. */
+  isolation: isolate;
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 16px;
+}
+
+/* Pokémon sprites peeking in from both edges of the screen, behind
+   every page, bobbing gently. Only on screens wide enough to have room. */
+.edge-sprites {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .edge-sprites {
+    position: fixed;
+    top: 90px;
+    bottom: 0;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    pointer-events: none;
+
+    img {
+      width: 144px;
+      height: 144px;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.18));
+      animation: edge-bob 3.2s ease-in-out infinite alternate;
+    }
+    /* Every other sprite sits a little further in, so they zig-zag. */
+    img:nth-child(even) {
+      --step: 40px;
+    }
+    img:nth-child(2) {
+      animation-delay: -0.8s;
+    }
+    img:nth-child(3) {
+      animation-delay: -1.6s;
+    }
+    img:nth-child(4) {
+      animation-delay: -2.4s;
+    }
+    img:nth-child(5) {
+      animation-delay: -1.2s;
+    }
+  }
+  /* Part of each sprite's empty border goes off-screen, so they peek in. */
+  .edge-sprites.left {
+    left: -28px;
+
+    img {
+      --flip: -1;
+    }
+  }
+  .edge-sprites.right {
+    right: -28px;
+    align-items: flex-end;
+
+    img {
+      --flip: 1;
+      --step-sign: -1;
+    }
+  }
+}
+
+@keyframes edge-bob {
+  from {
+    transform: translateX(calc(var(--step, 0px) * var(--step-sign, 1))) translateY(0)
+      scaleX(var(--flip, 1));
+  }
+  to {
+    transform: translateX(calc(var(--step, 0px) * var(--step-sign, 1))) translateY(-10px)
+      scaleX(var(--flip, 1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edge-sprites img {
+    animation: none;
+    transform: translateX(calc(var(--step, 0px) * var(--step-sign, 1))) scaleX(var(--flip, 1));
+  }
 }
 
 /* Navigation */
@@ -1086,88 +1167,7 @@ body {
 /* About page: a hand of three cards. */
 
 .about {
-  /* Its own layer, so the edge sprites (z-index -1) sit behind the page's
-     content but still in front of the page background. */
-  isolation: isolate;
   padding-bottom: 40px;
-}
-
-/* Pokémon sprites peeking in from both edges of the screen, behind the
-   page, bobbing gently. Only on screens wide enough to have room. */
-.edge-sprites {
-  display: none;
-}
-
-@media (min-width: 1000px) {
-  .edge-sprites {
-    position: fixed;
-    top: 90px;
-    bottom: 0;
-    z-index: -1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    pointer-events: none;
-
-    img {
-      width: 144px;
-      height: 144px;
-      image-rendering: pixelated;
-      filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.18));
-      animation: edge-bob 3.2s ease-in-out infinite alternate;
-    }
-    /* Every other sprite sits a little further in, so they zig-zag. */
-    img:nth-child(even) {
-      --step: 40px;
-    }
-    img:nth-child(2) {
-      animation-delay: -0.8s;
-    }
-    img:nth-child(3) {
-      animation-delay: -1.6s;
-    }
-    img:nth-child(4) {
-      animation-delay: -2.4s;
-    }
-    img:nth-child(5) {
-      animation-delay: -1.2s;
-    }
-  }
-  /* Part of each sprite's empty border goes off-screen, so they peek in. */
-  .edge-sprites.left {
-    left: -28px;
-
-    img {
-      --flip: -1;
-    }
-  }
-  .edge-sprites.right {
-    right: -28px;
-    align-items: flex-end;
-
-    img {
-      --flip: 1;
-      --step-sign: -1;
-    }
-  }
-}
-
-@keyframes edge-bob {
-  from {
-    transform: translateX(calc(var(--step, 0px) * var(--step-sign, 1))) translateY(0)
-      scaleX(var(--flip, 1));
-  }
-  to {
-    transform: translateX(calc(var(--step, 0px) * var(--step-sign, 1))) translateY(-10px)
-      scaleX(var(--flip, 1));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .edge-sprites img {
-    animation: none;
-    transform: translateX(calc(var(--step, 0px) * var(--step-sign, 1))) scaleX(var(--flip, 1));
-  }
 }
 
 .about-intro {
