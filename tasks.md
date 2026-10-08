@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: all 31 tasks are done. Tasks 9–31 were added after the first plan.
+Status: tasks 1–31 are done; task 32 is planned for later. Tasks 9–32 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -164,3 +164,13 @@ Done when: at 1280 and 1600 pixels wide all ten sprites show at the edges and no
 Move the edge sprites from the About page into their own `EdgeSprites` component in the app layout, so every page has them. Instead of a fixed ten, pick ten different Pokémon at random from all 649 each time you go to another page (the component is keyed by the first part of the address, so React starts it again with a new set). Picking a different Pokémon on the same page, like /pokedex/6 → /pokedex/25, keeps the set so it doesn't change on every click. The whole app gets its own layer (`isolation: isolate` on `#root`) so the sprites stay behind every page's content but in front of the background.
 
 Done when: at 1280 pixels wide all ten sprites show on every page (Home, Pokédex, a Pokémon, Favorites, Team Builder, a team, About, and a page that doesn't exist) without covering any link, button or input, and with no sideways scroll; going through the pages with the navigation bar shows a new set of ten different Pokémon each time; clicking a Pokémon in the Pokédex list keeps the set; and at 375 pixels wide the sprites are hidden.
+
+## Task 32 (later): Add every generation to the Pokédex ⏳
+Not started; kept for later. Show all 1025 Pokémon (Generations 1–9) instead of 649, while the Team Builder stays Generation 5 (option A of three; the other two, moving the Team Builder to Generation 9 or using each Pokémon's newest game, were much bigger and left out).
+- Change `LAST_POKEMON` in `src/api.ts` from 649 to 1025. The list, search, type filter, card numbers, Pokémon of the day and edge sprites all follow it.
+- Add the Generation 6–9 legendary and mythical Pokémon to `src/legendary.ts`, taken from the `is_legendary` and `is_mythical` flags in PokéAPI's pokemon-species data.
+- Keep the Team Builder's picker to Nos. 1–649 and label it as a Generation 5 team builder, because its moves, items, Smogon builds and Showdown export are all Generation 5.
+- Update "649" and "Generations 1–5" on the Home and About pages and in the PRD.
+- Expect a mix of art styles: sprites from Generation 6 on are not pixel art.
+
+Done when: the Pokédex list scrolls to No. 1025 (Pecharunt), searching "1025" or "pecharunt" finds it, the card shows "1025/1025", Generation 6–9 legendaries have the mark and the sparkly card, and the Team Builder picker still ends at No. 649.

@@ -35,7 +35,7 @@ The app has five pages. A navigation bar at the top of every page links to Home,
 ## 6. Not now (ideas for later)
 - Compare two Pokémon side by side.
 - Filter the list by generation.
-- Add Pokémon from Generation 6 and later.
+- Add Pokémon from Generation 6 and later in the Pokédex, with the Team Builder staying Generation 5 (planned as task 32).
 - Sync favorites and teams across devices (this would need user accounts).
 - Choose IVs and level, and items beyond the 94 that Smogon's builds use.
 - Open Showdown with the team already in it. Showdown has no link that accepts a team, and one website can't write into another's storage, so the team has to be pasted.

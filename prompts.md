@@ -363,3 +363,15 @@ could we make so every switch from route to route pulls new randomized pokemon s
 ```text
 update the docs and push into github
 ```
+
+## 58. Would all generations make a mess?
+
+```text
+would it make a mess to pull all pokemon gens now instead of up to gen 5
+```
+
+## 59. Keep it for later
+
+```text
+nevermind lets keep it as is for now, add it to tasks for later
+```
