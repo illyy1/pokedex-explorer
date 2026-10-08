@@ -261,3 +261,15 @@ push the changes
 ```text
 execute tasks 16 to 19, when you get to the sleeker design part, i would like the design to be based on a traditional pokemon card, i attached an image with what i mean, try to replicate the font and layout
 ```
+
+## 41. Push
+
+```text
+push
+```
+
+## 42. Redesign the About page
+
+```text
+change the design in the about section, it looks generic and boring
+```

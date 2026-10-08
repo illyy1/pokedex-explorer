@@ -798,32 +798,188 @@ body {
   }
 }
 
-.about {
-  max-width: 70ch;
-  padding-bottom: 32px;
+/* About page: a hand of three cards. */
 
-  section {
-    margin-bottom: 16px;
-    padding: 16px 20px;
-    border: 1px solid var(--border);
-    border-left: 6px solid var(--card-yellow);
-    border-radius: 10px;
-    background: var(--surface);
-  }
-  h2 {
-    margin: 0 0 8px;
-    color: var(--text-h);
-    font-size: 21px;
+.about {
+  padding-bottom: 40px;
+}
+
+.about-intro {
+  text-align: center;
+
+  h1 {
+    margin-bottom: 4px;
   }
   p {
-    margin: 0 0 10px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 18px;
   }
-  ul {
-    margin: 0 0 10px;
-    padding-left: 20px;
+}
+
+.card-hand {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 14px;
+  padding: 40px 0 24px;
+
+  .poke-card {
+    flex: 0 1 300px;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
-  li {
-    margin-bottom: 6px;
+  /* Fan the cards out like a hand. */
+  .poke-card:nth-child(1) {
+    transform: rotate(-7deg) translateY(18px);
+  }
+  .poke-card:nth-child(2) {
+    z-index: 1;
+  }
+  .poke-card:nth-child(3) {
+    transform: rotate(7deg) translateY(18px);
+  }
+  /* Hovering (or tabbing into) a card lifts it out of the hand. */
+  .poke-card:hover,
+  .poke-card:focus-within {
+    z-index: 2;
+    transform: translateY(-14px) rotate(0deg) scale(1.03);
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+      0 22px 40px rgba(0, 0, 0, 0.3);
+  }
+  .card-face {
+    height: 100%;
+    box-sizing: border-box;
+  }
+  /* The text box grows so all three cards end at the same height. */
+  .card-rules {
+    flex: 1;
+  }
+  .card-name {
+    font-size: 25px;
+  }
+}
+
+.page .card-hand {
+  a {
+    color: var(--card-ink);
+    font-weight: 700;
+  }
+  a:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.card-kind {
+  color: var(--card-red);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Trainer cards are silver-grey instead of a type color. */
+.trainer-card .card-face {
+  background:
+    radial-gradient(circle at 25% 15%, rgba(255, 255, 255, 0.7), transparent 55%),
+    linear-gradient(160deg, #f4f4f2 0%, #cfd2d6 100%);
+}
+
+.trainer-art {
+  grid-template-columns: repeat(3, 1fr);
+  aspect-ratio: auto;
+  padding: 4px;
+  background: linear-gradient(160deg, #fdfcf6, #e4e0d2);
+
+  img {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    filter: none;
+  }
+}
+
+/* Basic Energy cards: one big energy symbol in the middle. */
+.energy-art {
+  display: grid;
+  place-items: center;
+  padding: 22px 0;
+
+  .energy.big {
+    --size: 120px;
+    box-shadow:
+      0 0 0 4px #fff,
+      0 0 0 6px rgba(0, 0, 0, 0.25),
+      inset 0 -8px 12px rgba(0, 0, 0, 0.25),
+      0 8px 18px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.card-rules {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  border: 1.5px solid #b8952e;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 13.5px;
+  line-height: 1.4;
+
+  p {
+    margin: 0 0 8px;
+  }
+  p:last-child {
+    margin: 0;
+  }
+}
+
+.card-link {
+  display: inline-block;
+  /* Sits at the bottom of the text box. */
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--card-frame);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.fine-print {
+  max-width: 62ch;
+  margin: 24px auto 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* On narrow screens, lay the cards out one under the other, straight. */
+@media (max-width: 900px) {
+  .card-hand {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding-top: 24px;
+
+    .poke-card,
+    .poke-card:nth-child(1),
+    .poke-card:nth-child(3) {
+      flex: none;
+      width: 100%;
+      max-width: 340px;
+      box-sizing: border-box;
+      margin: 0;
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-hand .poke-card {
+    transition: none;
   }
 }
 
