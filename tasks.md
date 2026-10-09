@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–37 are done; task 32 is planned for later. Tasks 9–37 were added after the first plan.
+Status: tasks 1–31 and 33–38 are done; task 32 is planned for later. Tasks 9–38 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -212,3 +212,12 @@ Add a randomizer to the team editor.
 - Fix found while testing: a few Smogon builds use a Generation 5 hidden ability that later games changed (Scolipede's Quick Feet became Speed Boost), so PokéAPI doesn't list it. The Ability dropdown now keeps the chosen ability, so the card shows what is saved and exported.
 
 Done when: Unown and Ditto get their one move, Magikarp (no builds) gets a random set with 504 EVs, and Pikachu gets a Smogon build; 300 random picks of six have no repeats, stay within 1–649 and never pick an excluded Pokémon; "Random Pokémon" adds one complete Pokémon; "Randomize team" gives six different Pokémon whose abilities show on their cards; randomizing the third card changes only that one and the team stays without repeats; the Showdown export includes the random sets; offline, a message appears and the team is unchanged; and a saved Scolipede with Quick Feet shows Quick Feet on its card.
+
+## Task 38: Security hardening for the public site ✅
+A security check of the live site found no serious problems (no login, server or secrets; React escapes all text; saved data is checked before use; links to other sites can't control the tab; HTTPS is enforced; `npm audit` finds nothing; no personal email in any commit). These four changes harden it further:
+1. **Deploy workflow permissions:** nothing by default. The build job, which runs `npm ci` and so code from npm packages, can only read the code; only the deploy job, which runs no npm code, may publish to Pages. `actions/checkout` doesn't keep its token.
+2. **Pinned actions:** every action in the workflow is pinned to the exact commit of its release, with the version in a comment. `.github/dependabot.yml` suggests updates monthly.
+3. **Repository settings:** Dependabot alerts and Dependabot security updates for npm packages, secret scanning, and push protection (a push containing a key is refused) are turned on.
+4. **Content Security Policy:** a `<meta>` tag, added by a small plugin in `vite.config.ts` to the built page only (the dev server needs inline styles and a live-reload connection), lets the browser load scripts only from the site, data only from PokéAPI and the pkmn project (data.pkmn.cc and pkmn.github.io, where it redirects), pictures only from the site and PokéAPI's sprites on GitHub, and styles and fonts only from the site and Google Fonts. No inline scripts, no `eval`, no plugins, no forms.
+
+Done when: the production build, served like GitHub Pages, works with the policy and nothing is blocked (homepage, a Pokémon with its Smogon builds, list sprites, the 3D tilt, a random team, "Save as text file", the About page with edge sprites and the Google font); a request to another site and a script from another site are blocked; the repository shows Dependabot alerts, security updates, secret scanning and push protection as on; and after pushing, the workflow with the new permissions and pinned actions deploys the site.

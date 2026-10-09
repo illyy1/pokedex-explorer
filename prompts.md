@@ -441,3 +441,15 @@ add the ability to save a text file with the team to the team builder
 ```text
 add a randomizer option to the team builder, you can randomize an entire team or 1 pokemon at a time
 ```
+
+## 71. Security check of the live site
+
+```text
+check for security concerns in the website we are currently running through github
+```
+
+## 72. Do the recommended fixes
+
+```text
+do the recommended
+```

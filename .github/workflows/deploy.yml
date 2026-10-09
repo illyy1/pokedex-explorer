@@ -8,22 +8,29 @@ on:
   # Also allows running it by hand from the Actions tab.
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# Nothing by default; each job asks only for what it needs below.
+permissions: {}
 
 # Only one deploy at a time; a newer push replaces one that is waiting.
 concurrency:
   group: pages
   cancel-in-progress: false
 
+# Each action is pinned to the exact commit of its release (the comment
+# says which), so a moved tag can't swap in different code. Dependabot
+# (.github/dependabot.yml) suggests updates.
 jobs:
+  # Installs packages and builds. It can only read the code, so a bad
+  # install script in a package can't publish anything.
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm
@@ -34,17 +41,22 @@ jobs:
       # /pokedex-explorer/pokedex/25 directly would be "not found". Its 404
       # page is a copy of the app, which then shows the right page itself.
       - run: cp dist/index.html dist/404.html
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
 
+  # Publishes what the build made. Only this job may write to Pages, and it
+  # runs no code from npm.
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -1,0 +1,10 @@
+# Dependabot opens a pull request when a newer version is out, so pinned
+# versions don't go stale. Security fixes for npm packages come separately,
+# from Dependabot security updates in the repository settings.
+version: 2
+updates:
+  # The actions in .github/workflows, pinned to exact commits.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
