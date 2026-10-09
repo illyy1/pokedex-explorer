@@ -1543,6 +1543,13 @@ body {
   margin-bottom: 20px;
 }
 
+/* Export and Save side by side, wrapping onto two lines on narrow screens. */
+.showdown-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .showdown-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;

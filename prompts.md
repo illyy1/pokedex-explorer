@@ -429,3 +429,9 @@ the fix works now on both samsung internet and chrome, thanks
 ```text
 when expanding the pokemon cards the images get cut off, use flexbox to correct it
 ```
+
+## 69. Save a team as a text file (sent while the picture fix was being tested)
+
+```text
+add the ability to save a text file with the team to the team builder
+```

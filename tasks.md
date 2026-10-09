@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–35 are done; task 32 is planned for later. Tasks 9–35 were added after the first plan.
+Status: tasks 1–31 and 33–36 are done; task 32 is planned for later. Tasks 9–36 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -195,3 +195,8 @@ Fix after testing on a Samsung phone: the tilt did nothing, because many Samsung
 The artwork on the Pokédex card, the homepage's Pokémon of the day and the Team Builder cards was cut off at the bottom (70–111 pixels, for example Charizard's feet and Pikachu's tail). The picture frame is wider than it is tall (4:3, or 16:10 on team cards), but it was a grid, and there the square picture's `height: 100%` didn't count, so it was drawn as a full-width square and the frame hid the rest. The frame is now a flexbox that centres the picture, and the picture has `min-height: 0` so it can shrink to the frame's height, with `object-fit: contain` keeping it whole. The About page's 3×3 sprite collage sets `display: grid` itself, since it used to borrow the frame's grid.
 
 Done when: on the homepage, a Pokémon's card (/pokedex/6 and /pokedex/150), a team's cards and the About page, at 1280 and 375 pixels wide, every picture fits inside its frame with 0 pixels cut off, and the About collage is still 3 by 3.
+
+## Task 36: Save a team as a text file ✅
+Add a "Save as text file" button next to "Export to Showdown". It downloads the team as a .txt file in the same Showdown text format, so it can be kept or imported into Showdown later. The file is named after the team, without characters that can't be in file names ("Rain: Team / #1?" → "Rain Team #1.txt"; a name with nothing left becomes "team.txt"). The download is made in the browser (a Blob and a link), so nothing is sent anywhere. Afterwards a note says where it was saved and how to import it. The button is off while the team is empty, and the two buttons wrap onto two lines on narrow screens.
+
+Done when: saving a team of Pikachu (Light Ball, Lightning Rod, Timid, 4 Def / 252 SpA / 252 Spe, Thunderbolt, Hidden Power Ice) and Mr. Mime downloads "Rain Team #1.txt" with the same text as the Showdown export, a team named "???" saves as "team.txt", the button is off for an empty team, and at 375 pixels wide nothing scrolls sideways.
