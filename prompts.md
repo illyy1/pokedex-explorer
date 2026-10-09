@@ -423,3 +423,9 @@ push the fix
 ```text
 the fix works now on both samsung internet and chrome, thanks
 ```
+
+## 68. Pictures cut off on the cards
+
+```text
+when expanding the pokemon cards the images get cut off, use flexbox to correct it
+```

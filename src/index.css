@@ -606,10 +606,13 @@ body {
   }
 }
 
-/* The picture window with its gold, bevelled frame. */
+/* The picture window with its gold, bevelled frame. A flexbox centres the
+   picture; the picture fills the frame's height and shrinks to fit, so a
+   square picture in a wide frame is shown whole instead of cut off. */
 .card-art {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 5px solid;
@@ -628,6 +631,9 @@ body {
     display: block;
     width: 100%;
     height: 100%;
+    /* Flex items won't shrink below their picture's own size unless told to. */
+    min-width: 0;
+    min-height: 0;
     object-fit: contain;
     filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.2));
   }
@@ -1260,7 +1266,10 @@ body {
     linear-gradient(160deg, #f4f4f2 0%, #cfd2d6 100%);
 }
 
+/* A 3 by 3 collage of sprites, so a grid instead of the frame's usual flexbox. */
 .trainer-art {
+  display: grid;
+  place-items: center;
   grid-template-columns: repeat(3, 1fr);
   aspect-ratio: auto;
   padding: 4px;

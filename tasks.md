@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31, 33 and 34 are done; task 32 is planned for later. Tasks 9–34 were added after the first plan.
+Status: tasks 1–31 and 33–35 are done; task 32 is planned for later. Tasks 9–35 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -190,3 +190,8 @@ On touch screens, following a finger would fight with scrolling, so the card til
 Done when (checked with fake sensor readings in a phone-sized, touch-screen browser): tilting right 15° turns the card 10.5° to the right and tipping forward tips it, 60° stops at the most, holding a tilt settles back to flat, the phone held sideways still tilts the right way, turning 3D off keeps it flat; pretending to be an iPhone, the button says "Tap to start", asks once when tapped, and then tilts on "Allow" or shows "Not available" on "Don't Allow"; on a computer the mouse still tilts the card and sensor readings are ignored. The last check is on a real phone, on the live site (motion needs HTTPS).
 
 Fix after testing on a Samsung phone: the tilt did nothing, because many Samsung Galaxy phones say they can hover like a mouse, so the phone was treated as a computer. Touch screens are now recognized by `navigator.maxTouchPoints` (or `any-pointer: coarse`), and motion readings are used on any device that sends them. Checked on a real Samsung phone afterwards: the tilt works in both Samsung Internet and Chrome.
+
+## Task 35: Show the whole picture on every card ✅
+The artwork on the Pokédex card, the homepage's Pokémon of the day and the Team Builder cards was cut off at the bottom (70–111 pixels, for example Charizard's feet and Pikachu's tail). The picture frame is wider than it is tall (4:3, or 16:10 on team cards), but it was a grid, and there the square picture's `height: 100%` didn't count, so it was drawn as a full-width square and the frame hid the rest. The frame is now a flexbox that centres the picture, and the picture has `min-height: 0` so it can shrink to the frame's height, with `object-fit: contain` keeping it whole. The About page's 3×3 sprite collage sets `display: grid` itself, since it used to borrow the frame's grid.
+
+Done when: on the homepage, a Pokémon's card (/pokedex/6 and /pokedex/150), a team's cards and the About page, at 1280 and 375 pixels wide, every picture fits inside its frame with 0 pixels cut off, and the About collage is still 3 by 3.
