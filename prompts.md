@@ -435,3 +435,9 @@ when expanding the pokemon cards the images get cut off, use flexbox to correct 
 ```text
 add the ability to save a text file with the team to the team builder
 ```
+
+## 70. Team randomizer
+
+```text
+add a randomizer option to the team builder, you can randomize an entire team or 1 pokemon at a time
+```

@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–36 are done; task 32 is planned for later. Tasks 9–36 were added after the first plan.
+Status: tasks 1–31 and 33–37 are done; task 32 is planned for later. Tasks 9–37 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -200,3 +200,15 @@ Done when: on the homepage, a Pokémon's card (/pokedex/6 and /pokedex/150), a t
 Add a "Save as text file" button next to "Export to Showdown". It downloads the team as a .txt file in the same Showdown text format, so it can be kept or imported into Showdown later. The file is named after the team, without characters that can't be in file names ("Rain: Team / #1?" → "Rain Team #1.txt"; a name with nothing left becomes "team.txt"). The download is made in the browser (a Blob and a link), so nothing is sent anywhere. Afterwards a note says where it was saved and how to import it. The button is off while the team is empty, and the two buttons wrap onto two lines on narrow screens.
 
 Done when: saving a team of Pikachu (Light Ball, Lightning Rod, Timid, 4 Def / 252 SpA / 252 Spe, Thunderbolt, Hidden Power Ice) and Mr. Mime downloads "Rain Team #1.txt" with the same text as the Showdown export, a team named "???" saves as "team.txt", the button is off for an empty team, and at 375 pixels wide nothing scrolls sideways.
+
+## Task 37: Randomize a team or one Pokémon ✅
+Add a randomizer to the team editor.
+- **🎲 Randomize team** fills all six slots with six different random Pokémon. If the team already has Pokémon, it asks first, because this replaces them.
+- **🎲 Randomize** on each card swaps that one Pokémon for a random one that isn't already in the team; the rest of the team stays as it is.
+- **🎲 Random Pokémon** under "Add Pokémon" in the next empty slot adds one random Pokémon.
+- Every random Pokémon gets a complete set (`src/randomTeam.ts`): one of its Smogon builds at random, or, for Pokémon without builds, a random ability, a random item from the list, a random nature, four different random moves it can learn in Generation 5 (fewer if it knows fewer, like Unown and Ditto) and 84 EVs in every stat, like Showdown's Random Battles.
+- While it loads, the button says "Randomizing…" or "Picking…" and the other randomize buttons wait. If PokéAPI can't be reached, a message says so and the team is left as it was.
+- The edge sprites now use the same random-number picker.
+- Fix found while testing: a few Smogon builds use a Generation 5 hidden ability that later games changed (Scolipede's Quick Feet became Speed Boost), so PokéAPI doesn't list it. The Ability dropdown now keeps the chosen ability, so the card shows what is saved and exported.
+
+Done when: Unown and Ditto get their one move, Magikarp (no builds) gets a random set with 504 EVs, and Pikachu gets a Smogon build; 300 random picks of six have no repeats, stay within 1–649 and never pick an excluded Pokémon; "Random Pokémon" adds one complete Pokémon; "Randomize team" gives six different Pokémon whose abilities show on their cards; randomizing the third card changes only that one and the team stays without repeats; the Showdown export includes the random sets; offline, a message appears and the team is unchanged; and a saved Scolipede with Quick Feet shows Quick Feet on its card.

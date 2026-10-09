@@ -59,10 +59,16 @@ type Props = {
   // Called with the changed Pokémon when anything about it is picked.
   onChange: (member: TeamMember) => void
   onRemove: () => void
+  // Swaps this Pokémon for a random one with a complete set.
+  onRandomize: () => void
+  // True while this card's random replacement is loading.
+  isRandomizing: boolean
+  // False while any randomizing is going on, so only one runs at a time.
+  canRandomize: boolean
 }
 
 // One Pokémon in a team, shown as a small trading card.
-function TeamSlot({ member, onChange, onRemove }: Props) {
+function TeamSlot({ member, onChange, onRemove, onRandomize, isRandomizing, canRandomize }: Props) {
   const [data, setData] = useState<TeamPokemonData | null>(null)
   const [failed, setFailed] = useState(false)
   // Goes up when "Try again" is clicked, to load the Pokémon again.
@@ -238,6 +244,12 @@ function TeamSlot({ member, onChange, onRemove }: Props) {
                 value={member.ability ?? ''}
                 onChange={(event) => onChange({ ...member, ability: event.target.value })}
               >
+                {/* Keep a chosen ability even if PokéAPI doesn't list it: some Smogon
+                    builds use a Generation 5 hidden ability that later games
+                    changed (Scolipede's Quick Feet became Speed Boost). */}
+                {member.ability && !loaded.abilities.some((a) => a.name === member.ability) && (
+                  <option value={member.ability}>{displayName(member.ability)}</option>
+                )}
                 {loaded.abilities.map((a) => (
                   <option key={a.name} value={a.name}>
                     {displayName(a.name)}
@@ -309,9 +321,20 @@ function TeamSlot({ member, onChange, onRemove }: Props) {
             </details>
           </div>
         )}
-        <button type="button" className="team-remove" onClick={onRemove}>
-          Remove {item ? displayName(item.name) : 'Pokémon'}
-        </button>
+        <div className="team-card-actions">
+          <button
+            type="button"
+            className="team-remove"
+            onClick={onRandomize}
+            disabled={!canRandomize}
+            title="Swap this Pokémon for a random one"
+          >
+            {isRandomizing ? 'Picking…' : '🎲 Randomize'}
+          </button>
+          <button type="button" className="team-remove" onClick={onRemove}>
+            Remove {item ? displayName(item.name) : 'Pokémon'}
+          </button>
+        </div>
       </div>
     </article>
   )

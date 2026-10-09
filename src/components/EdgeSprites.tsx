@@ -1,17 +1,10 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router'
-import { LAST_POKEMON } from '../api'
 import { spriteUrl } from '../names'
+import { randomPokemonIds } from '../randomTeam'
 
 // How many Pokémon peek in from each side of the screen.
 const PER_SIDE = 5
-
-// `count` different Pokémon numbers from 1 to LAST_POKEMON, picked at random.
-function randomPokemonIds(count: number): number[] {
-  const ids = new Set<number>()
-  while (ids.size < count) ids.add(1 + Math.floor(Math.random() * LAST_POKEMON))
-  return [...ids]
-}
 
 // Pokémon peeking in from the left and right edges of the screen, the left
 // ones flipped to face the page. They are picked once, when this appears.

@@ -1627,6 +1627,32 @@ body {
     outline: 3px solid var(--focus);
     outline-offset: 2px;
   }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  &:disabled:hover {
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--card-red);
+  }
+}
+
+/* Randomize and Remove at the bottom of a team card, side by side. */
+.team-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* "Randomize team", above the export buttons. */
+.team-randomizer {
+  margin-bottom: 10px;
+
+  .button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 /* The ability and move choices on a team card. */
@@ -1807,6 +1833,38 @@ body {
   }
   &:focus-visible {
     outline: 3px solid var(--focus);
+  }
+}
+
+/* "Add Pokémon" with "Random Pokémon" under it, in the next empty slot. */
+.add-choices {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.add-random {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bg);
+  }
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 }
 

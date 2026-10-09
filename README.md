@@ -10,7 +10,7 @@ Browse all 649 Pokémon from Generations 1–5, styled like the original Pokémo
 
 - **Pokédex:** search by name or number, filter by type, and scroll through every Pokémon (more load as you reach the end). Each Pokémon opens as a trading card with its stats, abilities, weaknesses, Pokédex entry and Smogon's competitive builds. Legendary and mythical Pokémon get a sparkly rainbow card, and cards tilt in 3D under the mouse, or as you tilt your phone (you can turn this off).
 - **Favorites:** star Pokémon to collect them on their own page.
-- **Team Builder:** build as many teams of six as you like. Choose each Pokémon's item, ability, nature, EVs and four moves, or fill everything in from one of its Smogon builds. **Export to Showdown** copies the team so you can paste it into [Pokémon Showdown](https://play.pokemonshowdown.com/).
+- **Team Builder:** build as many teams of six as you like. Choose each Pokémon's item, ability, nature, EVs and four moves, fill everything in from one of its Smogon builds, or randomize the whole team or one Pokémon at a time. **Export to Showdown** copies the team so you can paste it into [Pokémon Showdown](https://play.pokemonshowdown.com/).
 - **Home:** a Pokémon of the day. Every page has random Pokémon sprites peeking in from the edges of the screen.
 
 Favorites and teams are saved in your browser (localStorage). There is no account and no server.
