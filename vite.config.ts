@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig, type Plugin } from 'vite'
+import { defineConfig, type Plugin } from 'vitest/config'
 
 // Content Security Policy: the browser only loads scripts, styles, pictures
 // and data from the places listed here, so even if some code were slipped
@@ -40,9 +40,15 @@ function contentSecurityPolicy(): Plugin {
 }
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, isPreview }) => ({
   plugins: [react(), contentSecurityPolicy()],
+  test: {
+    environment: 'node',
+    // The end-to-end tests in tests/e2e/ are run by Playwright, not Vitest.
+    include: ['tests/{unit,integration}/**/*.test.{ts,tsx}'],
+  },
   // GitHub Pages serves the site from https://illyy1.github.io/pokedex-explorer/,
-  // so the built files live under that folder. The dev server stays at "/".
-  base: command === 'build' ? '/pokedex-explorer/' : '/',
+  // so the built files live under that folder, and `vite preview` serves them
+  // there too. The dev server stays at "/".
+  base: command === 'build' || isPreview ? '/pokedex-explorer/' : '/',
 }))

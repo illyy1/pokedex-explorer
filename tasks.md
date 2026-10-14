@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–38 are done; task 32 is planned for later. Tasks 9–38 were added after the first plan.
+Status: tasks 1–31 and 33–41 are done; task 32 is planned for later. Tasks 9–41 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -221,3 +221,26 @@ A security check of the live site found no serious problems (no login, server or
 4. **Content Security Policy:** a `<meta>` tag, added by a small plugin in `vite.config.ts` to the built page only (the dev server needs inline styles and a live-reload connection), lets the browser load scripts only from the site, data only from PokéAPI and the pkmn project (data.pkmn.cc and pkmn.github.io, where it redirects), pictures only from the site and PokéAPI's sprites on GitHub, and styles and fonts only from the site and Google Fonts. No inline scripts, no `eval`, no plugins, no forms.
 
 Done when: the production build, served like GitHub Pages, works with the policy and nothing is blocked (homepage, a Pokémon with its Smogon builds, list sprites, the 3D tilt, a random team, "Save as text file", the About page with edge sprites and the Google font); a request to another site and a script from another site are blocked; the repository shows Dependabot alerts, security updates, secret scanning and push protection as on; and after pushing, the workflow with the new permissions and pinned actions deploys the site.
+
+## Task 39: Unit and integration tests ✅
+Vitest runs with `npm test`.
+- **Unit tests** (`tests/unit/`, run in Node): `normalizeQuery` and `matchesQuery` (part of a name, and Pokédex numbers with `#` or leading zeroes), `displayName` and `spriteUrl`. These first ones were added with the ChatGPT agent.
+- **Integration tests** (`tests/integration/App.integration.test.tsx`): the whole app is rendered at an address with Testing Library in a simulated browser (jsdom), and used like a person would: clicking, typing and following links. `tests/helpers/fakeApi.ts` replaces `fetch` with a small fake PokéAPI and Smogon file, so the tests need no internet and always get the same data. They cover the list and search, the type filter, opening a card (description, ability text, builds), opening a card from its address, a number that isn't in the Pokédex, the offline message, saving favorites and loading them again, the empty Favorites page, making a team and adding a Pokémon, and a team that doesn't exist.
+
+Done when: `npm test` passes without internet, lint and build still pass, and breaking the name search on purpose makes a test fail.
+
+## Task 40: End-to-end tests ✅
+Playwright (`npm run test:e2e`, config in `playwright.config.ts`) builds the site, serves it with `vite preview` under `/pokedex-explorer/` like GitHub Pages, and opens it in a real Chromium browser, once at desktop size and once as a Pixel 7 phone. These tests use the real PokéAPI and Smogon data, so they need the internet. They follow whole journeys (`tests/e2e/app.spec.ts`): from the homepage to Pikachu's card with real builds and no console errors (so the Content Security Policy blocks nothing), opening /pokedex/150 directly, infinite scroll loading No. 51, a favorite surviving a reload, and a team saved as a text file that still exists after a reload. Vitest leaves `tests/e2e/` to Playwright, and Playwright's result folders are ignored by git.
+- Fix found while adding them: `npm run preview` showed a blank page, because it served the site from `/` while the built files expect `/pokedex-explorer/`. `vite.config.ts` now uses the Pages folder for preview too. The live site wasn't affected.
+
+Done when: all end-to-end tests pass at both sizes twice in a row, and `npm run preview` shows the site.
+
+## Task 41: Test the rest of the app ✅
+All the tests now live in one `tests/` folder: `tests/unit/`, `tests/integration/`, `tests/e2e/` and the shared `tests/helpers/`.
+Tests for everything that had none:
+- **Unit:** weakness and resistance math (`tests/unit/matchups.test.ts`: Charizard's Rock ×4 and Grass ×¼, Ice cancelling out to ×1, Flying's immunity beating Fire's Ground weakness, the order and the ×½/×¼ labels), the Showdown text and names (`tests/unit/showdown.test.ts`), EV and nature labels (`tests/unit/stats.test.ts`), legendary and mythical marks (`tests/unit/legendary.test.ts`) and the randomizer (`tests/unit/randomTeam.test.ts`: different Pokémon within 1–649, excluded ones never picked, a Smogon build when there is one, a complete random set with 84 EVs when there isn't, and no item when the builds file fails).
+- **Integration:** cards show the right weaknesses, resistances and immunities; legendary cards, rows and team cards sparkle and ordinary ones don't; the 3D button turns the effect off and remembers it; the About page opens from the menu with its three cards, and its five links go to the right places in a new tab. `tests/integration/TeamBuilder.integration.test.tsx` covers choosing an ability (first normal one by default), item, moves (no repeats, typed Hidden Power), nature and EVs (252 per stat, 510 in all), using a Smogon build, "Export to Showdown" (the exact copied text, Showdown opening, and the copy-by-hand box when copying is blocked), "Save as text file" (the file's name and text), empty teams, and all three randomize buttons, including the question before replacing a team and the offline message. Both integration files share `tests/helpers/renderApp.tsx`, and the fake server answers for any number up to 649, because the randomizer can pick any of them.
+- **End-to-end:** the card leans toward the mouse and lies flat when it leaves; on the phone it tilts with (fake) motion sensor readings; it stays flat with 3D off (also after a reload) and for people who asked for less motion; Mewtwo's card has its sparkles; every picture on the About page loads and nothing sticks out sideways on a phone; and a Garchomp with a real Smogon build is exported, Showdown opens, and the copied text is a complete set.
+- The About page now shows `LAST_POKEMON` instead of a fixed "649", so it always matches the rest of the app.
+
+Done when: 71 unit and integration tests and 20 end-to-end runs pass (4 runs are skipped on purpose: the mouse tests don't run on the phone and the sensor test doesn't run on the computer), lint and build pass, and breaking the immunity math, the 510 EV limit, the export's Nature line or the question before randomizing each makes a test fail.

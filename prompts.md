@@ -453,3 +453,106 @@ check for security concerns in the website we are currently running through gith
 ```text
 do the recommended
 ```
+
+## 73. Add Vitest tests and update docs
+
+```text
+add tests to the website via vitest, update the docs
+```
+
+## 74. Check whether prompts were updated
+
+```text
+did you update prompts.md
+```
+
+## 75. Keep prompts.md up to date
+
+```text
+you have to update prompts.md with every prompt i give you
+```
+
+## 76. Keep the latest prompt last
+
+```text
+please update the prompts so the latest prompt ive given you shows up last
+```
+
+## 77. Move the Vitest prompts to the end
+
+```text
+please move prompts 37 to 40 down all the way, they were just added to the prompts.md
+```
+
+## 78. Where are the ChatGPT agent's tests?
+
+```text
+now about the checks added by the chatgpt agent, where are they located
+```
+
+## 79. Unit or integration tests?
+
+```text
+are these unit tests or integration tests
+```
+
+## 80. Add integration tests
+
+```text
+add integration tests please
+```
+
+## 81. Where to run npm test
+
+```text
+where should i run npm test, it doesnt work in bash or powershell
+```
+
+## 82. Add end-to-end tests
+
+```text
+add end to end test please
+```
+
+## 83. What each kind of test covers
+
+```text
+please tell me what the unit tests, the integration tests and te end to end tests cover
+```
+
+## 84. Tests for the About page
+
+```text
+what tests would we need for the about page
+```
+
+## 85. Cover the untested parts with tests
+
+```text
+please cover the following with tests -
+
+The Showdown export button, which copies the team and opens Showdown.
+Choosing abilities, moves, items, natures and EVs in the Team Builder.
+The team randomizer.
+The 3D tilt and sparkly cards.
+The About page.
+The weakness and resistance numbers on cards. The matchups.ts math has no tests of its own.
+```
+
+## 86. Update the docs
+
+```text
+update the docs including prompts readme prd and tasks
+```
+
+## 87. Put all the tests in one folder
+
+```text
+please put all the test files into one shared folder
+```
+
+## 88. Commit and push
+
+```text
+commit and push
+```

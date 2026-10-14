@@ -1,3 +1,4 @@
+import { LAST_POKEMON } from '../api'
 import { spriteUrl } from '../names'
 import { typeStyle } from '../pokemonTypes'
 
@@ -30,7 +31,7 @@ function AboutPage() {
             </div>
             <div className="card-rules">
               <p>
-                Browse and search all 649 Pokémon from Generations 1–5 by name, number or type,
+                Browse and search all {LAST_POKEMON} Pokémon from Generations 1–5 by name, number or type,
                 and see each one's stats, abilities, weaknesses and recommended builds. Star your
                 favorites, build teams of six with items, EVs and moves (or a Smogon build in one
                 click), and export them to Pokémon Showdown.
