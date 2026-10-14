@@ -7,6 +7,7 @@ import type { Matchup, PokemonInfo } from '../lib/types'
 import { formatLength, formatWeight } from '../lib/units'
 import { useTilt } from '../lib/useTilt'
 import EnergySymbol from './EnergySymbol'
+import GenerationMark from './GenerationMark'
 import RarityMark from './RarityMark'
 import Sparkles from './Sparkles'
 import TypeBadge from './TypeBadge'
@@ -65,6 +66,7 @@ function PokemonCard({ info, tilt3d = true }: { info: PokemonInfo; tilt3d?: bool
           <header className="card-header">
             <span className="card-stage">
               {info.evolvesFrom ? `Evolves from ${displayName(info.evolvesFrom)}` : 'Basic Pokémon'}
+              <GenerationMark id={info.id} />
             </span>
             <div className="card-title">
               <h2 className="card-name">

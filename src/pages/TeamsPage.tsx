@@ -5,12 +5,18 @@ import { TEAM_SIZE, useTeams } from '../lib/teams'
 
 // The Team Builder: every saved team, and a button to start a new one.
 function TeamsPage() {
-  const { teams, createTeam, deleteTeam } = useTeams()
+  const { teams, createTeam, updateTeam, deleteTeam } = useTeams()
+  // Starred teams first; otherwise in the order they were made.
+  const sortedTeams = [...teams].sort((a, b) => Number(b.favorite) - Number(a.favorite))
   const { index } = usePokemonData()
   const navigate = useNavigate()
 
   function handleNewTeam() {
     navigate(`/teams/${createTeam()}`)
+  }
+
+  function toggleFavorite(id: string) {
+    updateTeam(id, (team) => ({ ...team, favorite: !team.favorite }))
   }
 
   function handleDelete(id: string, name: string) {
@@ -39,8 +45,8 @@ function TeamsPage() {
         <p className="hint">No teams yet. Click "New team" to build your first one.</p>
       ) : (
         <ul className="team-list">
-          {teams.map((team) => (
-            <li key={team.id} className="team-box">
+          {sortedTeams.map((team) => (
+            <li key={team.id} className={team.favorite ? 'team-box favorite' : 'team-box'}>
               <Link to={`/teams/${team.id}`} className="team-box-link">
                 <span className="team-box-name">{team.name}</span>
                 <span className="team-box-count">
@@ -64,6 +70,16 @@ function TeamsPage() {
                   })}
                 </span>
               </Link>
+              <button
+                type="button"
+                className={team.favorite ? 'team-star on' : 'team-star'}
+                aria-pressed={team.favorite}
+                aria-label={team.favorite ? `Remove ${team.name} from favorites` : `Add ${team.name} to favorites`}
+                title={team.favorite ? 'Remove from favorite teams' : 'Add to favorite teams'}
+                onClick={() => toggleFavorite(team.id)}
+              >
+                {team.favorite ? '★' : '☆'}
+              </button>
               <button
                 type="button"
                 className="team-delete"

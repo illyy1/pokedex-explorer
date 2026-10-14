@@ -18,6 +18,7 @@ import {
 } from '../lib/stats'
 import { MOVES_PER_POKEMON, type TeamMember } from '../lib/teams'
 import EnergySymbol from './EnergySymbol'
+import GenerationMark from './GenerationMark'
 import RarityMark from './RarityMark'
 import Sparkles from './Sparkles'
 
@@ -156,6 +157,10 @@ function TeamSlot({ member, onChange, onRemove, onRandomize, isRandomizing, canR
       <div className="card-face">
         {rarity && <Sparkles />}
         <header className="card-header">
+          <span className="card-stage">
+            No. {member.pokemonId}
+            <GenerationMark id={member.pokemonId} size="small" />
+          </span>
           <div className="card-title">
             <h2 className="card-name">
               {item ? displayName(item.name) : `No. ${member.pokemonId}`}{' '}

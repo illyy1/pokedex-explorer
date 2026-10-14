@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { LAST_POKEMON } from '../../src/lib/api'
+import { pokemonOfTheDay } from '../../src/lib/pokemonOfTheDay'
 import { fakeFetch } from '../helpers/fakeApi'
 import { pokemonList, renderApp, setUpFakeBrowser } from '../helpers/renderApp'
 
@@ -11,6 +12,95 @@ import { pokemonList, renderApp, setUpFakeBrowser } from '../helpers/renderApp'
 // The Team Builder has its own file, TeamBuilder.integration.test.tsx.
 
 setUpFakeBrowser()
+
+describe('Home page', () => {
+  // The first day from 2026 on whose Pokémon of the day is `id`.
+  function dayFor(id: number): Date {
+    const day = new Date(2026, 0, 1, 12)
+    while (pokemonOfTheDay(day) !== id) day.setDate(day.getDate() + 1)
+    return day
+  }
+
+  it('shows the Pokémon of the day, which opens its card', async () => {
+    // Only the date is pretend; timers stay real.
+    vi.useFakeTimers({ toFake: ['Date'], now: dayFor(25) })
+    try {
+      const user = renderApp('/')
+      expect(screen.getByRole('heading', { name: 'Pokédex Explorer', level: 1 })).toBeInTheDocument()
+      const featured = within(screen.getByRole('region', { name: 'Pokémon of the day' }))
+      const card = await featured.findByRole('link', { name: /pikachu/i })
+      expect(card).toHaveTextContent('Gen 1 · Kanto')
+      expect(card).toHaveTextContent('25/649')
+
+      await user.click(card)
+      expect(await screen.findByRole('article', { name: 'pikachu card' })).toBeInTheDocument()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('makes the Pokémon of the day sparkle when it is legendary', async () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: dayFor(150) })
+    try {
+      renderApp('/')
+      const featured = within(screen.getByRole('region', { name: 'Pokémon of the day' }))
+      const card = await featured.findByRole('link', { name: /mewtwo/i })
+      expect(card).toHaveClass('holo-rare')
+      expect(card).toHaveTextContent('✦ Legendary')
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('links to the Pokédex, the favorites and the Team Builder', async () => {
+    const user = renderApp('/')
+    const hero = within(screen.getByRole('heading', { name: 'Pokédex Explorer', level: 1 }).parentElement!)
+    await user.click(hero.getByRole('link', { name: 'Team Builder' }))
+    expect(screen.getByRole('heading', { name: 'Team Builder' })).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: 'Home' }))
+    await user.click(screen.getByRole('link', { name: 'My favorites' }))
+    expect(await screen.findByText(/No favorites yet/)).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: 'Home' }))
+    await user.click(screen.getByRole('link', { name: 'Browse the Pokédex' }))
+    expect(await pokemonList().findByRole('button', { name: /pikachu/i })).toBeInTheDocument()
+  })
+})
+
+describe('Page not found', () => {
+  it('shows "Page not found" for an unknown address, with a way home', async () => {
+    const user = renderApp('/no-such-page')
+    expect(screen.getByRole('heading', { name: 'Page not found' })).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: 'Go back to Home' }))
+    expect(screen.getByRole('heading', { name: 'Pokédex Explorer', level: 1 })).toBeInTheDocument()
+  })
+})
+
+describe('Edge sprites', () => {
+  // The pictures of the Pokémon peeking in from the screen edges.
+  function edgeSprites(): string[] {
+    return [...document.querySelectorAll('.edge-sprites img')].map((img) => img.getAttribute('src')!)
+  }
+
+  it('shows ten different Pokémon that screen readers skip', () => {
+    renderApp('/pokedex')
+    expect(edgeSprites()).toHaveLength(10)
+    expect(new Set(edgeSprites()).size).toBe(10)
+    for (const column of document.querySelectorAll('.edge-sprites')) {
+      expect(column).toHaveAttribute('aria-hidden', 'true')
+    }
+  })
+
+  it('picks new ones on each page, but keeps them while picking Pokémon', async () => {
+    const user = renderApp('/pokedex')
+    const first = edgeSprites()
+    await user.click(await pokemonList().findByRole('button', { name: /pikachu/i }))
+    expect(edgeSprites()).toEqual(first)
+
+    await user.click(screen.getByRole('link', { name: 'About' }))
+    expect(edgeSprites()).toHaveLength(10)
+    expect(edgeSprites()).not.toEqual(first)
+  })
+})
 
 describe('Pokédex page', () => {
   it('lists the Pokémon and filters them with the search bar', async () => {
@@ -165,6 +255,120 @@ describe('Pokémon cards', () => {
     cleanup()
     renderApp('/pokedex/25')
     expect(await screen.findByRole('button', { name: '3D effect: Off' })).toBeInTheDocument()
+  })
+})
+
+describe('Generation marks', () => {
+  it('shows the generation on every list row and on the card', async () => {
+    renderApp('/pokedex/150')
+    const row = await pokemonList().findByRole('button', { name: /pikachu/i })
+    expect(within(row).getByText('Gen 1')).toHaveAttribute(
+      'title',
+      'Introduced in Generation 1 (Kanto)',
+    )
+    const card = await screen.findByRole('article', { name: 'mewtwo card' })
+    expect(within(card).getByText('Gen 1 · Kanto')).toBeInTheDocument()
+  })
+})
+
+describe('Browsing by generation', () => {
+  // These tests need the whole Pokédex, not only the few test Pokémon.
+  function renderWithAll(path: string) {
+    vi.stubGlobal('fetch', fakeFetch({ fullIndex: true }))
+    return renderApp(path)
+  }
+
+  // The Pokédex numbers of the rows in the list, in order.
+  async function rowNumbers(): Promise<number[]> {
+    const rows = () => [...document.querySelectorAll('.pokemon-list .row')]
+    await waitFor(() => expect(rows().length).toBeGreaterThan(0))
+    return rows().map((row) => Number(row.textContent!.match(/No\. (\d+)/)![1]))
+  }
+
+  function generationSelect() {
+    return screen.getByRole('combobox', { name: 'Filter by generation' })
+  }
+
+  it('has a button on the home page for each generation', () => {
+    renderApp('/')
+    const section = within(screen.getByRole('region', { name: 'Browse by generation' }))
+    const buttons = section.getAllByRole('link')
+    expect(buttons.map((b) => b.getAttribute('href'))).toEqual([
+      '/pokedex?gen=1',
+      '/pokedex?gen=2',
+      '/pokedex?gen=3',
+      '/pokedex?gen=4',
+      '/pokedex?gen=5',
+    ])
+    expect(buttons[1]).toHaveTextContent('Gen 2Johto')
+    expect(buttons[1]).toHaveTextContent('No. 152–251')
+  })
+
+  it('opens the Pokédex with only that generation’s Pokémon', async () => {
+    const user = renderWithAll('/')
+    const section = within(screen.getByRole('region', { name: 'Browse by generation' }))
+    await user.click(section.getByRole('link', { name: /^Gen 2/ }))
+
+    const numbers = await rowNumbers()
+    expect(numbers[0]).toBe(152)
+    expect(numbers).toHaveLength(50)
+    expect(numbers.every((n) => n >= 152 && n <= 251)).toBe(true)
+    expect(generationSelect()).toHaveValue('2')
+    expect(screen.getByText('Generation 2 · Johto')).toBeInTheDocument()
+  })
+
+  it('goes back to every Pokémon with "Show all Pokémon"', async () => {
+    const user = renderWithAll('/pokedex?gen=3')
+    expect((await rowNumbers())[0]).toBe(252)
+
+    await user.click(screen.getByRole('button', { name: 'Show all Pokémon' }))
+    expect((await rowNumbers())[0]).toBe(1)
+    expect(generationSelect()).toHaveValue('')
+    expect(screen.queryByRole('button', { name: 'Show all Pokémon' })).not.toBeInTheDocument()
+  })
+
+  it('switches generation with the dropdown', async () => {
+    const user = renderWithAll('/pokedex')
+    expect((await rowNumbers())[0]).toBe(1)
+    await user.selectOptions(generationSelect(), '5')
+    expect((await rowNumbers())[0]).toBe(494)
+    await user.selectOptions(generationSelect(), '')
+    expect((await rowNumbers())[0]).toBe(1)
+  })
+
+  it('stays on the generation while picking Pokémon', async () => {
+    const user = renderWithAll('/pokedex?gen=2')
+    await user.click(await pokemonList().findByRole('button', { name: /No\. 155(?!\d)/ }))
+    expect(await screen.findByRole('article', { name: 'pokemon-155 card' })).toBeInTheDocument()
+    expect(generationSelect()).toHaveValue('2')
+    expect((await rowNumbers())[0]).toBe(152)
+  })
+
+  it('searches only inside the picked generation', async () => {
+    const user = renderWithAll('/pokedex?gen=1')
+    await user.type(screen.getByRole('searchbox', { name: /search pokémon/i }), 'pika')
+    expect(pokemonList().getByRole('button', { name: /pikachu/i })).toBeInTheDocument()
+
+    await user.selectOptions(generationSelect(), '2')
+    expect(screen.getByText('No Pokémon match your search.')).toBeInTheDocument()
+  })
+
+  it('shows every Pokémon for an address with an unknown generation', async () => {
+    renderWithAll('/pokedex?gen=9')
+    expect((await rowNumbers())[0]).toBe(1)
+    expect(generationSelect()).toHaveValue('')
+  })
+
+  it('works on the Favorites page too', async () => {
+    localStorage.setItem('favorites', JSON.stringify([25, 155]))
+    const user = renderWithAll('/favorites?gen=2')
+    expect(await rowNumbers()).toEqual([155])
+
+    await user.selectOptions(generationSelect(), '3')
+    expect(screen.getByText('No favorites from this generation yet.')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Show all favorites' }))
+    expect(await rowNumbers()).toEqual([25, 155])
   })
 })
 

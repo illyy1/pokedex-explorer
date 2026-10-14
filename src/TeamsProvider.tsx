@@ -52,6 +52,8 @@ function readTeams(): Team[] {
     if (!Array.isArray(parsed)) return []
     return parsed.filter(isTeam).map((team) => ({
       ...team,
+      // Teams saved before stars existed aren't starred.
+      favorite: team.favorite === true,
       members: team.members.map((m) => ({
         ...m,
         item: typeof m.item === 'string' ? m.item : '',
@@ -102,7 +104,7 @@ function TeamsProvider({ children }: { children: ReactNode }) {
 
   const createTeam = useCallback(() => {
     const id = newId()
-    setTeams((current) => [...current, { id, name: nextTeamName(current), members: [] }])
+    setTeams((current) => [...current, { id, name: nextTeamName(current), favorite: false, members: [] }])
     return id
   }, [])
 

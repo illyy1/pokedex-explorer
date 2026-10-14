@@ -4,6 +4,7 @@ import type { PokemonInfo, PokemonListItem } from '../lib/types'
 import { useStoredToggle } from '../lib/useStoredToggle'
 import BuildsSection from './BuildsSection'
 import FavoriteButton from './FavoriteButton'
+import GenerationMark from './GenerationMark'
 import PokemonCard from './PokemonCard'
 
 type Props = {
@@ -48,7 +49,10 @@ function DetailsPanel({ selected, info, failed }: Props) {
         <article className="poke-card" style={typeStyle(selected.types?.[0])}>
           <div className="card-face">
             <header className="card-header">
-              <span className="card-stage">No. {selected.id}</span>
+              <span className="card-stage">
+                No. {selected.id}
+                <GenerationMark id={selected.id} />
+              </span>
               <div className="card-title">
                 <h2 className="card-name">{selected.name.replace(/-/g, ' ')}</h2>
               </div>

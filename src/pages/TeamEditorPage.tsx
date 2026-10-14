@@ -122,6 +122,14 @@ function TeamEditorPage() {
           onChange={(event) => updateTeam(id, (t) => ({ ...t, name: event.target.value }))}
         />
       </label>
+      <button
+        type="button"
+        className={team.favorite ? 'favorite-button on' : 'favorite-button'}
+        aria-pressed={team.favorite}
+        onClick={() => updateTeam(id, (t) => ({ ...t, favorite: !t.favorite }))}
+      >
+        {team.favorite ? '★ Favorite team' : '☆ Add to favorite teams'}
+      </button>
       <p className="team-count">
         {team.members.length}/{TEAM_SIZE} Pokémon · saved automatically in this browser
       </p>

@@ -32,6 +32,8 @@ export function newMember(pokemonId: number): TeamMember {
 export type Team = {
   id: string
   name: string
+  // Starred teams are listed first in the Team Builder.
+  favorite: boolean
   members: TeamMember[]
 }
 

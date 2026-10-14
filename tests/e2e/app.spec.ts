@@ -234,3 +234,70 @@ test('exports a team with a real Smogon build to Showdown', async ({ page, conte
   expect(lines).toContainEqual(expect.stringMatching(/^\w+ Nature$/))
   expect(lines.filter((line) => line.startsWith('- '))).toHaveLength(4)
 })
+
+test('the Pokémon of the day opens its own card', async ({ page }) => {
+  await page.goto('./')
+  const featured = page.getByRole('region', { name: 'Pokémon of the day' }).getByRole('link')
+  // The card's footer says "227/649"; its picture has loaded.
+  await expect(featured.locator('.card-art img')).toHaveJSProperty('complete', true)
+  const number = (await featured.locator('.card-footer span').last().textContent())!.split('/')[0]
+  await expect(featured).toContainText(/Gen \d · \w+/)
+
+  await featured.click()
+  await expect(page).toHaveURL(new RegExp(`/pokedex/${number}$`))
+  await expect(page.locator('.poke-card .card-flavor-number')).toHaveText(`No. ${number}`)
+})
+
+test('an unknown address shows "Page not found"', async ({ page }) => {
+  await page.goto('./no-such-page')
+  await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible()
+  await page.getByRole('link', { name: 'Go back to Home' }).click()
+  await expect(page.getByRole('heading', { name: 'Pokédex Explorer', level: 1 })).toBeVisible()
+})
+
+test('browses one generation from the home page and goes back to all', async ({ page }) => {
+  await page.goto('./')
+  await page
+    .getByRole('region', { name: 'Browse by generation' })
+    .getByRole('link', { name: /^Gen 3/ })
+    .click()
+  await expect(page).toHaveURL(/\/pokedex\?gen=3$/)
+  const list = pokemonList(page)
+  await expect(list.locator('.row').first()).toContainText('treecko')
+  await expect(list.getByRole('button', { name: /bulbasaur/i })).not.toBeAttached()
+
+  // Infinite scroll stays inside the generation: No. 302 comes after No. 301.
+  await expect(async () => {
+    await list.locator('.row').last().scrollIntoViewIfNeeded()
+    await expect(list.getByRole('button', { name: /No\. 302(?!\d)/ })).toBeAttached({ timeout: 1000 })
+  }).toPass()
+
+  // Picking a Pokémon keeps the generation in the address.
+  await list.getByRole('button', { name: /mudkip/i }).click()
+  await expect(page).toHaveURL(/\/pokedex\/258\?gen=3$/)
+
+  await list.getByRole('button', { name: 'Show all Pokémon' }).click()
+  await expect(page).toHaveURL(/\/pokedex\/258$/)
+  await expect(list.locator('.row').first()).toContainText('bulbasaur')
+})
+
+test('builds a team from favorite Pokémon and stars it', async ({ page }) => {
+  await page.goto('./pokedex/445')
+  await page.getByRole('button', { name: 'Add garchomp to favorites' }).click()
+
+  await page.goto('./teams')
+  await page.getByRole('button', { name: /new team/i }).click()
+  await page.getByRole('button', { name: /add pokémon/i }).click()
+  await page.getByRole('button', { name: '★ Favorites (1)' }).click()
+  await expect(page.locator('.picker-list button')).toHaveCount(1)
+  await page.locator('.picker-list').getByRole('button', { name: /garchomp/i }).click()
+  await expect(page.getByRole('button', { name: 'Remove Garchomp' })).toBeVisible()
+
+  await page.getByRole('button', { name: '☆ Add to favorite teams' }).click()
+  await page.getByRole('link', { name: /all teams/i }).click()
+  await page.getByRole('button', { name: /new team/i }).click()
+  await page.getByRole('link', { name: /all teams/i }).click()
+  // The starred team stays first, above the newer one.
+  await expect(page.locator('.team-box-name')).toHaveText(['Team 1', 'Team 2'])
+  await expect(page.getByRole('button', { name: 'Remove Team 1 from favorites' })).toBeVisible()
+})

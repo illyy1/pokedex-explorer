@@ -568,3 +568,45 @@ please put all the ts files in a seperate folder from the tsx files, and be sure
 ```text
 commit and push
 ```
+
+## 91. Generation mark on every Pokémon
+
+```text
+please add a label to each pokemon showing in which pokemon generation they were introduced
+```
+
+## 92. What the tests cover now
+
+```text
+what do our tests cover now
+```
+
+## 93. Cover the remaining gaps with tests
+
+```text
+cover these tests please
+```
+
+## 94. Generation buttons on the homepage
+
+```text
+add to homepage, buttons for each gen, if you press each button it takes you to a list of the pokemon introduced in the gen(obviously redirect to pokedex route), add the option to get back to the entire list of pokemon again
+```
+
+## 95. Favorites in the Team Builder (sent while the generation buttons were being built)
+
+```text
+add to the teambuilder, the ability to choose from your favorite pokemon list, also add the ability to mark a pokemon team as favorite with a star, your favorite pokemon teams show up first in the teambuilder
+```
+
+## 96. Team Builder button on the homepage (sent while the favorites were being tested)
+
+```text
+add a button to route to teambuilder on the homepage
+```
+
+## 97. Commit and push
+
+```text
+commit and push
+```

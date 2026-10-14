@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { fetchListItem, LAST_POKEMON } from '../lib/api'
 import EnergySymbol from '../components/EnergySymbol'
+import GenerationMark from '../components/GenerationMark'
 import RarityMark from '../components/RarityMark'
 import Sparkles from '../components/Sparkles'
+import { GENERATIONS } from '../lib/generations'
 import { rarityOf } from '../lib/legendary'
+import { spriteUrl } from '../lib/names'
 import { usePokemonData } from '../lib/pokemonData'
 import { pokemonOfTheDay } from '../lib/pokemonOfTheDay'
 import { typeStyle } from '../lib/pokemonTypes'
@@ -50,6 +53,9 @@ function HomePage() {
           <Link to="/favorites" className="button">
             My favorites
           </Link>
+          <Link to="/teams" className="button">
+            Team Builder
+          </Link>
         </div>
       </section>
 
@@ -63,7 +69,10 @@ function HomePage() {
             <span className="card-face">
               {rarity && <Sparkles />}
               <span className="card-header">
-                <span className="card-stage">Pokémon of the day</span>
+                <span className="card-stage">
+                  Pokémon of the day
+                  <GenerationMark id={featured.id} />
+                </span>
                 <span className="card-title">
                   <span className="card-name">
                     {featured.name.replace(/-/g, ' ')} {rarity && <RarityMark rarity={rarity} />}
@@ -98,6 +107,26 @@ function HomePage() {
         ) : (
           <p className="status">Loading…</p>
         )}
+      </section>
+
+      {/* One button per generation; each opens the Pokédex with only that generation's Pokémon. */}
+      <section className="generations" aria-labelledby="generations-title">
+        <h2 id="generations-title">Browse by generation</h2>
+        <ul className="generation-buttons">
+          {GENERATIONS.map((g) => (
+            <li key={g.number}>
+              <Link to={`/pokedex?gen=${g.number}`} className="generation-button">
+                {/* The first Pokémon each generation introduced. */}
+                <img src={spriteUrl(g.first)} alt="" width="72" height="72" />
+                <span className="generation-name">Gen {g.number}</span>
+                <span className="generation-region">{g.region}</span>
+                <small>
+                  No. {g.first}–{g.last}
+                </small>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   )

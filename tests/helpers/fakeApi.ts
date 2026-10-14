@@ -137,14 +137,19 @@ function pokemonResponse(p: FakePokemon) {
   }
 }
 
+// The Pokédex index: the Pokémon above, or with `fullIndex` all 649 (the
+// others as plain test Pokémon).
+function indexResponse(fullIndex: boolean) {
+  const list = fullIndex
+    ? Array.from({ length: 649 }, (_, i) => findPokemon(String(i + 1))!)
+    : FAKE_POKEMON
+  return { results: list.map((p) => ({ name: p.name, url: `${API_URL}/pokemon/${p.id}/` })) }
+}
+
 // What the fake server answers for one address, or undefined for "not found".
-function answer(url: string): unknown {
+function answer(url: string, fullIndex: boolean): unknown {
   if (url === 'https://data.pkmn.cc/sets/gen5.json') return BUILDS
-  if (url.startsWith(`${API_URL}/pokemon?`)) {
-    return {
-      results: FAKE_POKEMON.map((p) => ({ name: p.name, url: `${API_URL}/pokemon/${p.id}/` })),
-    }
-  }
+  if (url.startsWith(`${API_URL}/pokemon?`)) return indexResponse(fullIndex)
 
   const [, kind, key] = url.slice(API_URL.length).split('/')
   const pokemon = findPokemon(key)
@@ -175,13 +180,21 @@ function answer(url: string): unknown {
   return undefined
 }
 
-// A replacement for window.fetch. Pass `offline: true` to make every
-// request fail, like when there is no internet connection.
-export function fakeFetch({ offline = false } = {}) {
+type Options = {
+  // Every request fails, like when there is no internet connection.
+  offline?: boolean
+  // Only the requests this returns true for fail.
+  fails?: (url: string) => boolean
+  // The index lists all 649 Pokémon instead of the few above.
+  fullIndex?: boolean
+}
+
+// A replacement for window.fetch.
+export function fakeFetch({ offline = false, fails = () => false, fullIndex = false }: Options = {}) {
   return async (input: RequestInfo | URL): Promise<Response> => {
-    if (offline) throw new TypeError('Failed to fetch')
     const url = input instanceof Request ? input.url : String(input)
-    const body = answer(url)
+    if (offline || fails(url)) throw new TypeError('Failed to fetch')
+    const body = answer(url, fullIndex)
     return body === undefined
       ? new Response('Not found', { status: 404 })
       : new Response(JSON.stringify(body), { headers: { 'Content-Type': 'application/json' } })

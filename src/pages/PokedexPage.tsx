@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams, useSearchParams } from 'react-router'
 import {
   fetchListItem,
   fetchPokemonInfo,
@@ -11,6 +11,7 @@ import {
 import DetailsPanel from '../components/DetailsPanel'
 import PokemonList from '../components/PokemonList'
 import { useFavorites } from '../lib/favorites'
+import { GENERATIONS, generationFromParam } from '../lib/generations'
 import { usePokemonData } from '../lib/pokemonData'
 import { ALL_TYPES } from '../lib/pokemonTypes'
 import { matchesQuery, normalizeQuery } from '../lib/search'
@@ -30,11 +31,21 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   // The clicked Pokémon comes from the address, for example /pokedex/25.
   const { id } = useParams()
   const selectedId = id === undefined ? null : Number(id)
+  // The picked generation is in the address too (/pokedex?gen=1), so the
+  // homepage's generation buttons can link straight to it.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const generation = generationFromParam(searchParams.get('gen'))
   const isValidId =
     selectedId !== null && Number.isInteger(selectedId) && selectedId >= 1 && selectedId <= LAST_POKEMON
 
   // How many Pokémon the list shows when not searching.
   const [shownCount, setShownCount] = useState(PAGE_SIZE)
+  // Picking another generation starts its list from the top again.
+  const [shownGeneration, setShownGeneration] = useState(generation?.number)
+  if (shownGeneration !== generation?.number) {
+    setShownGeneration(generation?.number)
+    setShownCount(PAGE_SIZE)
+  }
   const listPanelRef = useRef<HTMLElement>(null)
   const endMarkerRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
@@ -104,8 +115,10 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   const typeFailed = typeFilter !== '' && typeErrorName === typeFilter
   const isLoadingType = typeFilter !== '' && !typeIds && !typeFailed
 
-  // All Pokémon, or only the favorites.
-  const baseList = favoritesOnly ? index.filter((p) => favoriteIds.includes(p.id)) : index
+  // All Pokémon, or only the favorites, from the picked generation if there is one.
+  const baseList = (favoritesOnly ? index.filter((p) => favoriteIds.includes(p.id)) : index).filter(
+    (p) => !generation || (p.id >= generation.first && p.id <= generation.last),
+  )
   const matches = isFiltering
     ? baseList.filter(
         (p) =>
@@ -116,7 +129,7 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
     ? matches.slice(0, MAX_RESULTS)
     : favoritesOnly
       ? baseList
-      : index.slice(0, shownCount)
+      : baseList.slice(0, shownCount)
   // Use the loaded version (with picture and types) when we have it.
   const rows = visible.map((p) => items[p.id] ?? p)
 
@@ -148,8 +161,15 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   }, [missingKey, isFiltering, retryCount, addItems])
 
   function handleSelect(pokemonId: number) {
-    navigate(`${basePath}/${pokemonId}`)
+    // Keep the picked generation in the address.
+    navigate({ pathname: `${basePath}/${pokemonId}`, search: searchParams.toString() })
     setClickCount((count) => count + 1)
+  }
+
+  // '' shows every generation again.
+  function changeGeneration(value: string) {
+    setSearchParams(value ? { gen: value } : {})
+    listPanelRef.current?.scrollTo({ top: 0 })
   }
 
   function handleRetry() {
@@ -159,7 +179,7 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
 
   // Only one page loads at a time: while rows are loading (or failed), this is false.
   const canLoadMore =
-    !favoritesOnly && !isFiltering && shownCount < index.length && !isLoadingItems && !itemsFailed
+    !favoritesOnly && !isFiltering && shownCount < baseList.length && !isLoadingItems && !itemsFailed
 
   // Infinite scroll: watch the end marker inside the scrolling list panel.
   // The observer is made again after every page, so if the marker is still
@@ -208,10 +228,38 @@ function PokedexPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
               </option>
             ))}
           </select>
+          <select
+            aria-label="Filter by generation"
+            value={generation ? String(generation.number) : ''}
+            onChange={(event) => changeGeneration(event.target.value)}
+          >
+            <option value="">All generations</option>
+            {GENERATIONS.map((g) => (
+              <option key={g.number} value={g.number}>
+                Gen {g.number} · {g.region}
+              </option>
+            ))}
+          </select>
         </div>
+        {generation && (
+          <div className="generation-filter">
+            <p>
+              <strong>
+                Generation {generation.number} · {generation.region}
+              </strong>{' '}
+              (No. {generation.first}–{generation.last})
+            </p>
+            <button type="button" className="retry-button" onClick={() => changeGeneration('')}>
+              {favoritesOnly ? 'Show all favorites' : 'Show all Pokémon'}
+            </button>
+          </div>
+        )}
         <PokemonList pokemon={rows} selectedId={selectedId} onSelect={handleSelect} />
-        {favoritesOnly && !isLoadingIndex && !indexError && baseList.length === 0 && (
+        {favoritesOnly && !isLoadingIndex && !indexError && favoriteIds.length === 0 && (
           <p className="status">No favorites yet. Tap the ☆ on any Pokémon to save it.</p>
+        )}
+        {favoritesOnly && !isFiltering && favoriteIds.length > 0 && baseList.length === 0 && (
+          <p className="status">No favorites from this generation yet.</p>
         )}
         {typeFailed && (
           <p className="status error" role="alert">

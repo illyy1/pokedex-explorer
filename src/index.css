@@ -415,6 +415,33 @@ body {
   }
 }
 
+/* The "Gen 1 · Kanto" mark: which generation introduced a Pokémon. */
+.gen-mark {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 7px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  opacity: 0.8;
+  white-space: nowrap;
+
+  &.small {
+    margin-left: 4px;
+    padding: 0 5px;
+    font-size: 9px;
+  }
+}
+
+/* In list rows and the picker, the row's own gap spaces it. */
+.row-bottom .gen-mark,
+.picker-list .gen-mark {
+  margin-left: 0;
+}
+
 /* The "✦ Legendary" / "✦ Mythical" mark. */
 .rarity-mark {
   display: inline-block;
@@ -839,6 +866,21 @@ body {
     flex: 1;
     min-width: 0;
   }
+  select {
+    min-width: 0;
+  }
+
+  /* On narrow screens the search box gets its own row, and the two filters share the next. */
+  @media (max-width: 520px) {
+    flex-wrap: wrap;
+
+    input {
+      flex-basis: 100%;
+    }
+    select {
+      flex: 1;
+    }
+  }
 }
 
 .pokemon-list {
@@ -1154,6 +1196,100 @@ body {
   gap: 12px;
 }
 
+/* "Browse by generation": a row of buttons under the hero and the card. */
+.generations {
+  grid-column: 1 / -1;
+
+  h2 {
+    margin: 0 0 12px;
+    font-size: 24px;
+  }
+}
+
+.generation-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.generation-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px 14px;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  color: var(--text-h);
+  text-align: center;
+  text-decoration: none;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+
+  img {
+    image-rendering: pixelated;
+  }
+  small {
+    color: var(--muted);
+  }
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 0 0 2px var(--card-frame),
+      0 6px 14px rgba(0, 0, 0, 0.14);
+  }
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.generation-name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.generation-region {
+  font-weight: 700;
+  color: var(--card-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .generation-button {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+/* The picked generation above the Pokédex list, with a way back to all of them. */
+.generation-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+
+  p {
+    margin: 0;
+  }
+  .retry-button {
+    padding: 6px 16px;
+  }
+}
+
 .featured .status {
   margin: 48px 0;
 }
@@ -1433,7 +1569,7 @@ body {
 }
 
 .team-box-name {
-  padding-right: 70px;
+  padding-right: 110px;
   font-size: 22px;
   font-weight: 700;
   overflow-wrap: anywhere;
@@ -1468,6 +1604,33 @@ body {
   background:
     linear-gradient(transparent 46%, rgba(0, 0, 0, 0.15) 46% 54%, transparent 54%),
     radial-gradient(circle, #fff 55%, #e7dfc6 100%) !important;
+}
+
+/* The star that marks a favorite team, left of "Delete". */
+.team-star {
+  position: absolute;
+  top: 14px;
+  right: 86px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  background: #fff;
+  color: #b08900;
+  font: inherit;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+
+  &.on {
+    background: var(--card-frame);
+    color: var(--card-ink);
+  }
+  &:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
 }
 
 .team-delete {
@@ -1942,6 +2105,36 @@ body {
   }
 }
 
+/* "All Pokémon" / "★ Favorites" above the picker's list. */
+.picker-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0 4px;
+
+  button {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-h);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &[aria-pressed='true'] {
+      border-color: transparent;
+      background: var(--card-frame);
+      color: var(--card-ink);
+    }
+    &:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 1px;
+    }
+  }
+}
+
 /* The invisible marker that loads more choices when it scrolls into view. */
 .picker-end {
   height: 1px;
@@ -1986,4 +2179,9 @@ body {
   .card-name {
     font-size: 23px;
   }
+}
+
+/* The editor's "Favorite team" button, between the name and the count. */
+.team-editor > .favorite-button {
+  margin-bottom: 10px;
 }

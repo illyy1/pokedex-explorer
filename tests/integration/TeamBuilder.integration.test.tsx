@@ -78,6 +78,22 @@ describe('Team Builder', () => {
     expect(screen.getByRole('heading', { name: 'Team not found' })).toBeInTheDocument()
   })
 
+  it('deletes a team only after asking', async () => {
+    const user = await newTeam()
+    await user.click(screen.getByRole('link', { name: /all teams/i }))
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+
+    await user.click(screen.getByRole('button', { name: 'Delete Team 1' }))
+    expect(confirm).toHaveBeenCalledWith(`Delete "Team 1"? This can't be undone.`)
+    // Saying no keeps it.
+    expect(screen.getByRole('link', { name: /Team 1/ })).toBeInTheDocument()
+
+    confirm.mockReturnValue(true)
+    await user.click(screen.getByRole('button', { name: 'Delete Team 1' }))
+    expect(screen.getByText(/No teams yet/)).toBeInTheDocument()
+    expect(JSON.parse(localStorage.getItem('teams')!)).toEqual([])
+  })
+
   it('gives legendary Pokémon a sparkly team card', async () => {
     const user = await newTeam()
     await addPokemon(user, 'mew', 'Mewtwo')
@@ -85,6 +101,128 @@ describe('Team Builder', () => {
     expect(card).toHaveClass('holo-rare')
     expect(card.querySelector('.sparkles')).not.toBeNull()
     expect(within(card).getByText('✦ Legendary')).toBeInTheDocument()
+  })
+})
+
+describe('Generation marks', () => {
+  it('shows the generation in the picker and on the team card', async () => {
+    const user = await newTeam()
+    await user.click(screen.getByRole('button', { name: /add pokémon/i }))
+    await user.type(screen.getByRole('searchbox', { name: 'Search for a Pokémon to add' }), 'pika')
+    const choice = await screen.findByRole('button', { name: /pikachu/i })
+    expect(within(choice).getByText('Gen 1')).toBeInTheDocument()
+
+    await user.click(choice)
+    const card = (await screen.findByRole('heading', { name: /Pikachu/ })).closest('article')!
+    expect(within(card).getByText('Gen 1')).toBeInTheDocument()
+  })
+})
+
+describe('Picking from favorites', () => {
+  it('lists only the favorite Pokémon under "Favorites"', async () => {
+    localStorage.setItem('favorites', JSON.stringify([6, 150]))
+    const user = await newTeam()
+    await user.click(screen.getByRole('button', { name: /add pokémon/i }))
+    const all = screen.getByRole('button', { name: 'All Pokémon' })
+    const favorites = screen.getByRole('button', { name: '★ Favorites (2)' })
+    expect(all).toHaveAttribute('aria-pressed', 'true')
+
+    await user.click(favorites)
+    expect(favorites).toHaveAttribute('aria-pressed', 'true')
+    const names = [...document.querySelectorAll('.picker .picker-name')].map((el) => el.textContent)
+    expect(names).toEqual(['Charizard', 'Mewtwo'])
+
+    await user.click(screen.getByRole('button', { name: /mewtwo/i }))
+    expect(await screen.findByRole('button', { name: 'Remove Mewtwo' })).toBeInTheDocument()
+    expect(savedTeam().members[0].pokemonId).toBe(150)
+  })
+
+  it('searches inside the favorites, and leaves out the ones already in the team', async () => {
+    localStorage.setItem('favorites', JSON.stringify([6, 25]))
+    const user = await newTeam()
+    await addPokemon(user, 'pika', 'Pikachu')
+    await user.click(screen.getByRole('button', { name: /add pokémon/i }))
+    await user.click(screen.getByRole('button', { name: /Favorites/ }))
+    const picker = within(document.querySelector('.picker') as HTMLElement)
+    expect(picker.queryByRole('button', { name: /pikachu/i })).not.toBeInTheDocument()
+
+    await user.type(screen.getByRole('searchbox', { name: 'Search for a Pokémon to add' }), 'rai')
+    expect(screen.getByText('None of your favorites match.')).toBeInTheDocument()
+    await user.clear(screen.getByRole('searchbox', { name: 'Search for a Pokémon to add' }))
+    await user.click(picker.getByRole('button', { name: /charizard/i }))
+    expect(await screen.findByRole('button', { name: 'Remove Charizard' })).toBeInTheDocument()
+
+    // Both favorites are in the team now.
+    await user.click(screen.getByRole('button', { name: /add pokémon/i }))
+    await user.click(screen.getByRole('button', { name: /Favorites/ }))
+    expect(screen.getByText('All your favorites are already in this team.')).toBeInTheDocument()
+  })
+
+  it('says how to get favorites when there are none', async () => {
+    const user = await newTeam()
+    await user.click(screen.getByRole('button', { name: /add pokémon/i }))
+    await user.click(screen.getByRole('button', { name: '★ Favorites (0)' }))
+    expect(screen.getByText(/No favorites yet. Star Pokémon in the Pokédex/)).toBeInTheDocument()
+  })
+
+  it('marks favorites with a star in the full list', async () => {
+    localStorage.setItem('favorites', JSON.stringify([25]))
+    const user = await newTeam()
+    await user.click(screen.getByRole('button', { name: /add pokémon/i }))
+    expect(within(screen.getByRole('button', { name: /pikachu/i })).getByLabelText('Favorite')).toBeInTheDocument()
+    expect(within(screen.getByRole('button', { name: /raichu/i })).queryByLabelText('Favorite')).not.toBeInTheDocument()
+  })
+})
+
+describe('Favorite teams', () => {
+  // The team names in the order the Team Builder lists them.
+  function teamOrder() {
+    return [...document.querySelectorAll('.team-box-name')].map((el) => el.textContent)
+  }
+
+  it('stars a team, lists starred teams first, and remembers it', async () => {
+    localStorage.setItem(
+      'teams',
+      JSON.stringify(
+        ['Rain', 'Sun', 'Sand'].map((name) => ({ id: name, name, favorite: false, members: [] })),
+      ),
+    )
+    const user = renderApp('/teams')
+    expect(teamOrder()).toEqual(['Rain', 'Sun', 'Sand'])
+
+    await user.click(screen.getByRole('button', { name: 'Add Sand to favorites' }))
+    expect(teamOrder()).toEqual(['Sand', 'Rain', 'Sun'])
+    expect(screen.getByRole('button', { name: 'Remove Sand from favorites' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await user.click(screen.getByRole('button', { name: 'Add Sun to favorites' }))
+    // Starred teams keep the order they were made in.
+    expect(teamOrder()).toEqual(['Sun', 'Sand', 'Rain'])
+    expect(JSON.parse(localStorage.getItem('teams')!).map((t: { favorite: boolean }) => t.favorite)).toEqual([
+      false,
+      true,
+      true,
+    ])
+
+    await user.click(screen.getByRole('button', { name: 'Remove Sun from favorites' }))
+    expect(teamOrder()).toEqual(['Sand', 'Rain', 'Sun'])
+  })
+
+  it('stars a team from its editor', async () => {
+    const user = await newTeam()
+    await user.click(screen.getByRole('button', { name: '☆ Add to favorite teams' }))
+    expect(screen.getByRole('button', { name: '★ Favorite team' })).toHaveAttribute('aria-pressed', 'true')
+    expect(savedTeam().favorite).toBe(true)
+
+    await user.click(screen.getByRole('link', { name: /all teams/i }))
+    expect(screen.getByRole('button', { name: 'Remove Team 1 from favorites' })).toBeInTheDocument()
+  })
+
+  it('treats teams saved before stars existed as not starred', () => {
+    localStorage.setItem('teams', JSON.stringify([{ id: 'old', name: 'Old', members: [] }]))
+    renderApp('/teams')
+    expect(screen.getByRole('button', { name: 'Add Old to favorites' })).toBeInTheDocument()
   })
 })
 

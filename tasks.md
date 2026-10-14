@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–42 are done; task 32 is planned for later. Tasks 9–42 were added after the first plan.
+Status: tasks 1–31 and 33–47 are done; task 32 is planned for later. Tasks 9–47 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -168,6 +168,7 @@ Done when: at 1280 pixels wide all ten sprites show on every page (Home, Pokéde
 ## Task 32 (later): Add every generation to the Pokédex ⏳
 Not started; kept for later. Show all 1025 Pokémon (Generations 1–9) instead of 649, while the Team Builder stays Generation 5 (option A of three; the other two, moving the Team Builder to Generation 9 or using each Pokémon's newest game, were much bigger and left out).
 - Change `LAST_POKEMON` in `src/lib/api.ts` from 649 to 1025. The list, search, type filter, card numbers, Pokémon of the day and edge sprites all follow it.
+- Add Generations 6–9 (Kalos 650–721, Alola 722–809, Galar 810–905, Paldea 906–1025) to `src/lib/generations.ts`, so their Pokémon get a generation mark.
 - Add the Generation 6–9 legendary and mythical Pokémon to `src/lib/legendary.ts`, taken from the `is_legendary` and `is_mythical` flags in PokéAPI's pokemon-species data.
 - Keep the Team Builder's picker to Nos. 1–649 and label it as a Generation 5 team builder, because its moves, items, Smogon builds and Showdown export are all Generation 5.
 - Update "649" and "Generations 1–5" on the Home and About pages and in the PRD.
@@ -249,3 +250,31 @@ Done when: 71 unit and integration tests and 20 end-to-end runs pass (4 runs are
 The 19 `.ts` files that were next to the `.tsx` files in `src/` (`api`, `builds`, `favorites`, `legendary`, `matchups`, `motionAccess`, `names`, `pokemonData`, `pokemonOfTheDay`, `pokemonTypes`, `randomTeam`, `search`, `showdown`, `stats`, `teams`, `types`, `units`, `useStoredToggle` and `useTilt`) moved to `src/lib/`. `src/` keeps `main.tsx`, `App.tsx` and the three providers, with the pages and components in their own folders. Every import in `src/` and `tests/` was changed to the new place (81 of them), and the docs and comments that named these files too.
 
 Done when: no `.ts` file is left next to a `.tsx` file in `src/`, and build, lint, the 71 unit and integration tests and the 20 end-to-end runs all pass.
+
+## Task 43: Show which generation introduced each Pokémon ✅
+Every Pokémon gets a small rounded "Gen 1" mark. `src/lib/generations.ts` works out the generation from the Pokédex number, because each generation's new Pokémon come right after the last one's (Kanto 1–151, Johto 152–251, Hoenn 252–386, Sinnoh 387–493, Unova 494–649), so no extra request is needed. `GenerationMark` shows "Gen 1" in small places and "Gen 1 · Kanto" on the big cards, and hovering it says "Introduced in Generation 1 (Kanto)". It is on the Pokédex and Favorites list rows (after the number), the Pokédex card and its loading card (next to "Basic Pokémon" or "Evolves from …"), the Pokémon of the day, the Team Builder cards (a new "No. 6" line above the name) and the Team Builder's picker.
+
+Done when: list rows show "Gen 1" for Pikachu, Mewtwo's card shows "Gen 1 · Kanto", Skarmory's homepage card shows "Gen 2 · Johto", the picker shows Chimchar as "Gen 4", the first and last Pokémon of every generation get the right one, every number from 1 to 649 has one, and at 1280 and 375 pixels wide the marks fit without crowding.
+
+## Task 44: Test the last untested parts ✅
+- **Unit:** `tests/unit/units.test.ts` (feet and inches, whole pounds, one decimal under 10 lbs), `tests/unit/pokemonOfTheDay.test.ts` (the same all day, new at midnight, every one of the 649 once before any repeats) and `tests/unit/motionAccess.test.ts` (no sensor, Android, iPhone yes / no / asking failed, a reading counting as an earlier yes, which states may read the sensor, and touch screens including Samsung phones).
+- **Integration:** the home page (the Pokémon of the day for a pretend date opens its card, sparkles when legendary, and the two buttons work), "Page not found" with its link home, the edge sprites (ten different, hidden from screen readers, new on each page, kept while picking Pokémon) and deleting a team only after asking. `tests/integration/Errors.integration.test.tsx` covers the builds, details, type, Pokémon-of-the-day, list-row and team-card errors with their "Try again" buttons, "Showing the first 50 of 111 matches", unreadable or hand-edited favorites and teams (bad entries dropped, old teams filled in, EVs over 510 reset) and favorites and teams changed in another tab. `tests/integration/Motion.integration.test.tsx` loads a fresh copy of the app as an Android phone, an iPhone that says yes or no, and a touch screen without a sensor. The fake server can now fail chosen requests and list all 649 Pokémon.
+- **End-to-end:** the real Pokémon of the day opens its own card, and an unknown address shows "Page not found".
+
+Done when: 119 unit and integration tests and 24 end-to-end runs pass, and breaking the favorites check, teams syncing between tabs, the decimal for light Pokémon, the question before deleting or the team card's "Try again" each makes a test fail.
+
+## Task 45: Browse by generation ✅
+The homepage gets a "Browse by generation" row: one button per generation with its first Pokémon's sprite, "Gen 1", "Kanto" and "No. 1–151". Each links to `/pokedex?gen=1` and so on. The Pokédex reads `?gen=` (`generationFromParam` in `src/lib/generations.ts`, which now also lists each generation's first and last number), and only lists that generation's Pokémon: infinite scroll, search and the type filter all stay inside it, and changing generation starts the list from the top. A new "Filter by generation" dropdown next to the type filter does the same, and a bar above the list ("Generation 2 · Johto (No. 152–251)") has a "Show all Pokémon" button to go back to the whole list. Picking a Pokémon keeps `?gen=` in the address. An unknown generation (`?gen=9`) shows everything. The Favorites page has the dropdown too ("Show all favorites", and "No favorites from this generation yet."). On phones the search bar gets its own row above the two dropdowns.
+
+Done when: the five homepage buttons open the Pokédex at Nos. 1, 152, 252, 387 and 494 with only that generation's Pokémon; scrolling Gen 3 loads No. 302 and never leaves Gen 3; searching "pika" finds Pikachu in Gen 1 and nothing in Gen 2; picking Mudkip goes to /pokedex/258?gen=3; "Show all Pokémon" goes back to Bulbasaur and /pokedex/258; and at 375 pixels wide the search bar is readable.
+
+## Task 46: Favorites in the Team Builder ✅
+- **Pick from favorites:** the picker gets "All Pokémon" and "★ Favorites (n)" tabs. Favorites lists only the starred Pokémon not already in the team, searchable like the full list, with a message when there are none ("Star Pokémon in the Pokédex to pick them here"), when all are already in the team, or when none match. Favorites are starred in the full list too.
+- **Favorite teams:** each team box on `/teams` has a ☆ button (★ when starred) left of "Delete", and the editor has "☆ Add to favorite teams" / "★ Favorite team". Starred teams are listed first; each group keeps the order the teams were made in. Teams save `favorite: true/false`; teams saved before this load as not starred.
+
+Done when: with Charizard and Mewtwo starred, the Favorites tab shows only those two and picking Mewtwo adds it; a favorite already in the team isn't offered; starring Sand in Rain, Sun, Sand lists Sand, Rain, Sun, then starring Sun lists Sun, Sand, Rain; unstarring moves a team back; a star from the editor shows on `/teams`; and the stars are still there after a reload.
+
+## Task 47: Team Builder button on the homepage ✅
+The homepage's buttons are now "Browse the Pokédex", "My favorites" and "Team Builder", which opens `/teams`.
+
+Done when: the button opens the Team Builder, and the three buttons wrap neatly on a phone.

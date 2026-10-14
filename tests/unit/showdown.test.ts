@@ -37,6 +37,7 @@ describe('teamToShowdownText', () => {
     const team: Team = {
       id: 't1',
       name: 'Test',
+      favorite: false,
       members: [
         {
           pokemonId: 25,
@@ -63,22 +64,22 @@ describe('teamToShowdownText', () => {
   })
 
   it('leaves out everything that was not chosen', () => {
-    const team: Team = { id: 't1', name: 'Test', members: [newMember(25)] }
+    const team: Team = { id: 't1', name: 'Test', favorite: false, members: [newMember(25)] }
     expect(teamToShowdownText(team, nameOf)).toBe('Pikachu')
   })
 
   it('skips empty move slots', () => {
     const member = { ...newMember(25), moves: ['', 'thunderbolt', '', ''] }
-    const team: Team = { id: 't1', name: 'Test', members: [member] }
+    const team: Team = { id: 't1', name: 'Test', favorite: false, members: [member] }
     expect(teamToShowdownText(team, nameOf)).toBe('Pikachu\n- Thunderbolt')
   })
 
   it('puts a blank line between Pokémon and uses Showdown names', () => {
-    const team: Team = { id: 't1', name: 'Test', members: [newMember(122), newMember(386)] }
+    const team: Team = { id: 't1', name: 'Test', favorite: false, members: [newMember(122), newMember(386)] }
     expect(teamToShowdownText(team, nameOf)).toBe('Mr. Mime\n\nDeoxys')
   })
 
   it('is empty for an empty team', () => {
-    expect(teamToShowdownText({ id: 't1', name: 'Test', members: [] }, nameOf)).toBe('')
+    expect(teamToShowdownText({ id: 't1', name: 'Test', favorite: false, members: [] }, nameOf)).toBe('')
   })
 })

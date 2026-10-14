@@ -3,6 +3,7 @@ import { rarityOf } from '../lib/legendary'
 import { typeStyle } from '../lib/pokemonTypes'
 import type { PokemonListItem } from '../lib/types'
 import EnergySymbol from './EnergySymbol'
+import GenerationMark from './GenerationMark'
 import RarityMark from './RarityMark'
 
 type Props = {
@@ -47,6 +48,7 @@ function PokemonList({ pokemon, selectedId, onSelect }: Props) {
                 </span>
                 <span className="row-bottom">
                   <span className="number">No. {p.id}</span>
+                  <GenerationMark id={p.id} size="small" />
                   {rarity && <RarityMark rarity={rarity} size="small" />}
                   {p.types && (
                     <span className="types">
