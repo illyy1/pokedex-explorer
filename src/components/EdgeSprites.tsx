@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router'
-import { spriteUrl } from '../names'
-import { randomPokemonIds } from '../randomTeam'
+import { spriteUrl } from '../lib/names'
+import { randomPokemonIds } from '../lib/randomTeam'
 
 // How many Pokémon peek in from each side of the screen.
 const PER_SIDE = 5

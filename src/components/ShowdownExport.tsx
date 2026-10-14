@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { usePokemonData } from '../pokemonData'
-import { SHOWDOWN_TEAMBUILDER_URL, teamToShowdownText } from '../showdown'
-import type { Team } from '../teams'
+import { usePokemonData } from '../lib/pokemonData'
+import { SHOWDOWN_TEAMBUILDER_URL, teamToShowdownText } from '../lib/showdown'
+import type { Team } from '../lib/teams'
 
 type Props = {
   team: Team

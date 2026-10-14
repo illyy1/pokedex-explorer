@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { displayName, spriteUrl } from '../../src/names'
+import { displayName, spriteUrl } from '../../src/lib/names'
 
 describe('displayName', () => {
   it('converts PokéAPI hyphenated names to title case', () => {

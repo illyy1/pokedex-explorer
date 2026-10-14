@@ -1,4 +1,4 @@
-import { TYPE_COLORS } from '../pokemonTypes'
+import { TYPE_COLORS } from '../lib/pokemonTypes'
 
 function TypeBadge({ type }: { type: string }) {
   return (

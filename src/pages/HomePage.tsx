@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { fetchListItem, LAST_POKEMON } from '../api'
+import { fetchListItem, LAST_POKEMON } from '../lib/api'
 import EnergySymbol from '../components/EnergySymbol'
 import RarityMark from '../components/RarityMark'
 import Sparkles from '../components/Sparkles'
-import { rarityOf } from '../legendary'
-import { usePokemonData } from '../pokemonData'
-import { pokemonOfTheDay } from '../pokemonOfTheDay'
-import { typeStyle } from '../pokemonTypes'
+import { rarityOf } from '../lib/legendary'
+import { usePokemonData } from '../lib/pokemonData'
+import { pokemonOfTheDay } from '../lib/pokemonOfTheDay'
+import { typeStyle } from '../lib/pokemonTypes'
 
 function HomePage() {
   const { items, addItems } = usePokemonData()

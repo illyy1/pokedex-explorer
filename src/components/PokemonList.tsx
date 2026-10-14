@@ -1,7 +1,7 @@
-import { useFavorites } from '../favorites'
-import { rarityOf } from '../legendary'
-import { typeStyle } from '../pokemonTypes'
-import type { PokemonListItem } from '../types'
+import { useFavorites } from '../lib/favorites'
+import { rarityOf } from '../lib/legendary'
+import { typeStyle } from '../lib/pokemonTypes'
+import type { PokemonListItem } from '../lib/types'
 import EnergySymbol from './EnergySymbol'
 import RarityMark from './RarityMark'
 

@@ -7,14 +7,14 @@ import {
   LAST_POKEMON,
   PAGE_SIZE,
   type TypeData,
-} from '../api'
+} from '../lib/api'
 import DetailsPanel from '../components/DetailsPanel'
 import PokemonList from '../components/PokemonList'
-import { useFavorites } from '../favorites'
-import { usePokemonData } from '../pokemonData'
-import { ALL_TYPES } from '../pokemonTypes'
-import { matchesQuery, normalizeQuery } from '../search'
-import type { PokemonInfo } from '../types'
+import { useFavorites } from '../lib/favorites'
+import { usePokemonData } from '../lib/pokemonData'
+import { ALL_TYPES } from '../lib/pokemonTypes'
+import { matchesQuery, normalizeQuery } from '../lib/search'
+import type { PokemonInfo } from '../lib/types'
 
 // The most search results we show (and load pictures for) at once.
 const MAX_RESULTS = 50

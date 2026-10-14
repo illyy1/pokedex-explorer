@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { emptyEvs, MAX_EVS_PER_STAT, MAX_EVS_TOTAL, NATURES, STATS, type EvSpread } from './stats'
-import { MOVES_PER_POKEMON, TEAM_SIZE, TeamsContext, type Team, type TeamMember } from './teams'
+import { emptyEvs, MAX_EVS_PER_STAT, MAX_EVS_TOTAL, NATURES, STATS, type EvSpread } from './lib/stats'
+import { MOVES_PER_POKEMON, TEAM_SIZE, TeamsContext, type Team, type TeamMember } from './lib/teams'
 
 // Teams are saved in this browser's localStorage, like favorites.
 const STORAGE_KEY = 'teams'

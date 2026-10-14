@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { emptyEvs, evTotal, formatEvs, NATURES, natureLabel } from '../../src/stats'
+import { emptyEvs, evTotal, formatEvs, NATURES, natureLabel } from '../../src/lib/stats'
 
 describe('formatEvs', () => {
   it('writes EVs the way Showdown does, leaving out stats at 0', () => {

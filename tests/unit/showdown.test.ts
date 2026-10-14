@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { showdownMoveName, showdownPokemonName, teamToShowdownText } from '../../src/showdown'
-import { emptyEvs } from '../../src/stats'
-import { newMember, type Team } from '../../src/teams'
+import { showdownMoveName, showdownPokemonName, teamToShowdownText } from '../../src/lib/showdown'
+import { emptyEvs } from '../../src/lib/stats'
+import { newMember, type Team } from '../../src/lib/teams'
 
 const NAMES: Record<number, string> = { 25: 'pikachu', 122: 'mr-mime', 386: 'deoxys-normal' }
 const nameOf = (id: number) => NAMES[id]

@@ -2,7 +2,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { LAST_POKEMON } from '../../src/api'
+import { LAST_POKEMON } from '../../src/lib/api'
 import { fakeFetch } from '../helpers/fakeApi'
 import { pokemonList, renderApp, setUpFakeBrowser } from '../helpers/renderApp'
 

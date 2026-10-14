@@ -1,15 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { fetchTeamPokemon, LAST_POKEMON } from '../../src/api'
-import { fetchItemNames, fetchTeamBuilds, type TeamBuild } from '../../src/builds'
-import { randomMember, randomPokemonIds } from '../../src/randomTeam'
-import { NATURES } from '../../src/stats'
+import { fetchTeamPokemon, LAST_POKEMON } from '../../src/lib/api'
+import { fetchItemNames, fetchTeamBuilds, type TeamBuild } from '../../src/lib/builds'
+import { randomMember, randomPokemonIds } from '../../src/lib/randomTeam'
+import { NATURES } from '../../src/lib/stats'
 
 // randomMember asks PokéAPI and the builds file; these tests answer for them.
-vi.mock('../../src/api', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('../../src/api')>()),
+vi.mock('../../src/lib/api', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../src/lib/api')>()),
   fetchTeamPokemon: vi.fn(),
 }))
-vi.mock('../../src/builds', () => ({ fetchTeamBuilds: vi.fn(), fetchItemNames: vi.fn() }))
+vi.mock('../../src/lib/builds', () => ({ fetchTeamBuilds: vi.fn(), fetchItemNames: vi.fn() }))
 
 const PIKACHU = {
   item: { id: 25, name: 'pikachu' },

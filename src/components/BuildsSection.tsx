@@ -1,4 +1,4 @@
-import type { Build } from '../types'
+import type { Build } from '../lib/types'
 
 function BuildsSection({ builds }: { builds: Build[] | null }) {
   return (

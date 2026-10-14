@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { rarityOf } from '../../src/legendary'
+import { rarityOf } from '../../src/lib/legendary'
 
 describe('rarityOf', () => {
   it('marks legendary and mythical Pokémon, which get sparkly cards', () => {

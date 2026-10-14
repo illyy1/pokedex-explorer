@@ -1,4 +1,4 @@
-import { typeStyle } from '../pokemonTypes'
+import { typeStyle } from '../lib/pokemonTypes'
 
 // A round "energy" symbol in the type's color, like the ones on Pokémon cards.
 function EnergySymbol({ type, size = 'normal' }: { type?: string; size?: 'small' | 'normal' }) {

@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–41 are done; task 32 is planned for later. Tasks 9–41 were added after the first plan.
+Status: tasks 1–31 and 33–42 are done; task 32 is planned for later. Tasks 9–42 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -140,7 +140,7 @@ The "Add Pokémon" picker only listed the first 40 Pokémon, so without a search
 Done when: with Pikachu in the team, scrolling the picker to the end shows all 648 other Pokémon with no duplicates, ending at No. 649, and searching "1" first shows 40 and then all 111 matches as you scroll.
 
 ## Task 28: Export a team to Pokémon Showdown ✅
-Add an "Export to Showdown" button to the team editor. Showdown can't be opened with a team already in it, so the button copies the team in Showdown's text format (name, `Ability:` line, `- Move` lines) and opens Showdown's team builder in a new tab, then shows how to paste it: New Team → Import from text → Save. PokéAPI names are turned into Showdown's spelling in `src/showdown.ts` ("mr-mime" → "Mr. Mime", "landorus-incarnate" → "Landorus", "u-turn" → "U-turn"). If the browser won't allow copying, the text appears in a box to copy by hand. The button is off while the team is empty. Items, natures and EVs aren't part of our teams, so they are added in Showdown.
+Add an "Export to Showdown" button to the team editor. Showdown can't be opened with a team already in it, so the button copies the team in Showdown's text format (name, `Ability:` line, `- Move` lines) and opens Showdown's team builder in a new tab, then shows how to paste it: New Team → Import from text → Save. PokéAPI names are turned into Showdown's spelling in `src/lib/showdown.ts` ("mr-mime" → "Mr. Mime", "landorus-incarnate" → "Landorus", "u-turn" → "U-turn"). If the browser won't allow copying, the text appears in a box to copy by hand. The button is off while the team is empty. Items, natures and EVs aren't part of our teams, so they are added in Showdown.
 
 Done when: a team of Pikachu (Lightning Rod, Thunderbolt, Volt Switch), Mr. Mime and Landorus (U-turn, Earthquake) copies as "Pikachu / Ability: Lightning Rod / - Thunderbolt / - Volt Switch", "Mr. Mime / Ability: Soundproof" and "Landorus / Ability: Sand Force / - U-turn / - Earthquake" and opens play.pokemonshowdown.com/teambuilder; every Generation 1–5 Pokémon, move and ability name we write matches a name in Showdown's own data; and when copying is refused, the same text is shown in a box.
 
@@ -167,8 +167,8 @@ Done when: at 1280 pixels wide all ten sprites show on every page (Home, Pokéde
 
 ## Task 32 (later): Add every generation to the Pokédex ⏳
 Not started; kept for later. Show all 1025 Pokémon (Generations 1–9) instead of 649, while the Team Builder stays Generation 5 (option A of three; the other two, moving the Team Builder to Generation 9 or using each Pokémon's newest game, were much bigger and left out).
-- Change `LAST_POKEMON` in `src/api.ts` from 649 to 1025. The list, search, type filter, card numbers, Pokémon of the day and edge sprites all follow it.
-- Add the Generation 6–9 legendary and mythical Pokémon to `src/legendary.ts`, taken from the `is_legendary` and `is_mythical` flags in PokéAPI's pokemon-species data.
+- Change `LAST_POKEMON` in `src/lib/api.ts` from 649 to 1025. The list, search, type filter, card numbers, Pokémon of the day and edge sprites all follow it.
+- Add the Generation 6–9 legendary and mythical Pokémon to `src/lib/legendary.ts`, taken from the `is_legendary` and `is_mythical` flags in PokéAPI's pokemon-species data.
 - Keep the Team Builder's picker to Nos. 1–649 and label it as a Generation 5 team builder, because its moves, items, Smogon builds and Showdown export are all Generation 5.
 - Update "649" and "Generations 1–5" on the Home and About pages and in the PRD.
 - Expect a mix of art styles: sprites from Generation 6 on are not pixel art.
@@ -184,7 +184,7 @@ Done when: the production build, served under /pokedex-explorer/ with the 404 fa
 On touch screens, following a finger would fight with scrolling, so the card tilts as you tilt the phone instead, with the same shine as with a mouse.
 - `useTilt` listens to `deviceorientation` on any device that sends motion readings (computers without a sensor send none; while a mouse is moving over the card, it is in charge) and turns the phone's left/right and forward/back tilt into the same tilt as the mouse. Turning the phone 20° turns the card all the way; more is capped.
 - The tilt is measured from how the phone is being held, which starts at the first reading and slowly follows the phone, so the card settles back to flat after a few seconds held still. Holding the phone sideways is handled with `screen.orientation.angle`.
-- `src/motionAccess.ts` keeps track of whether the page may read the sensor. iPhones and iPads (Safari) ask first, and only after a tap, so the 3D button says "Tap to start" and asks when tapped. If a reading arrives without asking, access was already allowed. A "no", or a device without the sensor, shows "3D effect: Not available" with a hint to allow it in the browser's settings.
+- `src/lib/motionAccess.ts` keeps track of whether the page may read the sensor. iPhones and iPads (Safari) ask first, and only after a tap, so the 3D button says "Tap to start" and asks when tapped. If a reading arrives without asking, access was already allowed. A "no", or a device without the sensor, shows "3D effect: Not available" with a hint to allow it in the browser's settings.
 - The 3D button now shows on touch screens too; it is still hidden for people who turned off animations, who still get a flat card. Computers keep the mouse tilt and ignore sensor readings.
 
 Done when (checked with fake sensor readings in a phone-sized, touch-screen browser): tilting right 15° turns the card 10.5° to the right and tipping forward tips it, 60° stops at the most, holding a tilt settles back to flat, the phone held sideways still tilts the right way, turning 3D off keeps it flat; pretending to be an iPhone, the button says "Tap to start", asks once when tapped, and then tilts on "Allow" or shows "Not available" on "Don't Allow"; on a computer the mouse still tilts the card and sensor readings are ignored. The last check is on a real phone, on the live site (motion needs HTTPS).
@@ -206,7 +206,7 @@ Add a randomizer to the team editor.
 - **🎲 Randomize team** fills all six slots with six different random Pokémon. If the team already has Pokémon, it asks first, because this replaces them.
 - **🎲 Randomize** on each card swaps that one Pokémon for a random one that isn't already in the team; the rest of the team stays as it is.
 - **🎲 Random Pokémon** under "Add Pokémon" in the next empty slot adds one random Pokémon.
-- Every random Pokémon gets a complete set (`src/randomTeam.ts`): one of its Smogon builds at random, or, for Pokémon without builds, a random ability, a random item from the list, a random nature, four different random moves it can learn in Generation 5 (fewer if it knows fewer, like Unown and Ditto) and 84 EVs in every stat, like Showdown's Random Battles.
+- Every random Pokémon gets a complete set (`src/lib/randomTeam.ts`): one of its Smogon builds at random, or, for Pokémon without builds, a random ability, a random item from the list, a random nature, four different random moves it can learn in Generation 5 (fewer if it knows fewer, like Unown and Ditto) and 84 EVs in every stat, like Showdown's Random Battles.
 - While it loads, the button says "Randomizing…" or "Picking…" and the other randomize buttons wait. If PokéAPI can't be reached, a message says so and the team is left as it was.
 - The edge sprites now use the same random-number picker.
 - Fix found while testing: a few Smogon builds use a Generation 5 hidden ability that later games changed (Scolipede's Quick Feet became Speed Boost), so PokéAPI doesn't list it. The Ability dropdown now keeps the chosen ability, so the card shows what is saved and exported.
@@ -244,3 +244,8 @@ Tests for everything that had none:
 - The About page now shows `LAST_POKEMON` instead of a fixed "649", so it always matches the rest of the app.
 
 Done when: 71 unit and integration tests and 20 end-to-end runs pass (4 runs are skipped on purpose: the mouse tests don't run on the phone and the sensor test doesn't run on the computer), lint and build pass, and breaking the immunity math, the 510 EV limit, the export's Nature line or the question before randomizing each makes a test fail.
+
+## Task 42: Keep the .ts files apart from the .tsx files ✅
+The 19 `.ts` files that were next to the `.tsx` files in `src/` (`api`, `builds`, `favorites`, `legendary`, `matchups`, `motionAccess`, `names`, `pokemonData`, `pokemonOfTheDay`, `pokemonTypes`, `randomTeam`, `search`, `showdown`, `stats`, `teams`, `types`, `units`, `useStoredToggle` and `useTilt`) moved to `src/lib/`. `src/` keeps `main.tsx`, `App.tsx` and the three providers, with the pages and components in their own folders. Every import in `src/` and `tests/` was changed to the new place (81 of them), and the docs and comments that named these files too.
+
+Done when: no `.ts` file is left next to a `.tsx` file in `src/`, and build, lint, the 71 unit and integration tests and the 20 end-to-end runs all pass.

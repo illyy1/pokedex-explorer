@@ -1,4 +1,4 @@
-import type { Rarity } from '../legendary'
+import type { Rarity } from '../lib/legendary'
 
 // The rainbow "✦ Legendary" / "✦ Mythical" mark next to a Pokémon's name.
 function RarityMark({ rarity, size = 'normal' }: { rarity: Rarity; size?: 'small' | 'normal' }) {

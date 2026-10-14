@@ -1,4 +1,4 @@
-import { useFavorites } from '../favorites'
+import { useFavorites } from '../lib/favorites'
 
 // ★ when the Pokémon is a favorite, ☆ when it is not. Clicking switches it.
 function FavoriteButton({ id, name }: { id: number; name: string }) {

@@ -478,7 +478,7 @@ body {
   }
 }
 
-/* 3D tilt: the wrapper follows the mouse (see useTilt.ts) and sets
+/* 3D tilt: the wrapper follows the mouse (see lib/useTilt.ts) and sets
    --rx/--ry (rotation), --mx/--my (pointer position) and --sx/--sy (shadow). */
 
 .tilt-wrapper {

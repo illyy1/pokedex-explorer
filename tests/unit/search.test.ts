@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { matchesQuery, normalizeQuery } from '../../src/search'
-import type { PokemonListItem } from '../../src/types'
+import { matchesQuery, normalizeQuery } from '../../src/lib/search'
+import type { PokemonListItem } from '../../src/lib/types'
 
 const pokemon: PokemonListItem[] = [
   { id: 25, name: 'pikachu' },

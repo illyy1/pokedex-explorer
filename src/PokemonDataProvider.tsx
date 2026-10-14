@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
-import { fetchPokemonIndex } from './api'
-import { PokemonDataContext } from './pokemonData'
-import type { PokemonListItem } from './types'
+import { fetchPokemonIndex } from './lib/api'
+import { PokemonDataContext } from './lib/pokemonData'
+import type { PokemonListItem } from './lib/types'
 
 function PokemonDataProvider({ children }: { children: ReactNode }) {
   const [index, setIndex] = useState<PokemonListItem[]>([])

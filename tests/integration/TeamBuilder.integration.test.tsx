@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/vitest'
 import { screen, waitFor, within } from '@testing-library/react'
 import type { UserEvent } from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { SHOWDOWN_TEAMBUILDER_URL } from '../../src/showdown'
+import { SHOWDOWN_TEAMBUILDER_URL } from '../../src/lib/showdown'
 import { fakeFetch } from '../helpers/fakeApi'
 import { renderApp, setUpFakeBrowser } from '../helpers/renderApp'
 

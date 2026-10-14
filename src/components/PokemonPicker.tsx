@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { displayName, spriteUrl } from '../names'
-import { usePokemonData } from '../pokemonData'
-import { matchesQuery, normalizeQuery } from '../search'
+import { displayName, spriteUrl } from '../lib/names'
+import { usePokemonData } from '../lib/pokemonData'
+import { matchesQuery, normalizeQuery } from '../lib/search'
 
 // How many more Pokémon the picker shows each time you reach the bottom.
 const PAGE_SIZE = 40

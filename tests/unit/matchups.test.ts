@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { TypeData } from '../../src/api'
-import { formatMultiplier, typeMatchups } from '../../src/matchups'
+import type { TypeData } from '../../src/lib/api'
+import { formatMultiplier, typeMatchups } from '../../src/lib/matchups'
 
 // The real Generation 5 damage relations of the types used below.
 const FIRE: TypeData = {

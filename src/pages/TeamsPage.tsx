@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router'
-import { displayName, spriteUrl } from '../names'
-import { usePokemonData } from '../pokemonData'
-import { TEAM_SIZE, useTeams } from '../teams'
+import { displayName, spriteUrl } from '../lib/names'
+import { usePokemonData } from '../lib/pokemonData'
+import { TEAM_SIZE, useTeams } from '../lib/teams'
 
 // The Team Builder: every saved team, and a button to start a new one.
 function TeamsPage() {

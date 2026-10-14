@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { FavoritesContext } from './favorites'
+import { FavoritesContext } from './lib/favorites'
 
 // Favorites are saved in this browser's localStorage, so they survive
 // closing the browser. They are not synced to other devices.

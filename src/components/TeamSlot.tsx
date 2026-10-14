@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { fetchTeamPokemon, type TeamPokemonData } from '../api'
-import { fetchItemNames, fetchTeamBuilds, type TeamBuild } from '../builds'
-import { rarityOf } from '../legendary'
-import { displayName } from '../names'
-import { typeStyle } from '../pokemonTypes'
-import { showdownMoveName, showdownPokemonName } from '../showdown'
+import { fetchTeamPokemon, type TeamPokemonData } from '../lib/api'
+import { fetchItemNames, fetchTeamBuilds, type TeamBuild } from '../lib/builds'
+import { rarityOf } from '../lib/legendary'
+import { displayName } from '../lib/names'
+import { typeStyle } from '../lib/pokemonTypes'
+import { showdownMoveName, showdownPokemonName } from '../lib/showdown'
 import {
   evTotal,
   formatEvs,
@@ -15,8 +15,8 @@ import {
   STAT_LABELS,
   STATS,
   type Stat,
-} from '../stats'
-import { MOVES_PER_POKEMON, type TeamMember } from '../teams'
+} from '../lib/stats'
+import { MOVES_PER_POKEMON, type TeamMember } from '../lib/teams'
 import EnergySymbol from './EnergySymbol'
 import RarityMark from './RarityMark'
 import Sparkles from './Sparkles'

@@ -1,6 +1,6 @@
-import { LAST_POKEMON } from '../api'
-import { spriteUrl } from '../names'
-import { typeStyle } from '../pokemonTypes'
+import { LAST_POKEMON } from '../lib/api'
+import { spriteUrl } from '../lib/names'
+import { typeStyle } from '../lib/pokemonTypes'
 
 // The Pokémon whose sprites make up the Trainer card's picture.
 const COLLAGE = [1, 4, 7, 25, 133, 150, 152, 155, 158]

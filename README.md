@@ -53,6 +53,14 @@ Then open http://localhost:5173.
 | `npm run test:e2e` | Builds the site and runs the end-to-end tests in a real browser |
 | `npm run preview` | Serves the built site locally |
 
+### Project layout
+
+- `src/main.tsx` and `src/App.tsx`: the start of the app and its pages' routes.
+- `src/pages/` and `src/components/`: the React pages and the pieces they are made of (`.tsx`).
+- `src/*Provider.tsx`: the shared data for favorites, teams and the Pokémon list.
+- `src/lib/`: everything that isn't a React component (`.ts`): PokéAPI and Smogon requests, search, matchups, the Showdown format, stats, the randomizer, saved-data types and hooks like the 3D tilt.
+- `tests/`: all the tests.
+
 All the tests are in the [tests/](tests) folder: `tests/unit/`, `tests/integration/` and `tests/e2e/`, with shared helpers in `tests/helpers/`.
 
 The unit tests (`tests/unit/`) check single functions: search matching, display names and sprite URLs, weakness and resistance math (including ×4, ×¼ and immunities), the Showdown text format and names, EV and nature labels, legendary and mythical marks, and the randomizer (different Pokémon each time, Smogon builds when there are some, a complete random set when there aren't).

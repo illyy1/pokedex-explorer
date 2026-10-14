@@ -3,8 +3,8 @@ import { Link, useParams } from 'react-router'
 import PokemonPicker from '../components/PokemonPicker'
 import ShowdownExport from '../components/ShowdownExport'
 import TeamSlot from '../components/TeamSlot'
-import { randomMember, randomPokemonIds } from '../randomTeam'
-import { newMember, TEAM_SIZE, useTeams, type TeamMember } from '../teams'
+import { randomMember, randomPokemonIds } from '../lib/randomTeam'
+import { newMember, TEAM_SIZE, useTeams, type TeamMember } from '../lib/teams'
 
 // What the randomizer is working on: the whole team, one Pokémon (by its
 // number), or a new Pokémon for the next empty slot.

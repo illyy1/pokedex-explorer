@@ -556,3 +556,15 @@ please put all the test files into one shared folder
 ```text
 commit and push
 ```
+
+## 89. Put the .ts files in their own folder
+
+```text
+please put all the ts files in a seperate folder from the tsx files, and be sure to correct the folder prefixes when importing those files into other files
+```
+
+## 90. Commit and push
+
+```text
+commit and push
+```
