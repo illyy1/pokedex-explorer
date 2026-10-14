@@ -46,7 +46,14 @@ function MatchupCell({ label, matchups }: { label: string; matchups: Matchup[] }
 }
 
 // The details of one Pokémon, laid out like an original Pokémon trading card.
-function PokemonCard({ info, tilt3d = true }: { info: PokemonInfo; tilt3d?: boolean }) {
+type Props = {
+  info: PokemonInfo
+  tilt3d?: boolean
+  // Show the shiny artwork instead, when there is one.
+  shiny?: boolean
+}
+
+function PokemonCard({ info, tilt3d = true, shiny = false }: Props) {
   const hp = info.stats.find((s) => s.name === 'hp')?.value
   const otherStats = info.stats.filter((s) => s.name !== 'hp')
   const tiltRef = useTilt<HTMLDivElement>(tilt3d)
@@ -84,7 +91,11 @@ function PokemonCard({ info, tilt3d = true }: { info: PokemonInfo; tilt3d?: bool
           </header>
 
           <div className="card-art">
-            <img src={info.artwork} alt={info.name} width="300" height="300" />
+            {shiny && info.shinyArtwork ? (
+              <img src={info.shinyArtwork} alt={`shiny ${info.name}`} width="300" height="300" />
+            ) : (
+              <img src={info.artwork} alt={info.name} width="300" height="300" />
+            )}
           </div>
           <p className="card-strip">
             {info.genus}. Length: {formatLength(info.heightDm)}, Weight: {formatWeight(info.weightHg)}

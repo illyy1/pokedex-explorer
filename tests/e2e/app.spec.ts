@@ -301,3 +301,36 @@ test('builds a team from favorite Pokémon and stars it', async ({ page }) => {
   await expect(page.locator('.team-box-name')).toHaveText(['Team 1', 'Team 2'])
   await expect(page.getByRole('button', { name: 'Remove Team 1 from favorites' })).toBeVisible()
 })
+
+test('the dark mode button darkens the background and is remembered', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' })
+  await page.goto('./')
+  const gradient = () =>
+    page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--page-gradient'))
+  const light = await gradient()
+
+  await page.getByRole('button', { name: 'Dark mode' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  const dark = await gradient()
+  expect(dark).not.toBe(light)
+  // The panels behind text turn dark too.
+  await expect(page.locator('.hero')).toHaveCSS('background-color', 'rgba(22, 23, 31, 0.86)')
+
+  await page.reload()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  expect(await gradient()).toBe(dark)
+})
+
+test('the Shiny button loads the real shiny artwork', async ({ page }) => {
+  await page.goto('./pokedex/6')
+  const art = page.getByRole('article', { name: 'charizard card' }).locator('.card-art img')
+  await expect(art).toHaveAttribute('src', /official-artwork\/6\.png$/)
+
+  await page.getByRole('button', { name: '✨ Shiny: Off' }).click()
+  await expect(art).toHaveAttribute('src', /official-artwork\/shiny\/6\.png$/)
+  await expect(art).toHaveJSProperty('complete', true)
+  expect(await art.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
+
+  await page.reload()
+  await expect(page.getByRole('button', { name: '✨ Shiny: On' })).toBeVisible()
+})

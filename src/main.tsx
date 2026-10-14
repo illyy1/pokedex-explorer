@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 import './index.css'
 import App from './App.tsx'
+import { applySavedTheme } from './lib/theme'
+
+applySavedTheme()
 
 // The folder the site is served from: "/" while developing, and
 // "/pokedex-explorer" on GitHub Pages (see vite.config.ts). Every route

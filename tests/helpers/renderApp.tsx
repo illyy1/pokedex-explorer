@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { cleanup, configure, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { afterEach, beforeEach, vi } from 'vitest'
@@ -10,6 +10,11 @@ class FakeIntersectionObserver {
   observe() {}
   disconnect() {}
 }
+
+// "findBy..." and "waitFor" wait up to 1 second by default. A busy computer
+// (for example while the build runs) can need longer for the bigger tests,
+// like randomizing a whole team, so they wait up to 5 seconds.
+configure({ asyncUtilTimeout: 5000 })
 
 // Call at the top of an integration test file: every test starts with
 // empty storage and the fake server, and is cleaned up afterwards.
@@ -31,6 +36,8 @@ export function setUpFakeBrowser() {
 
   afterEach(() => {
     cleanup()
+    // Forget a light or dark mode a test picked.
+    delete document.documentElement.dataset.theme
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
   })

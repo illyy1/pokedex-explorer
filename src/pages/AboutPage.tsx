@@ -123,9 +123,13 @@ function AboutPage() {
         owners. Both data sources are free and need no account, and your favorites and teams are
         saved only in your browser. Titles use the{' '}
         <a href="https://www.fontspace.com/pokemon-solid-font-f13844" target="_blank" rel="noreferrer">
-          Pokémon Solid font
+          Pokémon Solid
         </a>{' '}
-        by IPBP (Creative Commons Attribution).
+        and{' '}
+        <a href="https://www.fontspace.com/pokemon-hollow-font-f13845" target="_blank" rel="noreferrer">
+          Pokémon Hollow
+        </a>{' '}
+        fonts by IPBP (Creative Commons Attribution).
       </p>
     </div>
   )

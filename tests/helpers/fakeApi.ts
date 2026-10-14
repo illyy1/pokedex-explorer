@@ -122,7 +122,14 @@ function pokemonResponse(p: FakePokemon) {
     weight: 60,
     sprites: {
       front_default: `https://raw.githubusercontent.com/sprites/${p.id}.png`,
-      other: { 'official-artwork': { front_default: `https://raw.githubusercontent.com/art/${p.id}.png` } },
+      front_shiny: p.id === 26 ? null : `https://raw.githubusercontent.com/sprites/shiny/${p.id}.png`,
+      other: {
+        'official-artwork': {
+          front_default: `https://raw.githubusercontent.com/art/${p.id}.png`,
+          // Raichu has no shiny pictures, to test the button being off.
+          front_shiny: p.id === 26 ? null : `https://raw.githubusercontent.com/art/shiny/${p.id}.png`,
+        },
+      },
     },
     types: p.types.map((name) => ({ type: { name } })),
     stats: ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].map((name) => ({

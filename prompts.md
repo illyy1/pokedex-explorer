@@ -646,3 +646,75 @@ this looks better but take it off the mythical and legendary tags though
 ```text
 commit and push
 ```
+
+## 104. Why the font is not in the commit
+
+```text
+why isnt the font in the commit
+```
+
+## 105. Keep Pokémon Solid
+
+```text
+ok fine
+```
+
+## 106. Is Pokémon Hollow free for commercial use?
+
+```text
+is this font free for commercial use https://www.fontspace.com/pokemon-hollow-font-f13845
+```
+
+## 107. Replace Pokémon Solid with Pokémon Hollow
+
+```text
+yeah ok replace the solid font with the new font please
+```
+
+## 108. Keep Pokémon Solid for the logo and homepage (sent while Pokémon Hollow was being tested)
+
+```text
+keep the solid font for the logo and homepage
+```
+
+## 109. A vibrant gradient background, with boxes under text (sent while the fonts were being tested)
+
+```text
+id like for a more vibrant background color, try a gradient color and put boxes under text so it doesn't make the text unreadable
+```
+
+## 110. A pastel palette for the gradient
+
+```text
+i dont like the way the gradient turned out, try this color pallete instead https://color.adobe.com/explore?q=pastel
+```
+
+## 111. A dark mode button (sent while the pastel gradient was being tested)
+
+```text
+add a dark mode option to the website, it should alternate the background color to a more dark soft gradient aswell
+```
+
+## 112. A see-through band down the middle (sent with a screenshot of the Pokédex in dark mode, while dark mode was being tested)
+
+```text
+i would like a box covering the middle of the page while keeping the edges uncovered, essensially a 50% opacity background running through the middle of the site
+```
+
+## 113. Does PokéAPI have shiny sprites? (sent while the band was being tested)
+
+```text
+does our api include sprites and images for shiny versions of each pokemon?
+```
+
+## 114. A Shiny toggle (sent while the shiny answer was being written)
+
+```text
+add a shiny toggle
+```
+
+## 115. Commit and push (sent while the shiny toggle was being tested)
+
+```text
+commit and push
+```

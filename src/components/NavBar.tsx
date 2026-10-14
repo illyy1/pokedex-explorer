@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router'
+import ThemeToggle from './ThemeToggle'
 
 // NavLink adds the "active" class to the link of the page we are on.
 function NavBar() {
@@ -24,6 +25,9 @@ function NavBar() {
         </li>
         <li>
           <NavLink to="/about">About</NavLink>
+        </li>
+        <li>
+          <ThemeToggle />
         </li>
       </ul>
     </nav>

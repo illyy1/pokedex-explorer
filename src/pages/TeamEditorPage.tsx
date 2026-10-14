@@ -110,45 +110,48 @@ function TeamEditorPage() {
 
   return (
     <div className="page team-editor">
-      <Link to="/teams" className="back-link">
-        ← All teams
-      </Link>
-      <label className="team-name">
-        <span>Team name</span>
-        <input
-          type="text"
-          value={team.name}
-          maxLength={30}
-          onChange={(event) => updateTeam(id, (t) => ({ ...t, name: event.target.value }))}
-        />
-      </label>
-      <button
-        type="button"
-        className={team.favorite ? 'favorite-button on' : 'favorite-button'}
-        aria-pressed={team.favorite}
-        onClick={() => updateTeam(id, (t) => ({ ...t, favorite: !t.favorite }))}
-      >
-        {team.favorite ? '★ Favorite team' : '☆ Add to favorite teams'}
-      </button>
-      <p className="team-count">
-        {team.members.length}/{TEAM_SIZE} Pokémon · saved automatically in this browser
-      </p>
-      <div className="team-randomizer">
+      {/* Everything above the six slots, on one panel. */}
+      <div className="team-editor-header">
+        <Link to="/teams" className="back-link">
+          ← All teams
+        </Link>
+        <label className="team-name">
+          <span>Team name</span>
+          <input
+            type="text"
+            value={team.name}
+            maxLength={30}
+            onChange={(event) => updateTeam(id, (t) => ({ ...t, name: event.target.value }))}
+          />
+        </label>
         <button
           type="button"
-          className="button"
-          onClick={randomizeTeam}
-          disabled={isRandomizing}
+          className={team.favorite ? 'favorite-button on' : 'favorite-button'}
+          aria-pressed={team.favorite}
+          onClick={() => updateTeam(id, (t) => ({ ...t, favorite: !t.favorite }))}
         >
-          {randomizing === 'team' ? 'Randomizing…' : '🎲 Randomize team'}
+          {team.favorite ? '★ Favorite team' : '☆ Add to favorite teams'}
         </button>
-        {randomError && (
-          <p className="showdown-help" role="alert">
-            Couldn't load the random Pokémon. Check your internet connection and try again.
-          </p>
-        )}
+        <p className="team-count">
+          {team.members.length}/{TEAM_SIZE} Pokémon · saved automatically in this browser
+        </p>
+        <div className="team-randomizer">
+          <button
+            type="button"
+            className="button"
+            onClick={randomizeTeam}
+            disabled={isRandomizing}
+          >
+            {randomizing === 'team' ? 'Randomizing…' : '🎲 Randomize team'}
+          </button>
+          {randomError && (
+            <p className="showdown-help" role="alert">
+              Couldn't load the random Pokémon. Check your internet connection and try again.
+            </p>
+          )}
+        </div>
+        <ShowdownExport team={team} />
       </div>
-      <ShowdownExport team={team} />
 
       <ul className="team-slots">
         {team.members.map((member, index) => (

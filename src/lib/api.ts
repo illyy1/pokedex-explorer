@@ -21,7 +21,8 @@ type PokemonResponse = {
   weight: number
   sprites: {
     front_default: string | null
-    other: { 'official-artwork': { front_default: string | null } }
+    front_shiny: string | null
+    other: { 'official-artwork': { front_default: string | null; front_shiny: string | null } }
   }
   types: { type: { name: string } }[]
   stats: { base_stat: number; stat: { name: string } }[]
@@ -217,6 +218,7 @@ export async function fetchPokemonInfo(id: number): Promise<PokemonInfo> {
     name: p.name,
     types: p.types.map((t) => t.type.name),
     artwork: p.sprites.other['official-artwork'].front_default ?? p.sprites.front_default ?? '',
+    shinyArtwork: p.sprites.other['official-artwork'].front_shiny ?? p.sprites.front_shiny ?? null,
     stats: p.stats.map((s) => ({ name: s.stat.name, value: s.base_stat })),
     description: englishDescription(species),
     genus: species.genera.find((g) => g.language.name === 'en')?.genus ?? 'Pokémon',

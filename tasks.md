@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–48 are done; task 32 is planned for later. Tasks 9–48 were added after the first plan.
+Status: tasks 1–31 and 33–53 are done; task 32 is planned for later. Tasks 9–53 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -284,3 +284,30 @@ Done when: the button opens the Team Builder, and the three buttons wrap neatly 
 - **Dropdowns:** the Team Builder's dropdowns (Smogon build, item, ability, moves and nature) are rounded with a gold frame, a cream background, a little Poké Ball and an arrow (only the arrow on the narrow move dropdowns), and turn red on hover and focus. In Chrome and Edge 135 and later (`appearance: base-select`), the open list is styled too: a cream card with a gold frame, rounded choices, a red hover, the chosen one in gold, and the build formats as small red headings. Other browsers show their own list. The EV boxes have the same gold frame.
 
 Done when: the titles show Pokémon Solid (including the "é" in Pokédex) without overlapping the text below at 1280 and 375 pixels wide, nothing is blocked by the Content Security Policy, the open build, ability and move lists look as described in Chrome on a computer and on a phone, and all tests pass.
+
+## Task 49: Pokémon Hollow for titles, Pokémon Solid for the logo and homepage ✅
+Titles and headings outside the homepage (card names, team names, page headings) use Pokémon Hollow, the outline version of Pokémon Solid by the same designer (IPBP, https://www.fontspace.com/pokemon-hollow-font-f13845, also Creative Commons Attribution, also bundled with the site as `src/assets/fonts/pokemon-hollow.ttf`). Its outline is thin at smaller sizes, so smaller titles get a slightly thicker line (`-webkit-text-stroke`). The logo in the menu and everything on the homepage (the big title, "Browse by generation", the Gen buttons and the Pokémon of the day's name) keep the filled Pokémon Solid. Both fonts are credited on the About page and in the README. (Pocket Monk was also tried, on this computer only: its free license is non-commercial and doesn't allow a font on a public website, so it isn't used.)
+
+Done when: the menu logo and homepage titles show Pokémon Solid, the Pokédex and Team Builder card names show Pokémon Hollow and are readable on legendary cards too, nothing is blocked by the Content Security Policy, and all tests pass.
+
+## Task 50: A pastel gradient background, with panels under text ✅
+The plain beige page background becomes a soft pastel gradient: pink, peach, mint, baby blue and lavender (the same pastels at dusk in dark mode). A brighter yellow-to-purple gradient was tried first and replaced. It is drawn on its own fixed layer (`body::before`), so it stays put while the page scrolls, also on phones, which ignore `background-attachment: fixed`. Everything that used to sit straight on the background now sits on a soft, slightly see-through rounded panel (`--panel`, with a light blur), so it stays easy to read: the menu (with the yellow line now along its bottom edge), the homepage's title and intro and "Browse by generation", the Team Builder's heading and its "No teams yet" hint, the team editor's name, buttons and export (wrapped in a new `team-editor-header`), the About page's heading and fine print, "Page not found" and "Team not found", and the Pokédex's "Pick a Pokémon" hint. The Pokédex card's panel is see-through now, so the gradient shows around the card. Headings in Pokémon Hollow outside the homepage get the slightly thicker outline too.
+
+Also: an integration test sometimes failed on a busy computer (about 1 run in 30, always right after other heavy work). The integration tests now wait up to 5 seconds for something to appear (`asyncUtilTimeout`, 1 second by default) and each test may take up to 15 seconds (`testTimeout`), which doesn't hide real failures: a test still fails if what it waits for never appears.
+
+Done when: every page (Home, Pokédex, a legendary card, Team Builder, a team, About, "Page not found") shows the gradient with all text on a panel, in light and dark mode, at 1280 and 375 pixels wide, and all tests pass.
+
+## Task 51: A dark mode button ✅
+A round 🌙 button at the end of the menu switches to dark mode (☀️ switches back). Until it is used, the site follows the computer's setting, and changes with it; once used, the choice is saved in this browser (localStorage key `theme`) and put on `<html>` as `data-theme="dark"` or `"light"`, which the CSS reads alongside `prefers-color-scheme`. `src/main.tsx` applies a saved choice before the first render, so the page never flashes the wrong mode. Dark mode's gradient is darker and soft: the pastels at night (plum, deep teal and navy). The hook is `useTheme` in `src/lib/theme.ts` and the button `src/components/ThemeToggle.tsx`.
+
+Done when: on a light computer the button shows 🌙 and nothing is saved; clicking it turns every page dark with the dark gradient and panels, saves "dark", and the next visit opens dark; clicking again goes back to light; a dark computer starts dark without saving anything; and the integration and end-to-end tests check all of this.
+
+## Task 52: A see-through band down the middle of the page ✅
+A 50% see-through band runs down the middle of every page, between the gradient and the content: white in light mode, near-black in dark mode, a little wider than the content (up to 1180 pixels), with soft faded sides. The edges, where the sprites peek in, stay uncovered. It is a fixed layer (`body::after`), so it stays put while scrolling.
+
+Done when: at 1600 pixels wide the band covers the menu, list and card but not the edge sprites, in light and dark mode.
+
+## Task 53: A Shiny button on the Pokédex card ✅
+A "✨ Shiny: Off / On" button next to "3D effect" swaps the card's artwork for the Pokémon's shiny (different colored) version, from PokéAPI's `sprites.other['official-artwork'].front_shiny` (or the small `front_shiny` sprite if there is no shiny artwork), which comes in the same request as the rest of the card. The choice is remembered in this browser (localStorage key `shiny`), so other Pokémon and later visits open shiny too. The picture's text says "shiny charizard". For a Pokémon without any shiny picture, the button is off and the usual artwork shows.
+
+Done when: Pikachu's card swaps to its shiny artwork and back, Charizard then opens shiny, a reload keeps it, a Pokémon without shiny pictures shows its usual artwork with the button off, and the real shiny artwork loads on the live data.

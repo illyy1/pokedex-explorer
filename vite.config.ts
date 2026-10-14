@@ -11,7 +11,7 @@ const CONTENT_SECURITY_POLICY = [
   "script-src 'self'",
   // The app's stylesheet and the Cabin font's stylesheet from Google Fonts.
   "style-src 'self' https://fonts.googleapis.com",
-  // Cabin from Google Fonts, and the Pokémon Solid font that comes with the site.
+  // Cabin from Google Fonts, and the Pokémon Solid and Hollow fonts that come with the site.
   "font-src 'self' https://fonts.gstatic.com",
   // Sprites and artwork come from PokéAPI's collection on GitHub.
   "img-src 'self' data: https://raw.githubusercontent.com",
@@ -47,6 +47,8 @@ export default defineConfig(({ command, isPreview }) => ({
     environment: 'node',
     // The end-to-end tests in tests/e2e/ are run by Playwright, not Vitest.
     include: ['tests/{unit,integration}/**/*.test.{ts,tsx}'],
+    // Each test may take up to 15 seconds (5 by default), for a busy computer.
+    testTimeout: 15_000,
   },
   // GitHub Pages serves the site from https://illyy1.github.io/pokedex-explorer/,
   // so the built files live under that folder, and `vite preview` serves them

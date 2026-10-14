@@ -16,6 +16,8 @@ type Props = {
 function DetailsPanel({ selected, info, failed }: Props) {
   // The 3D tilt is on unless the user turned it off; the choice is remembered.
   const [tilt3d, toggleTilt3d] = useStoredToggle('tilt3d', true)
+  // Shiny artwork instead of the usual one; also remembered.
+  const [shiny, toggleShiny] = useStoredToggle('shiny', false)
   // On phones the card tilts with the motion sensor. iPhones and iPads ask
   // before a page may read it, and only when the person taps something, so
   // until then the button offers "Tap to start".
@@ -77,6 +79,16 @@ function DetailsPanel({ selected, info, failed }: Props) {
     <div className="details">
       <div className="details-toolbar">
         <FavoriteButton id={info.id} name={info.name} />
+        <button
+          type="button"
+          className={shiny ? 'toggle-shiny on' : 'toggle-shiny'}
+          aria-pressed={shiny}
+          disabled={!info.shinyArtwork}
+          title={info.shinyArtwork ? 'Show the shiny colors' : 'No shiny artwork for this Pokémon'}
+          onClick={toggleShiny}
+        >
+          ✨ Shiny: {shiny ? 'On' : 'Off'}
+        </button>
         {motionBlocked ? (
           <button
             type="button"
@@ -106,7 +118,7 @@ function DetailsPanel({ selected, info, failed }: Props) {
           </button>
         )}
       </div>
-      <PokemonCard info={info} tilt3d={tilt3d} />
+      <PokemonCard info={info} tilt3d={tilt3d} shiny={shiny} />
       <BuildsSection builds={info.builds} />
     </div>
   )

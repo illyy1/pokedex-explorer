@@ -239,6 +239,46 @@ describe('Pokémon cards', () => {
     expect(within(card).queryByText(/Legendary|Mythical/)).not.toBeInTheDocument()
   })
 
+  it('shows the shiny artwork with the Shiny button, and remembers it', async () => {
+    const user = renderApp('/pokedex/25')
+    const card = await screen.findByRole('article', { name: 'pikachu card' })
+    expect(within(card).getByRole('img', { name: 'pikachu' })).toHaveAttribute(
+      'src',
+      'https://raw.githubusercontent.com/art/25.png',
+    )
+    const shiny = screen.getByRole('button', { name: '✨ Shiny: Off' })
+    expect(shiny).toHaveAttribute('aria-pressed', 'false')
+
+    await user.click(shiny)
+    expect(screen.getByRole('button', { name: '✨ Shiny: On' })).toHaveAttribute('aria-pressed', 'true')
+    expect(within(card).getByRole('img', { name: 'shiny pikachu' })).toHaveAttribute(
+      'src',
+      'https://raw.githubusercontent.com/art/shiny/25.png',
+    )
+    expect(localStorage.getItem('shiny')).toBe('true')
+
+    // Other Pokémon open shiny too, and so does the next visit.
+    await user.click(pokemonList().getByRole('button', { name: /charizard/i }))
+    const charizard = await screen.findByRole('article', { name: 'charizard card' })
+    expect(within(charizard).getByRole('img', { name: 'shiny charizard' })).toBeInTheDocument()
+    cleanup()
+    renderApp('/pokedex/4')
+    const charmander = await screen.findByRole('article', { name: 'charmander card' })
+    expect(within(charmander).getByRole('img', { name: 'shiny charmander' })).toBeInTheDocument()
+  })
+
+  it('turns the Shiny button off for a Pokémon without shiny artwork', async () => {
+    localStorage.setItem('shiny', 'true')
+    renderApp('/pokedex/26')
+    const card = await screen.findByRole('article', { name: 'raichu card' })
+    expect(screen.getByRole('button', { name: /Shiny/ })).toBeDisabled()
+    // It shows the usual artwork instead of a broken picture.
+    expect(within(card).getByRole('img', { name: 'raichu' })).toHaveAttribute(
+      'src',
+      'https://raw.githubusercontent.com/art/26.png',
+    )
+  })
+
   it('turns the 3D effect off and remembers it', async () => {
     const user = renderApp('/pokedex/25')
     const toggle = await screen.findByRole('button', { name: '3D effect: On' })
@@ -369,6 +409,54 @@ describe('Browsing by generation', () => {
 
     await user.click(screen.getByRole('button', { name: 'Show all favorites' }))
     expect(await rowNumbers()).toEqual([25, 155])
+  })
+})
+
+describe('Dark mode button', () => {
+  function themeButton() {
+    return screen.getByRole('button', { name: 'Dark mode' })
+  }
+
+  it('follows the computer until a mode is picked', () => {
+    // The pretend computer is set to light mode.
+    renderApp('/')
+    expect(themeButton()).toHaveAttribute('aria-pressed', 'false')
+    expect(themeButton()).toHaveTextContent('🌙')
+    expect(document.documentElement.dataset.theme).toBeUndefined()
+    expect(localStorage.getItem('theme')).toBeNull()
+  })
+
+  it('switches to dark mode and back, and remembers it', async () => {
+    const user = renderApp('/')
+    await user.click(themeButton())
+    expect(themeButton()).toHaveAttribute('aria-pressed', 'true')
+    expect(themeButton()).toHaveTextContent('☀️')
+    expect(document.documentElement.dataset.theme).toBe('dark')
+    expect(localStorage.getItem('theme')).toBe('dark')
+
+    await user.click(themeButton())
+    expect(document.documentElement.dataset.theme).toBe('light')
+    expect(localStorage.getItem('theme')).toBe('light')
+  })
+
+  it('opens in the mode picked on an earlier visit', () => {
+    localStorage.setItem('theme', 'dark')
+    renderApp('/pokedex')
+    expect(themeButton()).toHaveAttribute('aria-pressed', 'true')
+    expect(document.documentElement.dataset.theme).toBe('dark')
+  })
+
+  it('starts in dark mode when the computer is set to dark', () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query.includes('dark'),
+      media: query,
+      addEventListener() {},
+      removeEventListener() {},
+    }))
+    renderApp('/')
+    expect(themeButton()).toHaveAttribute('aria-pressed', 'true')
+    // Nothing is saved until the button is used.
+    expect(localStorage.getItem('theme')).toBeNull()
   })
 })
 

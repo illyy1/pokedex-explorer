@@ -8,12 +8,12 @@ Browse all 649 Pokémon from Generations 1–5, styled like the original Pokémo
 
 ## Features
 
-- **Pokédex:** search by name or number, filter by type or generation, and scroll through every Pokémon (more load as you reach the end). Every Pokémon is marked with the generation that introduced it (for example "Gen 1 · Kanto"). Each Pokémon opens as a trading card with its stats, abilities, weaknesses, Pokédex entry and Smogon's competitive builds. Legendary and mythical Pokémon get a sparkly rainbow card, and cards tilt in 3D under the mouse, or as you tilt your phone (you can turn this off).
+- **Pokédex:** search by name or number, filter by type or generation, and scroll through every Pokémon (more load as you reach the end). Every Pokémon is marked with the generation that introduced it (for example "Gen 1 · Kanto"). Each Pokémon opens as a trading card with its stats, abilities, weaknesses, Pokédex entry and Smogon's competitive builds. Legendary and mythical Pokémon get a sparkly rainbow card, a ✨ Shiny button shows the shiny artwork, and cards tilt in 3D under the mouse, or as you tilt your phone (you can turn this off).
 - **Favorites:** star Pokémon to collect them on their own page.
 - **Team Builder:** build as many teams of six as you like, picking from every Pokémon or only your favorites, and star your favorite teams to keep them at the top. Choose each Pokémon's item, ability, nature, EVs and four moves, fill everything in from one of its Smogon builds, or randomize the whole team or one Pokémon at a time. **Export to Showdown** copies the team so you can paste it into [Pokémon Showdown](https://play.pokemonshowdown.com/).
 - **Home:** a Pokémon of the day, buttons to the Pokédex, favorites and Team Builder, and a button for each generation that opens the Pokédex with only its Pokémon. Every page has random Pokémon sprites peeking in from the edges of the screen.
 
-Favorites and teams are saved in your browser (localStorage). There is no account and no server.
+A 🌙 button in the menu switches to dark mode. Favorites and teams are saved in your browser (localStorage). There is no account and no server.
 
 ## Built with
 
@@ -22,7 +22,7 @@ Favorites and teams are saved in your browser (localStorage). There is no accoun
 - [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com) for unit and integration tests
 - [Playwright](https://playwright.dev) for end-to-end tests
 - [oxlint](https://oxc.rs) for linting
-- Plain CSS, no UI library; titles use the [Pokémon Solid](https://www.fontspace.com/pokemon-solid-font-f13844) font by IPBP (Creative Commons Attribution), bundled with the site
+- Plain CSS, no UI library; titles use the [Pokémon Solid](https://www.fontspace.com/pokemon-solid-font-f13844) (logo and homepage) and [Pokémon Hollow](https://www.fontspace.com/pokemon-hollow-font-f13845) (other titles) fonts by IPBP (Creative Commons Attribution), bundled with the site
 
 ## Data
 

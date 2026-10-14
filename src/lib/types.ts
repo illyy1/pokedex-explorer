@@ -54,6 +54,8 @@ export type PokemonInfo = {
   name: string
   types: string[]
   artwork: string
+  // The shiny (different colored) artwork, or null if PokéAPI has none.
+  shinyArtwork: string | null
   stats: PokemonStat[]
   description: string
   // For example "Bird Pokémon".
