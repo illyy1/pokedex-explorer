@@ -22,7 +22,7 @@ Favorites and teams are saved in your browser (localStorage). There is no accoun
 - [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com) for unit and integration tests
 - [Playwright](https://playwright.dev) for end-to-end tests
 - [oxlint](https://oxc.rs) for linting
-- Plain CSS, no UI library
+- Plain CSS, no UI library; titles use the [Pokémon Solid](https://www.fontspace.com/pokemon-solid-font-f13844) font by IPBP (Creative Commons Attribution), bundled with the site
 
 ## Data
 

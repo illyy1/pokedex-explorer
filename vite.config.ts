@@ -11,7 +11,8 @@ const CONTENT_SECURITY_POLICY = [
   "script-src 'self'",
   // The app's stylesheet and the Cabin font's stylesheet from Google Fonts.
   "style-src 'self' https://fonts.googleapis.com",
-  'font-src https://fonts.gstatic.com',
+  // Cabin from Google Fonts, and the Pokémon Solid font that comes with the site.
+  "font-src 'self' https://fonts.gstatic.com",
   // Sprites and artwork come from PokéAPI's collection on GitHub.
   "img-src 'self' data: https://raw.githubusercontent.com",
   // PokéAPI, and Smogon's builds (data.pkmn.cc redirects to pkmn.github.io).

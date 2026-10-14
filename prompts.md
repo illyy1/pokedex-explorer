@@ -610,3 +610,39 @@ add a button to route to teambuilder on the homepage
 ```text
 commit and push
 ```
+
+## 98. Pokémon font and sleeker Team Builder dropdowns
+
+```text
+change the font to a pokemon themed font, also change the dropdown bar in the team builder route to have a more sleek themed design
+```
+
+## 99. Roll back the pixel font, use Pokémon Solid for titles (sent while the pixel font was being tested)
+
+```text
+the pixel font is ugly, roll that back, use this font for titles and headlines https://www.fontspace.com/pokemon-solid-font-f13844
+```
+
+## 100. Style the open dropdown list (sent with a screenshot of the open Smogon build list)
+
+```text
+i need you to change the dropdown menu so it looks better aswell, im referring to this specifically, when you go to choose a move or ability for a pokemon
+```
+
+## 101. Try the Pocket Monk font for headings
+
+```text
+check this font instead of the one we use for heading https://www.fontspace.com/pocket-monk-font-f23540
+```
+
+## 102. Keep the title font off the Legendary and Mythical marks
+
+```text
+this looks better but take it off the mythical and legendary tags though
+```
+
+## 103. Commit and push
+
+```text
+commit and push
+```

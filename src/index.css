@@ -1,5 +1,16 @@
 /* Pokédex Explorer: styled after the original Pokémon trading cards. */
 
+/* "Pokémon Solid" by IPBP (https://www.fontspace.com/pokemon-solid-font-f13844),
+   free to use under the Creative Commons Attribution license. */
+@font-face {
+  font-family: 'Pokemon Solid';
+  src: url('./assets/fonts/pokemon-solid.ttf') format('truetype');
+  font-display: swap;
+  /* The letters sit low in their line; these move them up to line up with other text. */
+  ascent-override: 78%;
+  descent-override: 22%;
+}
+
 :root {
   /* The page around the cards. */
   --bg: #efe9dc;
@@ -18,6 +29,8 @@
   --card-yellow: #f2c51f;
   --card-frame: linear-gradient(145deg, #fbe36a 0%, #f2c51f 45%, #e3ad10 100%);
   --card-font: 'Gill Sans', 'Gill Sans MT', 'Cabin', 'Trebuchet MS', sans-serif;
+  /* The Pokémon logo's lettering, for titles and headings. */
+  --title-font: 'Pokemon Solid', var(--card-font);
 
   font: 16px/1.4 var(--card-font);
   color-scheme: light dark;
@@ -1844,28 +1857,142 @@ body {
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
+  /* A rounded, gold-framed dropdown with a little Poké Ball and arrow on the right. */
   select {
     width: 100%;
     min-width: 0;
-    padding: 5px 8px;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 6px;
-    background: #fffdf6;
+    padding: 6px 46px 6px 12px;
+    appearance: none;
+    border: 2px solid #c9a227;
+    border-radius: 999px;
+    background:
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2010%206'%3E%3Cpath%20d%3D'M1%201l4%204%204-4'%20fill%3D'none'%20stroke%3D'%231b1a17'%20stroke-width%3D'1.6'%20stroke-linecap%3D'round'%20stroke-linejoin%3D'round'%2F%3E%3C%2Fsvg%3E") no-repeat right 30px center / 10px 6px,
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2020%2020'%3E%3Cpath%20d%3D'M1.5%2010a8.5%208.5%200%200%201%2017%200z'%20fill%3D'%23c8102e'%2F%3E%3Cpath%20d%3D'M1.5%2010a8.5%208.5%200%200%200%2017%200z'%20fill%3D'%23fff'%2F%3E%3Ccircle%20cx%3D'10'%20cy%3D'10'%20r%3D'8.5'%20fill%3D'none'%20stroke%3D'%231b1a17'%20stroke-width%3D'1.5'%2F%3E%3Cpath%20d%3D'M1.5%2010h17'%20stroke%3D'%231b1a17'%20stroke-width%3D'1.5'%2F%3E%3Ccircle%20cx%3D'10'%20cy%3D'10'%20r%3D'2.6'%20fill%3D'%23fff'%20stroke%3D'%231b1a17'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E") no-repeat right 7px center / 18px 18px,
+      linear-gradient(180deg, #fffef8, #f6eed4);
+    box-shadow:
+      inset 0 -2px 0 rgba(0, 0, 0, 0.06),
+      0 1px 2px rgba(0, 0, 0, 0.12);
     color: var(--card-ink);
     font: inherit;
     font-size: 14px;
     font-weight: 600;
+    text-overflow: ellipsis;
     color-scheme: light;
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
 
+    &:hover {
+      border-color: var(--card-red);
+    }
     &:focus-visible {
-      outline: 3px solid var(--focus);
-      outline-offset: 1px;
+      outline: none;
+      border-color: var(--card-red);
+      box-shadow:
+        0 0 0 3px rgba(200, 16, 46, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+    option,
+    optgroup {
+      background: #fffdf6;
+      color: var(--card-ink);
+      font-family: var(--card-font);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-field select {
+    transition: none;
+  }
+}
+
+/* The open list of a Team Builder dropdown. Browsers that support styling it
+   (Chrome and Edge 135 and later) get a cream card with a gold frame, rounded
+   choices and a gold highlight on the chosen one; others show their own list. */
+@supports (appearance: base-select) {
+  .team-field select,
+  .team-field select::picker(select) {
+    appearance: base-select;
+  }
+
+  /* The dropdown already shows its own arrow and Poké Ball. */
+  .team-field select::picker-icon {
+    display: none;
+  }
+
+  .team-field select::picker(select) {
+    box-sizing: border-box;
+    min-width: anchor-size(width);
+    max-height: min(340px, 60vh);
+    margin-top: 4px;
+    padding: 6px;
+    border: 2px solid #c9a227;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #fffef8, #f8f0d8);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+    color: var(--card-ink);
+    font-family: var(--card-font);
+  }
+
+  .team-field select option {
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &::checkmark {
+      display: none;
+    }
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background: rgba(200, 16, 46, 0.1);
+      color: var(--card-red);
+    }
+    &:checked {
+      background: var(--card-frame);
+      color: var(--card-ink);
+      font-weight: 700;
+    }
+  }
+
+  /* Smogon build formats ("UU", "VGC 2011") as small red headings. */
+  .team-field select optgroup {
+    margin-top: 6px;
+    padding: 4px 4px 0;
+    background: transparent;
+    color: var(--card-red);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+    option {
+      color: var(--card-ink);
+      letter-spacing: normal;
+      text-transform: none;
     }
   }
 }
 
 .team-moves {
   grid-template-columns: 1fr 1fr;
+
+  /* Two to a row is narrow, so the moves keep only the arrow. */
+  select {
+    padding-right: 26px;
+    background-position:
+      right 10px center,
+      right -40px center,
+      0 0;
+  }
 
   legend {
     margin-bottom: 4px;
@@ -1926,10 +2053,10 @@ body {
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
-    padding: 4px 6px;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 6px;
-    background: #fffdf6;
+    padding: 4px 8px;
+    border: 2px solid #c9a227;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #fffef8, #f6eed4);
     color: var(--card-ink);
     font: inherit;
     font-size: 14px;
@@ -2184,4 +2311,37 @@ body {
 /* The editor's "Favorite team" button, between the name and the count. */
 .team-editor > .favorite-button {
   margin-bottom: 10px;
+}
+
+/* Kept last, so it wins over the `font: inherit` in the rules above:
+   titles and headings use Pokémon Solid, everything else the card font. */
+h1,
+h2,
+.brand,
+.card-name,
+.team-box-name,
+.generation-name {
+  font-family: var(--title-font);
+  font-weight: normal;
+  letter-spacing: 0.03em;
+}
+
+.hero h1 {
+  margin-bottom: 0.3em;
+}
+
+/* The app's name looks like the Pokémon logo: yellow with a blue outline. */
+.hero h1,
+.navbar .brand {
+  color: #ffcb05;
+  -webkit-text-stroke: 0.12em #2a75bb;
+  paint-order: stroke fill;
+  text-shadow: 0.04em 0.06em 0 #1d4f8a;
+}
+
+/* The Legendary / Mythical marks sit inside card titles but keep the card font. */
+.rarity-mark {
+  font-family: var(--card-font);
+  font-weight: 700;
+  letter-spacing: 0.06em;
 }

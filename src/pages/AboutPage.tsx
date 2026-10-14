@@ -121,7 +121,11 @@ function AboutPage() {
         Fan project, not affiliated with or endorsed by Nintendo, Game Freak, Creatures or The
         Pokémon Company. Pokémon and Pokémon character names are trademarks of their respective
         owners. Both data sources are free and need no account, and your favorites and teams are
-        saved only in your browser.
+        saved only in your browser. Titles use the{' '}
+        <a href="https://www.fontspace.com/pokemon-solid-font-f13844" target="_blank" rel="noreferrer">
+          Pokémon Solid font
+        </a>{' '}
+        by IPBP (Creative Commons Attribution).
       </p>
     </div>
   )

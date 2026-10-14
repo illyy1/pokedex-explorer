@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–47 are done; task 32 is planned for later. Tasks 9–47 were added after the first plan.
+Status: tasks 1–31 and 33–48 are done; task 32 is planned for later. Tasks 9–48 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -278,3 +278,9 @@ Done when: with Charizard and Mewtwo starred, the Favorites tab shows only those
 The homepage's buttons are now "Browse the Pokédex", "My favorites" and "Team Builder", which opens `/teams`.
 
 Done when: the button opens the Team Builder, and the three buttons wrap neatly on a phone.
+
+## Task 48: Pokémon Solid titles and themed Team Builder dropdowns ✅
+- **Font:** titles and headings (the app name, page headings, "Browse by generation", card names, team names and the generation buttons) use Pokémon Solid by IPBP, the Pokémon logo's lettering, from https://www.fontspace.com/pokemon-solid-font-f13844 (Creative Commons Attribution, credited on the About page and in the README). The app's name in the menu and on the homepage is yellow with a blue outline, like the logo. The font comes with the site (`src/assets/fonts/pokemon-solid.ttf`), so the Content Security Policy now allows fonts from the site itself; `ascent-override` and `descent-override` move its letters up to line up with other text. Everything else keeps the card font. The "✦ Legendary" and "✦ Mythical" marks inside card titles keep the card font. (A pixel font was tried first and rolled back.)
+- **Dropdowns:** the Team Builder's dropdowns (Smogon build, item, ability, moves and nature) are rounded with a gold frame, a cream background, a little Poké Ball and an arrow (only the arrow on the narrow move dropdowns), and turn red on hover and focus. In Chrome and Edge 135 and later (`appearance: base-select`), the open list is styled too: a cream card with a gold frame, rounded choices, a red hover, the chosen one in gold, and the build formats as small red headings. Other browsers show their own list. The EV boxes have the same gold frame.
+
+Done when: the titles show Pokémon Solid (including the "é" in Pokédex) without overlapping the text below at 1280 and 375 pixels wide, nothing is blocked by the Content Security Policy, the open build, ability and move lists look as described in Chrome on a computer and on a phone, and all tests pass.
