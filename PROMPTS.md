@@ -718,3 +718,16 @@ add a shiny toggle
 ```text
 commit and push
 ```
+
+## 116. Check the site against the course's final project instructions
+
+```text
+hi please go over these instructions and make sure the website covers all of them https://app.notion.com/p/4255-WEB-AI-3f91d753ff1581198dc1cc0fe37d8eb0?source=copy_link
+```
+
+## 117. The instructions, pasted because the assistant couldn't open the Notion link
+
+```text
+here are the instructions copy pasted from notion
+(the full text of the course's final project instructions, "פרויקט הגמר · 4255 · פלטפורמות מתקדמות לפיתוח ב-WEB ושימוש ב-AI")
+```

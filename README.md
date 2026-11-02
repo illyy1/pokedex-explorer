@@ -50,6 +50,7 @@ Then open http://localhost:5173.
 | `npm run build` | Type-checks and builds the site into `dist/` |
 | `npm run lint` | Checks the code with oxlint |
 | `npm test` | Runs the unit and integration tests once |
+| `npm run test:ui` | Runs the same tests in the Vitest UI, in your browser |
 | `npm run test:e2e` | Builds the site and runs the end-to-end tests in a real browser |
 | `npm run preview` | Serves the built site locally |
 
@@ -81,8 +82,9 @@ Every push to `main` is linted, built and published to GitHub Pages by [a GitHub
 This is a first-year student project, built step by step with an AI coding assistant:
 
 - [PRD.md](PRD.md): what the app does and for whom, its pages and its acceptance criteria.
+- [docs/architecture.md](docs/architecture.md): the pages, components and providers, and how the data moves between them.
 - [tasks.md](tasks.md): the build order, one commit per task, each with a "Done when" check (tasks 39–41 are the tests).
-- [prompts.md](prompts.md): every prompt given to the assistant, in order.
+- [PROMPTS.md](PROMPTS.md): every prompt given to the assistant, in order.
 
 ## Disclaimer
 
