@@ -34,7 +34,6 @@ The app is public at https://illyy1.github.io/pokedex-explorer/ (GitHub Pages), 
 
 ## 6. Not now (ideas for later)
 - Compare two Pokémon side by side.
-- Filter the list by generation.
 - Add Pokémon from Generation 6 and later in the Pokédex, with the Team Builder staying Generation 5 (planned as task 32).
 - Sync favorites and teams across devices (this would need user accounts).
 - Choose IVs and level, and items beyond the 94 that Smogon's builds use.
@@ -58,10 +57,15 @@ Sources: **PokéAPI** (https://pokeapi.co) for Pokémon data, and **Smogon's com
 | Teams (saved in this browser, not an API) | Browser storage (localStorage), key `teams` | A list of teams, each with an `id`, a `name` and up to six `members`; each member has a `pokemonId`, an `ability`, an `item` (Showdown's spelling, `""` for none), a `nature` (for example "Adamant", `""` for none), `evs` (`hp`, `atk`, `def`, `spa`, `spd`, `spe`, each 0–252, 510 at most in all) and four `moves` (an empty move slot is `""`). Teams saved before items, natures and EVs existed load with none of them |
 | Export to Showdown (not an API) | Opens `https://play.pokemonshowdown.com/teambuilder` in a new tab; the team goes through the clipboard | Each Pokémon as its name (with "@ Item" if it holds one), an `Ability:` line, an `EVs:` line, a "Nature" line and one `- Move` line per chosen move, with a blank line between Pokémon; anything not chosen is left out. Names are written the way Showdown spells them ("mr-mime" → "Mr. Mime", "deoxys-normal" → "Deoxys", "u-turn" → "U-turn"), checked against Showdown's own lists for every Generation 1–5 Pokémon, move and ability |
 
-## 8. Testing
+## 8. More documents
+- [docs/architecture.md](docs/architecture.md): how the pages, components and shared data fit together, and what happens from a click to a card.
+- [tasks.md](tasks.md): the build order, with a "Done when" check for each task.
+- [PROMPTS.md](PROMPTS.md): every prompt given to the assistant, in order.
+
+## 9. Testing
 Three kinds of automated tests check the app, so changes don't break it without anyone noticing:
 - **Unit tests** check single functions: search matching, names and sprite links, weakness and resistance math, the Showdown text format, EV and nature labels, legendary marks and the randomizer.
 - **Integration tests** run the whole app in a simulated browser with a fake PokéAPI and Smogon file, and use every page like a person would: the home page, search and filters, cards, favorites, the 3D button (including the iPhone question), the About page, "Page not found", the edge sprites, and everything in the Team Builder (choosing a set, Smogon builds, export, text file, randomizer and deleting teams). They also check every error message and "Try again" button, broken saved data, and changes made in another tab.
 - **End-to-end tests** run the built site in a real browser, at computer and phone size, with the real data: whole journeys from page to page, reloading, infinite scroll, the 3D tilt with the mouse and the phone's motion sensor, downloads, a real Showdown export, and the Content Security Policy.
 
-`npm test` runs the first two without internet; `npm run test:e2e` runs the last one and needs internet.
+`npm test` runs the first two without internet (`npm run test:ui` shows them in the Vitest UI in the browser); `npm run test:e2e` runs the last one and needs internet.

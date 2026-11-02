@@ -2,7 +2,7 @@
 
 Build in this order. Each task is one commit.
 
-Status: tasks 1–31 and 33–53 are done; task 32 is planned for later. Tasks 9–53 were added after the first plan.
+Status: tasks 1–31 and 33–54 are done; task 32 is planned for later. Tasks 9–54 were added after the first plan.
 
 ## Task 1: Show the list from a local sample file ✅
 Create a local JSON file with 5 sample Pokémon (for example Bulbasaur, Charmander, Squirtle, Pikachu, Eevee). Each one has a number, name, small picture URL and type(s). Show them as a list on the left side of the page, one row per Pokémon.
@@ -311,3 +311,8 @@ Done when: at 1600 pixels wide the band covers the menu, list and card but not t
 A "✨ Shiny: Off / On" button next to "3D effect" swaps the card's artwork for the Pokémon's shiny (different colored) version, from PokéAPI's `sprites.other['official-artwork'].front_shiny` (or the small `front_shiny` sprite if there is no shiny artwork), which comes in the same request as the rest of the card. The choice is remembered in this browser (localStorage key `shiny`), so other Pokémon and later visits open shiny too. The picture's text says "shiny charizard". For a Pokémon without any shiny picture, the button is off and the usual artwork shows.
 
 Done when: Pikachu's card swaps to its shiny artwork and back, Charizard then opens shiny, a reload keeps it, a Pokémon without shiny pictures shows its usual artwork with the button off, and the real shiny artwork loads on the live data.
+
+## Task 54: Match the course's final project requirements ✅
+Check the site against the course's final project instructions and fill the gaps: install `@vitest/ui` and add an `npm run test:ui` script that opens the tests in the Vitest UI, rename `prompts.md` to `PROMPTS.md` as the instructions name it, add `docs/architecture.md` (pages, components, shared state and the path from a click to a card) and link it from `PRD.md` and `README.md`, drop "Filter the list by generation" from the PRD's "Not now" list since it is already built, and name the package `pokedex-explorer`.
+
+Done when: `npm run test:ui` opens the Vitest UI with every test passing, `PROMPTS.md`, `PRD.md`, `tasks.md` and `docs/architecture.md` are in the repo and linked from the README, and `npm run build`, `npm run lint` and `npm test` pass.
