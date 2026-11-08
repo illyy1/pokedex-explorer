@@ -731,3 +731,9 @@ hi please go over these instructions and make sure the website covers all of the
 here are the instructions copy pasted from notion
 (the full text of the course's final project instructions, "פרויקט הגמר · 4255 · פלטפורמות מתקדמות לפיתוח ב-WEB ושימוש ב-AI")
 ```
+
+## 118. Is the latest site live?
+
+```text
+is the most recent site up or no
+```
